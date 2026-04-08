@@ -43,7 +43,7 @@ const FALLBACK_WORD_BANK = [
 
 const VALIDATION_DICTIONARY_URL = "https://raw.githubusercontent.com/dolph/dictionary/master/enable1.txt";
 const ROUND_DICTIONARY_URL = "https://raw.githubusercontent.com/petey284/word_list/master/popular.txt";
-const STORAGE_KEY = "letter-clock-scores-v2";
+const STORAGE_KEY = "letter-clock-scores-v3";
 const REQUIRED_LENGTHS = [4, 5, 6, 7];
 const ROUND_TIME_LIMIT = 45;
 const SESSION_ROUND_COUNT = 8;
@@ -131,7 +131,7 @@ function loadStoredScores() {
     const parsed = JSON.parse(raw);
     return {
       best: parsed.best || 0,
-      leaderboard: Array.isArray(parsed.leaderboard) ? parsed.leaderboard : []
+      leaderboard: normalizeLeaderboardEntries(Array.isArray(parsed.leaderboard) ? parsed.leaderboard : [])
     };
   } catch (error) {
     return { best: 0, leaderboard: [] };
@@ -355,6 +355,29 @@ function updateBestScore() {
   persistScores();
 }
 
+function normalizeLeaderboardEntries(entries) {
+  const seen = new Set();
+
+  return entries
+    .map((entry) => ({
+      name: String(entry?.name || "Player").trim().slice(0, 16) || "Player",
+      score: Number(entry?.score || 0),
+      rounds: Number(entry?.rounds || SESSION_ROUND_COUNT),
+      timestamp: entry?.created_at || entry?.timestamp || null
+    }))
+    .filter((entry) => Number.isFinite(entry.score) && entry.score >= 0)
+    .filter((entry) => {
+      const key = `${entry.name}|${entry.score}|${entry.rounds}`;
+      if (seen.has(key)) {
+        return false;
+      }
+      seen.add(key);
+      return true;
+    })
+    .sort((left, right) => right.score - left.score)
+    .slice(0, 10);
+}
+
 function updateHud() {
   elements.score.textContent = String(state.score);
   elements.survivalMultiplier.textContent = `x${state.survivalMultiplier.toFixed(2)}`;
@@ -376,8 +399,11 @@ function updateLeaderboard() {
 
   state.scores.leaderboard.forEach((entry, index) => {
     const item = document.createElement("li");
-    const when = new Date(entry.timestamp).toLocaleDateString();
-    item.innerHTML = `<span>#${index + 1} ${entry.score}</span><span>Round ${entry.rounds} | ${when}</span>`;
+    const when = entry.timestamp ? new Date(entry.timestamp) : null;
+    const whenLabel = when && !Number.isNaN(when.getTime())
+      ? when.toLocaleDateString()
+      : "Seeded";
+    item.innerHTML = `<span>#${index + 1} ${entry.name} ${entry.score}</span><span>Round ${entry.rounds} | ${whenLabel}</span>`;
     elements.leaderboardList.appendChild(item);
   });
 }
@@ -389,7 +415,7 @@ async function refreshLeaderboard() {
       throw new Error(`Leaderboard fetch failed with ${response.status}`);
     }
     const payload = await response.json();
-    state.scores.leaderboard = Array.isArray(payload.scores) ? payload.scores : [];
+    state.scores.leaderboard = normalizeLeaderboardEntries(Array.isArray(payload.scores) ? payload.scores : []);
     state.scores.best = Math.max(
       state.scores.best || 0,
       state.scores.leaderboard[0]?.score || 0
