@@ -28,6 +28,18 @@
       </div>
     </section>
 
+    <section id="singlePlayerScreen" class="menu-screen" hidden>
+      <div class="menu-card">
+        <p class="menu-kicker">Single Player</p>
+        <h1>Choose A Mode</h1>
+        <div class="menu-actions">
+          <button id="arcadeModeButton" class="menu-button" type="button">Arcade</button>
+          <button id="puzzleModeButton" class="menu-button secondary" type="button">Puzzle</button>
+        </div>
+        <button id="singlePlayerBackButton" class="ghost-button menu-back" type="button">Back</button>
+      </div>
+    </section>
+
     <section id="multiplayerScreen" class="menu-screen" hidden>
       <div class="menu-card">
         <p class="menu-kicker">Multiplayer</p>
@@ -135,6 +147,10 @@
         <label class="sr-only" for="guessInput">Enter a word</label>
         <input id="guessInput" name="guess" type="text" maxlength="24" placeholder="Type a word using the three letters" />
       </form>
+
+      <section id="mysteryPanel" class="mystery-panel" hidden>
+        <div id="mysteryGroups" class="mystery-groups"></div>
+      </section>
 
       <div class="feedback-row">
         <p id="message" class="message">The wheels are ready.</p>

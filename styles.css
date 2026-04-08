@@ -126,6 +126,59 @@ body::before {
   line-height: 1.5;
 }
 
+.mystery-panel {
+  margin-top: 10px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, rgba(18, 24, 52, 0.92), rgba(7, 12, 28, 0.92));
+}
+
+.mystery-groups {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  align-items: start;
+}
+
+.mystery-group {
+  display: grid;
+  gap: 8px;
+}
+
+.mystery-group-title {
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.mystery-word {
+  display: flex;
+  gap: 4px;
+  min-height: 28px;
+}
+
+.mystery-letter {
+  width: 24px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  border-radius: 6px;
+  border: 1px solid rgba(123, 173, 201, 0.18);
+  background: rgba(9, 18, 36, 0.84);
+  color: transparent;
+  font-weight: 800;
+  font-size: 0.78rem;
+}
+
+.mystery-word.solved .mystery-letter {
+  color: #07131c;
+  background: linear-gradient(180deg, #fff07a, #ffc84d);
+  border-color: rgba(255, 216, 77, 0.6);
+}
+
 .menu-actions {
   display: flex;
   justify-content: center;
@@ -1211,6 +1264,27 @@ body::before {
 
   .join-room-form {
     grid-template-columns: 1fr;
+  }
+
+  .mystery-panel {
+    margin-top: 8px;
+    padding: 8px;
+  }
+
+  .mystery-groups {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .mystery-word {
+    gap: 3px;
+    min-height: 24px;
+  }
+
+  .mystery-letter {
+    width: 20px;
+    height: 24px;
+    font-size: 0.66rem;
   }
 
   .lobby-meta {

@@ -69,6 +69,7 @@ const LETTER_POOL = "abcdefghijklmnopqrstuvwxyz".split("");
 const state = {
   activeScreen: "home",
   gameMode: "single",
+  singlePlayerVariant: "arcade",
   score: 0,
   survivalMultiplier: 1,
   consecutiveClears: 0,
@@ -104,6 +105,7 @@ const state = {
   room: null,
   lobbyTimerId: null,
   countdownTimerIds: [],
+  puzzleWordsByLength: {},
   playerId: crypto.randomUUID ? crypto.randomUUID() : `player-${Math.random().toString(36).slice(2, 10)}`,
   playerName: loadStoredPlayerName(),
   playerReady: false,
@@ -115,6 +117,7 @@ const state = {
 
 const elements = {
   homeScreen: document.getElementById("homeScreen"),
+  singlePlayerScreen: document.getElementById("singlePlayerScreen"),
   multiplayerScreen: document.getElementById("multiplayerScreen"),
   rulesScreen: document.getElementById("rulesScreen"),
   lobbyScreen: document.getElementById("lobbyScreen"),
@@ -122,6 +125,9 @@ const elements = {
   racePanel: document.querySelector(".race-panel"),
   homeStatus: document.getElementById("homeStatus"),
   singlePlayerButton: document.getElementById("singlePlayerButton"),
+  arcadeModeButton: document.getElementById("arcadeModeButton"),
+  puzzleModeButton: document.getElementById("puzzleModeButton"),
+  singlePlayerBackButton: document.getElementById("singlePlayerBackButton"),
   multiplayerButton: document.getElementById("multiplayerButton"),
   rulesButton: document.getElementById("rulesButton"),
   createRoomButton: document.getElementById("createRoomButton"),
@@ -166,6 +172,8 @@ const elements = {
   restartButton: document.getElementById("restartButton"),
   guessForm: document.getElementById("guessForm"),
   guessInput: document.getElementById("guessInput"),
+  mysteryPanel: document.getElementById("mysteryPanel"),
+  mysteryGroups: document.getElementById("mysteryGroups"),
   skipButton: document.getElementById("skipButton"),
   message: document.getElementById("message"),
   foundList: document.getElementById("foundList"),
@@ -218,6 +226,7 @@ function persistPlayerName(name) {
 function setScreen(screenName) {
   state.activeScreen = screenName;
   elements.homeScreen.hidden = screenName !== "home";
+  elements.singlePlayerScreen.hidden = screenName !== "single-player-menu";
   elements.multiplayerScreen.hidden = screenName !== "multiplayer-menu";
   elements.rulesScreen.hidden = screenName !== "rules";
   elements.lobbyScreen.hidden = screenName !== "lobby";
@@ -226,6 +235,8 @@ function setScreen(screenName) {
 
 function updateModePanels() {
   elements.racePanel.hidden = state.gameMode !== "multiplayer";
+  elements.goalGrid.parentElement.hidden = state.gameMode === "single" && state.singlePlayerVariant === "puzzle";
+  elements.mysteryPanel.hidden = !(state.gameMode === "single" && state.singlePlayerVariant === "puzzle");
 }
 
 function updateEntryButtons() {
@@ -676,8 +687,9 @@ async function leaveLobby() {
   setScreen("multiplayer-menu");
 }
 
-function startSinglePlayerGame() {
+function startSinglePlayerGame(variant = "arcade") {
   state.gameMode = "single";
+  state.singlePlayerVariant = variant;
   state.raceOpponentName = RACE_RIVAL_NAME;
   state.matchEnded = false;
   clearLobbyTimer();
@@ -1035,6 +1047,27 @@ function buildSessionRounds(seedText = null) {
   }, rng, state.sessionWheelPlans, roundIndex));
 }
 
+function getRandomPuzzleCount(length, availableCount) {
+  const maxCount = Math.min(availableCount, length === 4 ? 4 : 3);
+  const minCount = 1;
+  return Math.max(minCount, Math.floor(Math.random() * maxCount) + 1);
+}
+
+function buildPuzzleWords(roundData) {
+  return REQUIRED_LENGTHS.reduce((groups, length) => {
+    const sourceWords = shuffle([...roundData.answersByLength[length]]);
+    const targetCount = getRandomPuzzleCount(length, sourceWords.length);
+    groups[length] = sourceWords
+      .slice(0, targetCount)
+      .sort((left, right) => left.localeCompare(right))
+      .map((word) => ({
+        word,
+        solved: false
+      }));
+    return groups;
+  }, {});
+}
+
 function getBestScore() {
   return state.scores.best || 0;
 }
@@ -1078,7 +1111,9 @@ function updateHud() {
   elements.round.textContent = `${Math.min(state.round, Math.max(state.sessionRounds.length, 1))}/${Math.max(state.sessionRounds.length, 1)}`;
   elements.bestScore.textContent = String(getBestScore());
   elements.foundCount.textContent = `${state.recentWords.length} word${state.recentWords.length === 1 ? "" : "s"} locked in`;
-  elements.modeSummary.textContent = "";
+  elements.modeSummary.textContent = state.gameMode === "single" && state.singlePlayerVariant === "puzzle"
+    ? "Puzzle Mode"
+    : "";
 }
 
 function clearRivalTimers() {
@@ -1225,6 +1260,10 @@ function updateSubmitScorePanel() {
 function updateGoals() {
   elements.goalGrid.innerHTML = "";
 
+  if (state.gameMode === "single" && state.singlePlayerVariant === "puzzle") {
+    return;
+  }
+
   if (!state.currentRound) {
     return;
   }
@@ -1244,6 +1283,41 @@ function updateGoals() {
     elements.goalGrid.appendChild(card);
   });
 
+}
+
+function updateMysteryPanel() {
+  elements.mysteryGroups.innerHTML = "";
+
+  if (!(state.gameMode === "single" && state.singlePlayerVariant === "puzzle") || !state.currentRound) {
+    return;
+  }
+
+  REQUIRED_LENGTHS.forEach((length) => {
+    const words = state.currentRound.puzzleWordsByLength?.[length] || [];
+    const group = document.createElement("div");
+    group.className = "mystery-group";
+
+    const title = document.createElement("div");
+    title.className = "mystery-group-title";
+    title.textContent = `${length} Letters`;
+    group.appendChild(title);
+
+    words.forEach((entry) => {
+      const row = document.createElement("div");
+      row.className = `mystery-word${entry.solved ? " solved" : ""}`;
+
+      entry.word.split("").forEach((letter) => {
+        const cell = document.createElement("div");
+        cell.className = "mystery-letter";
+        cell.textContent = entry.solved ? letter.toUpperCase() : letter.toUpperCase();
+        row.appendChild(cell);
+      });
+
+      group.appendChild(row);
+    });
+
+    elements.mysteryGroups.appendChild(group);
+  });
 }
 
 function updateRecentWords() {
@@ -1462,6 +1536,13 @@ function clearTimer() {
 }
 
 function updateTimerDisplay() {
+  if (state.gameMode === "single" && state.singlePlayerVariant === "puzzle") {
+    elements.timer.textContent = "Free";
+    elements.timer.classList.remove("danger");
+    elements.timer.parentElement.classList.remove("danger-panel");
+    return;
+  }
+
   if (!state.currentRound) {
     elements.timer.textContent = `${ROUND_TIME_LIMIT}s`;
     elements.timer.classList.remove("danger");
@@ -1523,6 +1604,9 @@ function loadNextRound(messageText, startAt = null) {
   }
 
   state.currentRound = nextRound;
+  if (state.gameMode === "single" && state.singlePlayerVariant === "puzzle") {
+    state.currentRound.puzzleWordsByLength = buildPuzzleWords(state.currentRound);
+  }
   const you = getRacePlayer("you");
   if (you) {
     you.round = state.round;
@@ -1532,6 +1616,7 @@ function loadNextRound(messageText, startAt = null) {
   updateHud();
   updateRaceBoard();
   updateGoals();
+  updateMysteryPanel();
   updateRecentWords();
   setMessage(messageText || "Fresh letters at six. Make them count.");
   elements.guessInput.value = "";
@@ -1548,7 +1633,10 @@ function loadNextRound(messageText, startAt = null) {
   window.setTimeout(() => {
     setSpinning(false);
     clearCountdown();
-    if (startAt) {
+    if (state.gameMode === "single" && state.singlePlayerVariant === "puzzle") {
+      clearTimer();
+      updateTimerDisplay();
+    } else if (startAt) {
       startRoundTimerAt(startAt);
     } else {
       startRoundTimer();
@@ -1560,14 +1648,67 @@ function loadNextRound(messageText, startAt = null) {
 
 function scoreWord(word) {
   const basePoints = LENGTH_SCORES[word.length];
-  const points = Math.round(basePoints * state.survivalMultiplier);
+  const points = state.gameMode === "single" && state.singlePlayerVariant === "puzzle"
+    ? basePoints
+    : Math.round(basePoints * state.survivalMultiplier);
   return {
     basePoints,
     points
   };
 }
 
+function getRemainingPuzzleWords() {
+  return REQUIRED_LENGTHS.flatMap((length) => (state.currentRound.puzzleWordsByLength?.[length] || []).filter((entry) => !entry.solved));
+}
+
+function handlePuzzleGuess(word) {
+  const words = state.currentRound.puzzleWordsByLength?.[word.length] || [];
+  const match = words.find((entry) => entry.word === word);
+
+  if (!match) {
+    setMessage(`"${word.toUpperCase()}" is valid, but not one of this board's mystery words.`, "error");
+    return;
+  }
+
+  if (match.solved) {
+    setMessage(`"${word.toUpperCase()}" is already solved.`, "error");
+    return;
+  }
+
+  const { points } = scoreWord(word);
+  match.solved = true;
+  state.score += points;
+  state.recentWords.unshift({ word, letters: state.currentRound.letters, points });
+  updateBestScore();
+  updateHud();
+  updateMysteryPanel();
+  updateRecentWords();
+  playWordScoreSound();
+  spawnScorePopup(`+${points}`, "word", -40);
+
+  const remaining = getRemainingPuzzleWords();
+  if (remaining.length === 0) {
+    if (state.sessionIndex >= state.sessionRounds.length) {
+      endSession(`Puzzle run complete. "${word.toUpperCase()}" finished the final board.`);
+      return;
+    }
+
+    state.round += 1;
+    loadNextRound(`Board cleared. "${word.toUpperCase()}" solved the final mystery word for this combo.`);
+    return;
+  }
+
+  setMessage(`Solved "${word.toUpperCase()}" for +${points}. ${remaining.length} mystery word${remaining.length === 1 ? "" : "s"} left.`, "success");
+  elements.guessInput.value = "";
+  elements.guessInput.focus();
+}
+
 function handleCorrectGuess(word) {
+  if (state.gameMode === "single" && state.singlePlayerVariant === "puzzle") {
+    handlePuzzleGuess(word);
+    return;
+  }
+
   const { basePoints, points } = scoreWord(word);
   state.currentRound.solvedLengths[word.length] = word;
   state.currentRound.solveSequence.push(word.length);
@@ -1656,6 +1797,10 @@ function handleRoundFailure(message) {
     return;
   }
 
+  if (state.gameMode === "single" && state.singlePlayerVariant === "puzzle") {
+    return;
+  }
+
   clearTimer();
   clearRivalTimers();
   playFailureSound();
@@ -1719,6 +1864,7 @@ function endSession(reason = "Run complete.", options = {}) {
   updateSubmitScorePanel();
   updateResultsPanel();
   updateGoals();
+  updateMysteryPanel();
   updateRecentWords();
   if (state.gameMode === "multiplayer") {
     updateOwnPresence().catch(() => {});
@@ -1748,8 +1894,13 @@ function handleGuess(event) {
     return;
   }
 
-  if (state.usedWords.has(guess)) {
+  if (!(state.gameMode === "single" && state.singlePlayerVariant === "puzzle") && state.usedWords.has(guess)) {
     setMessage(`"${guess.toUpperCase()}" was already played. Find a fresh one.`, "error");
+    return;
+  }
+
+  if (state.gameMode === "single" && state.singlePlayerVariant === "puzzle") {
+    handleCorrectGuess(guess);
     return;
   }
 
@@ -1786,6 +1937,7 @@ function restartSession() {
   state.consecutiveClears = 0;
   state.round = 1;
   state.currentRound = null;
+  state.puzzleWordsByLength = {};
   state.recentWords = [];
   state.usedWords = new Set();
   state.hasSubmittedScore = false;
@@ -1800,6 +1952,7 @@ function restartSession() {
   updateSubmitScorePanel();
   updateResultsPanel();
   updateGoals();
+  updateMysteryPanel();
   updateRecentWords();
   loadNextRound("Run ready. Eight rounds. Build your streak.", state.gameMode === "multiplayer" ? state.room?.startAt : null);
 }
@@ -1899,8 +2052,18 @@ elements.leaderboardButton.addEventListener("click", () => {
   elements.leaderboardPanel.hidden = !elements.leaderboardPanel.hidden;
 });
 elements.singlePlayerButton.addEventListener("click", () => {
+  setScreen("single-player-menu");
+});
+elements.arcadeModeButton.addEventListener("click", () => {
   ensureAudioReady();
-  startSinglePlayerGame();
+  startSinglePlayerGame("arcade");
+});
+elements.puzzleModeButton.addEventListener("click", () => {
+  ensureAudioReady();
+  startSinglePlayerGame("puzzle");
+});
+elements.singlePlayerBackButton.addEventListener("click", () => {
+  setScreen("home");
 });
 elements.multiplayerButton.addEventListener("click", () => {
   elements.playerNameMenuInput.value = state.playerName;
