@@ -16,7 +16,63 @@
       <p class="eyebrow">Word Wheel</p>
     </section>
 
-    <section class="game-panel">
+    <section id="homeScreen" class="menu-screen">
+      <div class="menu-card">
+        <p class="menu-kicker">Arcade word race</p>
+        <h1>Word Wheel</h1>
+        <p class="menu-copy">Pick your lane and chase the board.</p>
+        <div class="menu-actions">
+          <button id="singlePlayerButton" class="menu-button" type="button">Single Player</button>
+          <button id="multiplayerButton" class="menu-button secondary" type="button">Multiplayer</button>
+        </div>
+        <p id="homeStatus" class="menu-status">Loading dictionary...</p>
+      </div>
+    </section>
+
+    <section id="multiplayerScreen" class="menu-screen" hidden>
+      <div class="menu-card">
+        <p class="menu-kicker">Multiplayer</p>
+        <h1>Play Head To Head</h1>
+        <p class="menu-copy">Create a room as host or jump into an existing code.</p>
+        <form id="playerNameForm" class="player-name-form" autocomplete="off">
+          <label class="sr-only" for="playerNameMenuInput">Display name</label>
+          <input id="playerNameMenuInput" name="playerName" type="text" maxlength="16" placeholder="Your display name" />
+        </form>
+        <div class="menu-actions">
+          <button id="createRoomButton" class="menu-button" type="button">Create Room</button>
+        </div>
+        <form id="joinRoomForm" class="join-room-form" autocomplete="off">
+          <label class="sr-only" for="joinRoomInput">Room code</label>
+          <input id="joinRoomInput" name="roomCode" type="text" maxlength="6" placeholder="Enter room code" />
+          <button class="menu-button secondary" type="submit">Join Room</button>
+        </form>
+        <p id="multiplayerStatus" class="menu-status"></p>
+        <button id="backToHomeButton" class="ghost-button menu-back" type="button">Back</button>
+      </div>
+    </section>
+
+    <section id="lobbyScreen" class="menu-screen" hidden>
+      <div class="menu-card lobby-card">
+        <div class="lobby-meta">
+          <div>
+            <p class="menu-kicker">Room Code</p>
+            <h1 id="lobbyRoomCode">----</h1>
+          </div>
+          <div class="lobby-role">
+            <span>Role</span>
+            <strong id="lobbyRole">Host</strong>
+          </div>
+        </div>
+        <p id="lobbyStatus" class="menu-copy">Waiting for players...</p>
+        <div id="lobbyPlayers" class="lobby-players"></div>
+        <div class="menu-actions">
+          <button id="startMatchButton" class="menu-button" type="button" disabled>Start Match</button>
+          <button id="leaveLobbyButton" class="ghost-button" type="button">Leave Room</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="gamePanel" class="game-panel" hidden>
       <div class="hud">
         <div class="stat-card">
           <span class="stat-label">Score</span>
@@ -39,6 +95,14 @@
           <strong id="bestScore">0</strong>
         </div>
       </div>
+
+      <section class="race-panel">
+        <div class="race-header">
+          <h2>Head To Head</h2>
+          <p>Duel preview</p>
+        </div>
+        <div id="raceBoard" class="race-board"></div>
+      </section>
 
       <section class="goal-panel">
         <div id="goalGrid" class="goal-grid"></div>
@@ -110,6 +174,7 @@
     </section>
   </main>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="app.js"></script>
 </body>
 </html>

@@ -44,6 +44,7 @@ const FALLBACK_WORD_BANK = [
 const VALIDATION_DICTIONARY_URL = "https://raw.githubusercontent.com/dolph/dictionary/master/enable1.txt";
 const ROUND_DICTIONARY_URL = "https://raw.githubusercontent.com/petey284/word_list/master/popular.txt";
 const STORAGE_KEY = "letter-clock-scores-v3";
+const PLAYER_NAME_KEY = "word-wheel-player-name";
 const REQUIRED_LENGTHS = [4, 5, 6, 7];
 const ROUND_TIME_LIMIT = 45;
 const SESSION_ROUND_COUNT = 8;
@@ -59,12 +60,15 @@ const TIME_BONUS_PER_SECOND = 10;
 const SURVIVAL_STEP = 0.1;
 const SURVIVAL_CAP = 3;
 const REEL_BUFFER = 2;
+const RACE_RIVAL_NAME = "Rival";
 const MIN_WORD_LENGTH = REQUIRED_LENGTHS[0];
 const MAX_WORD_LENGTH = REQUIRED_LENGTHS[REQUIRED_LENGTHS.length - 1];
 const WHEEL_SIZE = 10;
 const LETTER_POOL = "abcdefghijklmnopqrstuvwxyz".split("");
 
 const state = {
+  activeScreen: "home",
+  gameMode: "single",
   score: 0,
   survivalMultiplier: 1,
   consecutiveClears: 0,
@@ -77,6 +81,12 @@ const state = {
   audioUnlocked: false,
   currentRound: null,
   recentWords: [],
+  racePlayers: [],
+  rivalTimers: [],
+  supabaseClient: null,
+  supabaseConfigReady: false,
+  realtimeChannel: null,
+  roomPresence: [],
   wheelOffsets: [0, 0, 0],
   isSpinning: false,
   hasSubmittedScore: false,
@@ -90,17 +100,43 @@ const state = {
   sessionRounds: [],
   sessionWheelPlans: [],
   sessionIndex: 0,
+  room: null,
+  lobbyTimerId: null,
+  playerId: crypto.randomUUID ? crypto.randomUUID() : `player-${Math.random().toString(36).slice(2, 10)}`,
+  playerName: loadStoredPlayerName(),
+  raceOpponentName: RACE_RIVAL_NAME,
   usedWords: new Set(),
   scores: loadStoredScores()
 };
 
 const elements = {
+  homeScreen: document.getElementById("homeScreen"),
+  multiplayerScreen: document.getElementById("multiplayerScreen"),
+  lobbyScreen: document.getElementById("lobbyScreen"),
+  gamePanel: document.getElementById("gamePanel"),
+  homeStatus: document.getElementById("homeStatus"),
+  singlePlayerButton: document.getElementById("singlePlayerButton"),
+  multiplayerButton: document.getElementById("multiplayerButton"),
+  createRoomButton: document.getElementById("createRoomButton"),
+  playerNameForm: document.getElementById("playerNameForm"),
+  playerNameMenuInput: document.getElementById("playerNameMenuInput"),
+  joinRoomForm: document.getElementById("joinRoomForm"),
+  joinRoomInput: document.getElementById("joinRoomInput"),
+  multiplayerStatus: document.getElementById("multiplayerStatus"),
+  backToHomeButton: document.getElementById("backToHomeButton"),
+  lobbyRoomCode: document.getElementById("lobbyRoomCode"),
+  lobbyRole: document.getElementById("lobbyRole"),
+  lobbyStatus: document.getElementById("lobbyStatus"),
+  lobbyPlayers: document.getElementById("lobbyPlayers"),
+  startMatchButton: document.getElementById("startMatchButton"),
+  leaveLobbyButton: document.getElementById("leaveLobbyButton"),
   wheelGrid: document.getElementById("wheelGrid"),
   score: document.getElementById("score"),
   survivalMultiplier: document.getElementById("survivalMultiplier"),
   timer: document.getElementById("timer"),
   round: document.getElementById("round"),
   bestScore: document.getElementById("bestScore"),
+  raceBoard: document.getElementById("raceBoard"),
   goalGrid: document.getElementById("goalGrid"),
   modeSummary: document.getElementById("modeSummary"),
   leaderboardButton: document.getElementById("leaderboardButton"),
@@ -140,6 +176,426 @@ function loadStoredScores() {
 
 function persistScores() {
   window.localStorage.setItem(STORAGE_KEY, JSON.stringify(state.scores));
+}
+
+function loadStoredPlayerName() {
+  try {
+    const saved = window.localStorage.getItem(PLAYER_NAME_KEY);
+    return saved ? saved.trim().slice(0, 16) : "";
+  } catch (error) {
+    return "";
+  }
+}
+
+function persistPlayerName(name) {
+  const clean = String(name || "").trim().slice(0, 16);
+  state.playerName = clean || "Player";
+  try {
+    window.localStorage.setItem(PLAYER_NAME_KEY, state.playerName);
+  } catch (error) {
+    return;
+  }
+}
+
+function setScreen(screenName) {
+  state.activeScreen = screenName;
+  elements.homeScreen.hidden = screenName !== "home";
+  elements.multiplayerScreen.hidden = screenName !== "multiplayer-menu";
+  elements.lobbyScreen.hidden = screenName !== "lobby";
+  elements.gamePanel.hidden = screenName !== "game";
+}
+
+function updateEntryButtons() {
+  const disabled = !state.dictionaryReady;
+  elements.singlePlayerButton.disabled = disabled;
+  elements.multiplayerButton.disabled = disabled;
+  elements.createRoomButton.disabled = disabled;
+  elements.joinRoomInput.disabled = disabled;
+  elements.joinRoomForm.querySelector("button").disabled = disabled;
+
+  if (!state.dictionaryReady) {
+    elements.homeStatus.textContent = "Loading dictionary...";
+    elements.multiplayerStatus.textContent = "";
+  } else {
+    elements.homeStatus.textContent = "Dictionary ready.";
+    elements.multiplayerStatus.textContent = "";
+  }
+}
+
+function clearLobbyTimer() {
+  if (state.lobbyTimerId) {
+    window.clearTimeout(state.lobbyTimerId);
+    state.lobbyTimerId = null;
+  }
+}
+
+function sanitizePlayerName(value) {
+  return String(value || "")
+    .replace(/[^a-zA-Z0-9 _-]/g, "")
+    .trim()
+    .slice(0, 16);
+}
+
+function getPlayerName() {
+  const typed = sanitizePlayerName(elements.playerNameMenuInput.value);
+  if (typed) {
+    persistPlayerName(typed);
+    return state.playerName;
+  }
+
+  if (state.playerName) {
+    return state.playerName;
+  }
+
+  persistPlayerName("Player");
+  elements.playerNameMenuInput.value = state.playerName;
+  return state.playerName;
+}
+
+function makeRoomCode() {
+  const alphabet = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  let code = "";
+  for (let index = 0; index < 4; index += 1) {
+    code += alphabet[Math.floor(Math.random() * alphabet.length)];
+  }
+  return code;
+}
+
+async function ensureSupabaseClient() {
+  if (state.supabaseClient) {
+    return state.supabaseClient;
+  }
+
+  if (!window.supabase?.createClient) {
+    throw new Error("Supabase client failed to load in the browser.");
+  }
+
+  const response = await fetch("/api/runtime-config");
+  if (!response.ok) {
+    throw new Error("Runtime config is missing.");
+  }
+
+  const payload = await response.json();
+  if (!payload.supabaseUrl || !payload.supabasePublishableKey) {
+    throw new Error("Supabase multiplayer config is incomplete.");
+  }
+
+  state.supabaseClient = window.supabase.createClient(payload.supabaseUrl, payload.supabasePublishableKey);
+  state.supabaseConfigReady = true;
+  return state.supabaseClient;
+}
+
+async function disconnectRealtimeRoom() {
+  if (state.realtimeChannel && state.supabaseClient) {
+    await state.supabaseClient.removeChannel(state.realtimeChannel);
+  }
+  state.realtimeChannel = null;
+  state.roomPresence = [];
+}
+
+function buildLobbyPlayers() {
+  if (!state.room) {
+    return [];
+  }
+
+  const roster = state.roomPresence
+    .slice()
+    .sort((left, right) => Number(right.isHost) - Number(left.isHost) || left.name.localeCompare(right.name))
+    .map((player) => ({
+      name: player.name,
+      status: player.isHost ? "Host" : "Joined"
+    }));
+
+  while (roster.length < 2) {
+    roster.push({ name: "Open Slot", status: "Waiting..." });
+  }
+
+  return roster.slice(0, 2);
+}
+
+function syncRoomPresence(channel) {
+  const presenceState = channel.presenceState();
+  const players = Object.values(presenceState).flatMap((entries) => entries);
+  state.roomPresence = players;
+
+  if (!state.room) {
+    return;
+  }
+
+  state.room.players = buildLobbyPlayers();
+  const opponent = players.find((player) => player.playerId !== state.playerId);
+  state.room.opponentName = opponent?.name || "Opponent";
+  state.room.ready = players.length >= 2;
+
+  if (state.room.status !== "live") {
+    state.room.status = state.room.ready
+      ? state.room.isHost
+        ? "Player 2 joined. Start when ready."
+        : "Connected. Waiting for host to start..."
+      : state.room.isHost
+        ? "Waiting for player 2 to join..."
+        : "Joined room. Waiting for host..."
+  }
+
+  updateLobbyView();
+}
+
+function applyRemoteProgress(payload) {
+  const rival = getRacePlayer("rival");
+  if (!rival || payload.playerId === state.playerId) {
+    return;
+  }
+
+  rival.name = payload.name || rival.name;
+
+  if (payload.type === "solve") {
+    rival.score = payload.score;
+    rival.round = payload.round;
+    rival.currentSolved[payload.length] = true;
+  }
+
+  if (payload.type === "round-clear") {
+    rival.score = payload.score;
+    rival.round = payload.round;
+    rival.currentSolved = {};
+  }
+
+  if (payload.type === "round-fail") {
+    rival.score = payload.score;
+    rival.round = payload.round;
+    rival.currentSolved = {};
+  }
+
+  if (payload.type === "session-end") {
+    rival.score = payload.score;
+    rival.round = SESSION_ROUND_COUNT;
+    rival.finished = true;
+    rival.currentSolved = {};
+  }
+
+  updateRaceBoard();
+}
+
+async function broadcastRoomEvent(event, payload) {
+  if (!state.realtimeChannel) {
+    return;
+  }
+
+  await state.realtimeChannel.send({
+    type: "broadcast",
+    event,
+    payload
+  });
+}
+
+async function connectRealtimeRoom(room, isHost) {
+  const supabase = await ensureSupabaseClient();
+  await disconnectRealtimeRoom();
+
+  state.room = {
+    code: room.code,
+    roomId: room.id,
+    isHost,
+    ready: false,
+    opponentName: "Opponent",
+    status: isHost ? "Waiting for player 2 to join..." : "Joined room. Waiting for host...",
+    players: [
+      { name: getPlayerName(), status: isHost ? "Host" : "Joined" },
+      { name: "Open Slot", status: "Waiting..." }
+    ]
+  };
+
+  const channel = supabase.channel(`room:${room.code}`, {
+    config: {
+      broadcast: { self: true },
+      presence: { key: state.playerId }
+    }
+  });
+
+  channel
+    .on("presence", { event: "sync" }, () => {
+      syncRoomPresence(channel);
+    })
+    .on("broadcast", { event: "match-start" }, ({ payload }) => {
+      if (!state.room || payload.hostId === undefined) {
+        return;
+      }
+      state.room.status = "live";
+      state.room.seed = payload.seed;
+      startMultiplayerGame();
+    })
+    .on("broadcast", { event: "progress" }, ({ payload }) => {
+      applyRemoteProgress(payload);
+    });
+
+  await new Promise((resolve, reject) => {
+    channel.subscribe(async (status) => {
+      if (status === "SUBSCRIBED") {
+        try {
+          await channel.track({
+            playerId: state.playerId,
+            name: getPlayerName(),
+            isHost,
+            joinedAt: new Date().toISOString()
+          });
+          resolve();
+        } catch (error) {
+          reject(error);
+        }
+      }
+
+      if (status === "CHANNEL_ERROR" || status === "TIMED_OUT") {
+        reject(new Error("Realtime room connection failed."));
+      }
+    });
+  });
+
+  state.realtimeChannel = channel;
+  syncRoomPresence(channel);
+  updateLobbyView();
+  setScreen("lobby");
+}
+
+function updateLobbyView() {
+  if (!state.room) {
+    return;
+  }
+
+  elements.lobbyRoomCode.textContent = state.room.code;
+  elements.lobbyRole.textContent = state.room.isHost ? "Host" : "Guest";
+  elements.lobbyStatus.textContent = state.room.status;
+  elements.lobbyPlayers.innerHTML = "";
+
+  state.room.players.forEach((player) => {
+    const row = document.createElement("div");
+    row.className = "lobby-player";
+    row.innerHTML = `<span>${player.name}</span><span>${player.status}</span>`;
+    elements.lobbyPlayers.appendChild(row);
+  });
+
+  elements.startMatchButton.hidden = !state.room.isHost;
+  elements.startMatchButton.disabled = !state.room.isHost || !state.room.ready;
+}
+
+async function leaveLobby() {
+  clearLobbyTimer();
+  await disconnectRealtimeRoom();
+  state.room = null;
+  setScreen("multiplayer-menu");
+}
+
+function startSinglePlayerGame() {
+  state.gameMode = "single";
+  state.raceOpponentName = RACE_RIVAL_NAME;
+  clearLobbyTimer();
+  disconnectRealtimeRoom();
+  state.room = null;
+  elements.restartButton.textContent = "Restart Run";
+  setScreen("game");
+  restartSession();
+}
+
+function startMultiplayerGame() {
+  state.gameMode = "multiplayer";
+  state.raceOpponentName = state.room?.opponentName || "Opponent";
+  clearLobbyTimer();
+  elements.restartButton.textContent = "Leave Match";
+  setScreen("game");
+  restartSession();
+  setMessage(`Room ${state.room?.code || "LIVE"} started. Beat ${state.raceOpponentName}.`);
+}
+
+async function createRoom() {
+  state.gameMode = "multiplayer";
+  clearLobbyTimer();
+  const supabase = await ensureSupabaseClient();
+  const playerName = getPlayerName();
+
+  let code = makeRoomCode();
+  for (let tries = 0; tries < 5; tries += 1) {
+    const { data: existing } = await supabase
+      .from("game_rooms")
+      .select("id")
+      .eq("code", code)
+      .maybeSingle();
+
+    if (!existing) {
+      break;
+    }
+
+    code = makeRoomCode();
+  }
+
+  const { data, error } = await supabase
+    .from("game_rooms")
+    .insert({
+      code,
+      host_player_id: state.playerId,
+      host_name: playerName,
+      status: "waiting"
+    })
+    .select("id, code")
+    .single();
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  await connectRealtimeRoom(data, true);
+}
+
+async function joinRoom(code) {
+  state.gameMode = "multiplayer";
+  clearLobbyTimer();
+  const supabase = await ensureSupabaseClient();
+
+  const { data, error } = await supabase
+    .from("game_rooms")
+    .select("id, code, status")
+    .eq("code", code)
+    .maybeSingle();
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  if (!data) {
+    throw new Error("Room not found.");
+  }
+
+  if (data.status === "live") {
+    throw new Error("That room has already started.");
+  }
+
+  await connectRealtimeRoom(data, false);
+}
+
+async function startRoomMatch() {
+  if (!state.room?.isHost || !state.room.ready) {
+    return;
+  }
+
+  const supabase = await ensureSupabaseClient();
+  const seed = `room-${state.room.code}-${Date.now()}`;
+
+  const { error } = await supabase
+    .from("game_rooms")
+    .update({
+      status: "live",
+      seed
+    })
+    .eq("id", state.room.roomId);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  state.room.status = "live";
+  state.room.seed = seed;
+  await broadcastRoomEvent("match-start", {
+    hostId: state.playerId,
+    seed
+  });
 }
 
 function normalizeWord(word) {
@@ -328,8 +784,8 @@ function buildRoundInstance(roundTemplate, rng, wheelPlans, roundIndex) {
   };
 }
 
-function buildSessionRounds() {
-  const seed = `run-${Date.now()}`;
+function buildSessionRounds(seedText = null) {
+  const seed = seedText || `run-${Date.now()}`;
   const rng = createRng(seed);
   const sourceRounds = shuffle(state.rounds, rng);
   const chosen = sourceRounds.slice(0, SESSION_ROUND_COUNT);
@@ -387,6 +843,131 @@ function updateHud() {
   elements.modeSummary.textContent = "";
 }
 
+function clearRivalTimers() {
+  state.rivalTimers.forEach((timerId) => window.clearTimeout(timerId));
+  state.rivalTimers = [];
+}
+
+function createRacePlayers() {
+  state.racePlayers = [
+    {
+      id: "you",
+      name: "You",
+      score: 0,
+      round: 1,
+      currentSolved: {},
+      finished: false,
+      isYou: true
+    },
+    {
+      id: "rival",
+      name: state.raceOpponentName || RACE_RIVAL_NAME,
+      score: 0,
+      round: 1,
+      currentSolved: {},
+      finished: false,
+      isYou: false
+    }
+  ];
+}
+
+function updateRaceBoard() {
+  elements.raceBoard.innerHTML = "";
+
+  state.racePlayers
+    .slice()
+    .sort((left, right) => right.score - left.score)
+    .forEach((player) => {
+      const lane = document.createElement("article");
+      lane.className = `race-lane${player.isYou ? " you" : ""}${player.finished ? " finished" : ""}`;
+
+      const name = document.createElement("div");
+      name.className = "race-lane-name";
+      name.innerHTML = `<strong>${player.name}</strong><span>${player.finished ? "Done" : player.isYou ? "You" : "Live"}</span>`;
+
+      const score = document.createElement("div");
+      score.className = "race-lane-score";
+      score.innerHTML = `<strong>${player.score}</strong><span>Score</span>`;
+
+      const round = document.createElement("div");
+      round.className = "race-lane-round";
+      round.innerHTML = `<strong>${Math.min(player.round, SESSION_ROUND_COUNT)}/${SESSION_ROUND_COUNT}</strong><span>Rd</span>`;
+
+      const progress = document.createElement("div");
+      progress.className = "race-progress";
+
+      REQUIRED_LENGTHS.forEach((length) => {
+        const cell = document.createElement("div");
+        cell.className = `race-cell${player.currentSolved[length] ? " complete" : ""}`;
+        cell.textContent = String(length);
+        progress.appendChild(cell);
+      });
+
+      lane.append(name, score, round, progress);
+      elements.raceBoard.appendChild(lane);
+    });
+}
+
+function getRacePlayer(id) {
+  return state.racePlayers.find((player) => player.id === id);
+}
+
+function getRivalWordPoints(length, round) {
+  const survival = Math.min(1 + Math.max(round - 1, 0) * SURVIVAL_STEP, SURVIVAL_CAP);
+  return Math.round(LENGTH_SCORES[length] * survival);
+}
+
+function getRivalRoundBonus(round) {
+  const survival = Math.min(1 + Math.max(round - 1, 0) * SURVIVAL_STEP, SURVIVAL_CAP);
+  return Math.round((ROUND_CLEAR_BONUS + 120) * survival);
+}
+
+function scheduleRivalRound() {
+  if (state.gameMode !== "single") {
+    return;
+  }
+
+  clearRivalTimers();
+
+  state.racePlayers
+    .filter((player) => !player.isYou && !player.finished)
+    .forEach((player) => {
+      const order = shuffle([...REQUIRED_LENGTHS]);
+      const willFinish = Math.random() > 0.16;
+      const lengthsToSolve = willFinish ? order : order.slice(0, Math.floor(Math.random() * 3) + 1);
+      let delay = 1800;
+
+      lengthsToSolve.forEach((length) => {
+        delay += 1500 + Math.floor(Math.random() * 2100);
+        const timerId = window.setTimeout(() => {
+          if (!state.currentRound || player.finished || player.round !== state.round) {
+            return;
+          }
+          player.currentSolved[length] = true;
+          player.score += getRivalWordPoints(length, player.round);
+          updateRaceBoard();
+        }, delay);
+        state.rivalTimers.push(timerId);
+      });
+
+      if (willFinish) {
+        const finishTimer = window.setTimeout(() => {
+          if (!state.currentRound || player.finished || player.round !== state.round) {
+            return;
+          }
+          player.score += getRivalRoundBonus(player.round);
+          player.round += 1;
+          player.currentSolved = {};
+          if (player.round > SESSION_ROUND_COUNT) {
+            player.finished = true;
+          }
+          updateRaceBoard();
+        }, delay + 600);
+        state.rivalTimers.push(finishTimer);
+      }
+    });
+}
+
 function updateLeaderboard() {
   elements.leaderboardList.innerHTML = "";
 
@@ -431,7 +1012,7 @@ async function refreshLeaderboard() {
 }
 
 function updateSubmitScorePanel() {
-  const shouldShow = !state.currentRound && state.score > 0 && !state.hasSubmittedScore;
+  const shouldShow = state.gameMode === "single" && !state.currentRound && state.score > 0 && !state.hasSubmittedScore;
   elements.submitScorePanel.hidden = !shouldShow;
   if (!shouldShow) {
     return;
@@ -729,8 +1310,14 @@ function loadNextRound(messageText) {
   }
 
   state.currentRound = nextRound;
+  const you = getRacePlayer("you");
+  if (you) {
+    you.round = state.round;
+    you.currentSolved = {};
+  }
   renderWheels(state.currentRound);
   updateHud();
+  updateRaceBoard();
   updateGoals();
   updateRecentWords();
   setMessage(messageText || "Fresh letters at six. Make them count.");
@@ -740,6 +1327,7 @@ function loadNextRound(messageText) {
   window.setTimeout(() => {
     setSpinning(false);
     startRoundTimer();
+    scheduleRivalRound();
     elements.guessInput.focus();
   }, 950);
 }
@@ -762,6 +1350,22 @@ function handleCorrectGuess(word) {
   state.recentWords.unshift({ word, letters: state.currentRound.letters, points });
   updateBestScore();
   updateHud();
+  const you = getRacePlayer("you");
+  if (you) {
+    you.score = state.score;
+    you.currentSolved[word.length] = true;
+  }
+  updateRaceBoard();
+  if (state.gameMode === "multiplayer") {
+    broadcastRoomEvent("progress", {
+      type: "solve",
+      playerId: state.playerId,
+      name: state.playerName,
+      score: state.score,
+      round: state.round,
+      length: word.length
+    }).catch(() => {});
+  }
   updateGoals();
   updateRecentWords();
   playWordScoreSound();
@@ -781,6 +1385,24 @@ function handleCorrectGuess(word) {
     state.survivalMultiplier = Math.min(1 + state.consecutiveClears * SURVIVAL_STEP, SURVIVAL_CAP);
     updateBestScore();
     updateHud();
+    if (you) {
+      you.score = state.score;
+      you.round += 1;
+      you.currentSolved = {};
+      if (you.round > SESSION_ROUND_COUNT) {
+        you.finished = true;
+      }
+    }
+    updateRaceBoard();
+    if (state.gameMode === "multiplayer") {
+      broadcastRoomEvent("progress", {
+        type: "round-clear",
+        playerId: state.playerId,
+        name: state.playerName,
+        score: state.score,
+        round: you?.round || state.round + 1
+      }).catch(() => {});
+    }
     playRoundClearSound();
     spawnScorePopup(`Round +${awardedRoundBonus}`, "bonus", 0);
     if (ordered) {
@@ -808,12 +1430,32 @@ function handleRoundFailure(message) {
   }
 
   clearTimer();
+  clearRivalTimers();
   playFailureSound();
 
   state.consecutiveClears = 0;
   state.survivalMultiplier = 1;
   state.round += 1;
   updateHud();
+  const you = getRacePlayer("you");
+  if (you) {
+    you.score = state.score;
+    you.round = state.round;
+    you.currentSolved = {};
+    if (you.round > SESSION_ROUND_COUNT) {
+      you.finished = true;
+    }
+  }
+  updateRaceBoard();
+  if (state.gameMode === "multiplayer") {
+    broadcastRoomEvent("progress", {
+      type: "round-fail",
+      playerId: state.playerId,
+      name: state.playerName,
+      score: state.score,
+      round: you?.round || state.round
+    }).catch(() => {});
+  }
 
   if (state.sessionIndex >= state.sessionRounds.length) {
     endSession(message);
@@ -829,12 +1471,22 @@ function isValidGuess(word) {
 
 function endSession(reason = "Run complete.") {
   clearTimer();
+  clearRivalTimers();
+  if (state.gameMode === "multiplayer") {
+    broadcastRoomEvent("progress", {
+      type: "session-end",
+      playerId: state.playerId,
+      name: state.playerName,
+      score: state.score
+    }).catch(() => {});
+  }
   state.currentRound = null;
   state.scores.best = Math.max(state.scores.best || 0, state.score);
   state.hasSubmittedScore = false;
   persistScores();
   updateHud();
   updateLeaderboard();
+  updateRaceBoard();
   updateSubmitScorePanel();
   updateGoals();
   updateRecentWords();
@@ -894,6 +1546,7 @@ function handleSkip() {
 function restartSession() {
   clearTimer();
   clearAutoSubmitTimer();
+  clearRivalTimers();
   state.score = 0;
   state.survivalMultiplier = 1;
   state.consecutiveClears = 0;
@@ -904,10 +1557,12 @@ function restartSession() {
   state.hasSubmittedScore = false;
   state.wheelOffsets = [0, 0, 0];
   state.sessionIndex = 0;
-  state.sessionRounds = buildSessionRounds();
+  state.sessionRounds = buildSessionRounds(state.gameMode === "multiplayer" ? state.room?.seed : null);
+  createRacePlayers();
   elements.wheelGrid.innerHTML = "";
   updateHud();
   updateLeaderboard();
+  updateRaceBoard();
   updateSubmitScorePanel();
   updateGoals();
   updateRecentWords();
@@ -922,6 +1577,7 @@ function hasAscendingSolveOrder() {
 async function loadDictionary() {
   setSpinning(true);
   setMessage("Loading proper game dictionary and balancing rounds...");
+  updateEntryButtons();
 
   try {
     const [validationResponse, roundResponse] = await Promise.all([
@@ -961,11 +1617,14 @@ async function loadDictionary() {
   state.dictionaryReady = state.rounds.length > 0;
 
   if (!state.dictionaryReady) {
+    elements.homeStatus.textContent = "Dictionary failed to load.";
     setMessage("The dictionary loaded, but no playable rounds were built.", "error");
+    updateEntryButtons();
     return;
   }
 
-  restartSession();
+  elements.homeStatus.textContent = "Choose a mode.";
+  updateEntryButtons();
   refreshLeaderboard();
 }
 
@@ -988,12 +1647,86 @@ elements.guessInput.addEventListener("input", () => {
   }, 220);
 });
 elements.skipButton.addEventListener("click", handleSkip);
-elements.restartButton.addEventListener("click", () => {
+elements.restartButton.addEventListener("click", async () => {
   ensureAudioReady();
+  if (state.gameMode === "multiplayer") {
+    await disconnectRealtimeRoom();
+    state.room = null;
+    state.gameMode = "single";
+    elements.restartButton.textContent = "Restart Run";
+    setScreen("home");
+    return;
+  }
   restartSession();
 });
 elements.leaderboardButton.addEventListener("click", () => {
   elements.leaderboardPanel.hidden = !elements.leaderboardPanel.hidden;
+});
+elements.singlePlayerButton.addEventListener("click", () => {
+  ensureAudioReady();
+  startSinglePlayerGame();
+});
+elements.multiplayerButton.addEventListener("click", () => {
+  elements.playerNameMenuInput.value = state.playerName;
+  setScreen("multiplayer-menu");
+});
+elements.playerNameForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+  persistPlayerName(sanitizePlayerName(elements.playerNameMenuInput.value) || "Player");
+  elements.playerNameMenuInput.value = state.playerName;
+});
+elements.createRoomButton.addEventListener("click", async () => {
+  ensureAudioReady();
+  elements.multiplayerStatus.textContent = "Creating room...";
+  try {
+    persistPlayerName(sanitizePlayerName(elements.playerNameMenuInput.value) || "Player");
+    elements.playerNameMenuInput.value = state.playerName;
+    await createRoom();
+    elements.multiplayerStatus.textContent = "";
+  } catch (error) {
+    elements.multiplayerStatus.textContent = error.message;
+  }
+});
+elements.joinRoomForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const code = String(elements.joinRoomInput.value || "").toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 6);
+  if (!code) {
+    elements.multiplayerStatus.textContent = "Enter a room code first.";
+    return;
+  }
+  ensureAudioReady();
+  elements.multiplayerStatus.textContent = "Joining room...";
+  persistPlayerName(sanitizePlayerName(elements.playerNameMenuInput.value) || "Player");
+  elements.playerNameMenuInput.value = state.playerName;
+  elements.joinRoomInput.value = code;
+  try {
+    await joinRoom(code);
+    elements.multiplayerStatus.textContent = "";
+  } catch (error) {
+    elements.multiplayerStatus.textContent = error.message;
+  }
+});
+elements.backToHomeButton.addEventListener("click", async () => {
+  clearLobbyTimer();
+  await disconnectRealtimeRoom();
+  state.room = null;
+  elements.multiplayerStatus.textContent = "";
+  setScreen("home");
+});
+elements.leaveLobbyButton.addEventListener("click", async () => {
+  await leaveLobby();
+});
+elements.startMatchButton.addEventListener("click", async () => {
+  if (!state.room?.ready) {
+    return;
+  }
+  ensureAudioReady();
+  elements.lobbyStatus.textContent = "Starting match...";
+  try {
+    await startRoomMatch();
+  } catch (error) {
+    elements.lobbyStatus.textContent = error.message;
+  }
 });
 elements.submitScoreForm.addEventListener("submit", async (event) => {
   event.preventDefault();
@@ -1043,4 +1776,7 @@ elements.submitScoreForm.addEventListener("submit", async (event) => {
   }
 });
 
+setScreen("home");
+elements.playerNameMenuInput.value = state.playerName;
+updateEntryButtons();
 loadDictionary();
