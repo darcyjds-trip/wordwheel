@@ -116,11 +116,14 @@ const state = {
 const elements = {
   homeScreen: document.getElementById("homeScreen"),
   multiplayerScreen: document.getElementById("multiplayerScreen"),
+  rulesScreen: document.getElementById("rulesScreen"),
   lobbyScreen: document.getElementById("lobbyScreen"),
   gamePanel: document.getElementById("gamePanel"),
+  racePanel: document.querySelector(".race-panel"),
   homeStatus: document.getElementById("homeStatus"),
   singlePlayerButton: document.getElementById("singlePlayerButton"),
   multiplayerButton: document.getElementById("multiplayerButton"),
+  rulesButton: document.getElementById("rulesButton"),
   createRoomButton: document.getElementById("createRoomButton"),
   playerNameForm: document.getElementById("playerNameForm"),
   playerNameMenuInput: document.getElementById("playerNameMenuInput"),
@@ -128,6 +131,7 @@ const elements = {
   joinRoomInput: document.getElementById("joinRoomInput"),
   multiplayerStatus: document.getElementById("multiplayerStatus"),
   backToHomeButton: document.getElementById("backToHomeButton"),
+  rulesBackButton: document.getElementById("rulesBackButton"),
   lobbyRoomCode: document.getElementById("lobbyRoomCode"),
   lobbyRole: document.getElementById("lobbyRole"),
   lobbyStatus: document.getElementById("lobbyStatus"),
@@ -215,8 +219,13 @@ function setScreen(screenName) {
   state.activeScreen = screenName;
   elements.homeScreen.hidden = screenName !== "home";
   elements.multiplayerScreen.hidden = screenName !== "multiplayer-menu";
+  elements.rulesScreen.hidden = screenName !== "rules";
   elements.lobbyScreen.hidden = screenName !== "lobby";
   elements.gamePanel.hidden = screenName !== "game";
+}
+
+function updateModePanels() {
+  elements.racePanel.hidden = state.gameMode !== "multiplayer";
 }
 
 function updateEntryButtons() {
@@ -246,11 +255,13 @@ function clearLobbyTimer() {
 function updateResultsPanel() {
   if (state.gameMode !== "multiplayer") {
     elements.resultsPanel.hidden = true;
+    elements.gamePanel.classList.remove("results-open");
     return;
   }
 
   const shouldShow = state.matchEnded;
   elements.resultsPanel.hidden = !shouldShow;
+  elements.gamePanel.classList.toggle("results-open", shouldShow);
   if (!shouldShow) {
     return;
   }
@@ -493,13 +504,19 @@ function applyRemoteProgress(payload) {
   }
 
   rival.name = payload.name || rival.name;
-  rival.flashLength = payload.length || null;
-  rival.flashUntil = Date.now() + 850;
 
   if (payload.type === "solve") {
+    if (rival.round !== payload.round) {
+      rival.currentSolved = {};
+    }
     rival.score = payload.score;
     rival.round = payload.round;
-    rival.currentSolved[payload.length] = true;
+    rival.currentSolved = {};
+    (payload.solvedLengths || []).forEach((length) => {
+      rival.currentSolved[length] = true;
+    });
+    rival.flashLength = payload.length || null;
+    rival.flashUntil = Date.now() + 850;
     showToast(`${rival.name} solved ${payload.length}.`);
   }
 
@@ -524,6 +541,10 @@ function applyRemoteProgress(payload) {
     rival.finished = true;
     rival.currentSolved = {};
     rival.flashLength = null;
+    if (!state.matchEnded) {
+      endSession(`${rival.name} finished first.`, { broadcast: false });
+      return;
+    }
   }
 
   updateRaceBoard();
@@ -665,6 +686,7 @@ function startSinglePlayerGame() {
   state.playerReady = false;
   state.room = null;
   elements.restartButton.textContent = "Restart Run";
+  updateModePanels();
   setScreen("game");
   restartSession();
 }
@@ -676,6 +698,7 @@ function startMultiplayerGame() {
   clearLobbyTimer();
   clearCountdown();
   elements.restartButton.textContent = "Leave Match";
+  updateModePanels();
   setScreen("game");
   restartSession();
   updateResultsPanel();
@@ -1064,17 +1087,18 @@ function clearRivalTimers() {
 }
 
 function createRacePlayers() {
-  state.racePlayers = [
-    {
-      id: "you",
-      name: "You",
-      score: 0,
-      round: 1,
-      currentSolved: {},
-      finished: false,
-      isYou: true
-    },
-    {
+  state.racePlayers = [{
+    id: "you",
+    name: "You",
+    score: 0,
+    round: 1,
+    currentSolved: {},
+    finished: false,
+    isYou: true
+  }];
+
+  if (state.gameMode === "multiplayer") {
+    state.racePlayers.push({
       id: "rival",
       name: state.raceOpponentName || RACE_RIVAL_NAME,
       score: 0,
@@ -1082,8 +1106,8 @@ function createRacePlayers() {
       currentSolved: {},
       finished: false,
       isYou: false
-    }
-  ];
+    });
+  }
 }
 
 function updateRaceBoard() {
@@ -1140,49 +1164,7 @@ function getRivalRoundBonus(round) {
 }
 
 function scheduleRivalRound() {
-  if (state.gameMode !== "single") {
-    return;
-  }
-
   clearRivalTimers();
-
-  state.racePlayers
-    .filter((player) => !player.isYou && !player.finished)
-    .forEach((player) => {
-      const order = shuffle([...REQUIRED_LENGTHS]);
-      const willFinish = Math.random() > 0.16;
-      const lengthsToSolve = willFinish ? order : order.slice(0, Math.floor(Math.random() * 3) + 1);
-      let delay = 1800;
-
-      lengthsToSolve.forEach((length) => {
-        delay += 1500 + Math.floor(Math.random() * 2100);
-        const timerId = window.setTimeout(() => {
-          if (!state.currentRound || player.finished || player.round !== state.round) {
-            return;
-          }
-          player.currentSolved[length] = true;
-          player.score += getRivalWordPoints(length, player.round);
-          updateRaceBoard();
-        }, delay);
-        state.rivalTimers.push(timerId);
-      });
-
-      if (willFinish) {
-        const finishTimer = window.setTimeout(() => {
-          if (!state.currentRound || player.finished || player.round !== state.round) {
-            return;
-          }
-          player.score += getRivalRoundBonus(player.round);
-          player.round += 1;
-          player.currentSolved = {};
-          if (player.round > SESSION_ROUND_COUNT) {
-            player.finished = true;
-          }
-          updateRaceBoard();
-        }, delay + 600);
-        state.rivalTimers.push(finishTimer);
-      }
-    });
 }
 
 function updateLeaderboard() {
@@ -1607,7 +1589,8 @@ function handleCorrectGuess(word) {
       name: state.playerName,
       score: state.score,
       round: state.round,
-      length: word.length
+      length: word.length,
+      solvedLengths: Object.keys(state.currentRound.solvedLengths).map((length) => Number(length))
     }).catch(() => {});
   }
   updateGoals();
@@ -1713,10 +1696,11 @@ function isValidGuess(word) {
   return state.validationSet.has(word) && includesLetterRequirements(word, state.currentRound.letters);
 }
 
-function endSession(reason = "Run complete.") {
+function endSession(reason = "Run complete.", options = {}) {
+  const { broadcast = true } = options;
   clearTimer();
   clearRivalTimers();
-  if (state.gameMode === "multiplayer") {
+  if (state.gameMode === "multiplayer" && broadcast) {
     broadcastRoomEvent("progress", {
       type: "session-end",
       playerId: state.playerId,
@@ -1922,6 +1906,12 @@ elements.multiplayerButton.addEventListener("click", () => {
   elements.playerNameMenuInput.value = state.playerName;
   setScreen("multiplayer-menu");
 });
+elements.rulesButton.addEventListener("click", () => {
+  setScreen("rules");
+});
+elements.rulesBackButton.addEventListener("click", () => {
+  setScreen("home");
+});
 elements.playerNameForm.addEventListener("submit", (event) => {
   event.preventDefault();
   persistPlayerName(sanitizePlayerName(elements.playerNameMenuInput.value) || "Player");
@@ -2065,5 +2055,6 @@ elements.submitScoreForm.addEventListener("submit", async (event) => {
 
 setScreen("home");
 elements.playerNameMenuInput.value = state.playerName;
+updateModePanels();
 updateEntryButtons();
 loadDictionary();

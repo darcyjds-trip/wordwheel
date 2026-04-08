@@ -22,6 +22,7 @@
         <div class="menu-actions">
           <button id="singlePlayerButton" class="menu-button" type="button">Single Player</button>
           <button id="multiplayerButton" class="menu-button secondary" type="button">Multiplayer</button>
+          <button id="rulesButton" class="menu-button secondary" type="button">Rules</button>
         </div>
         <p id="homeStatus" class="sr-only">Loading dictionary...</p>
       </div>
@@ -46,6 +47,20 @@
         </form>
         <p id="multiplayerStatus" class="menu-status"></p>
         <button id="backToHomeButton" class="ghost-button menu-back" type="button">Back</button>
+      </div>
+    </section>
+
+    <section id="rulesScreen" class="menu-screen" hidden>
+      <div class="menu-card rules-card">
+        <p class="menu-kicker">How To Play</p>
+        <h1>Rules</h1>
+        <div class="rules-copy">
+          <p>Use the three highlighted wheel letters to find one 4-letter, 5-letter, 6-letter, and 7-letter word each round. Letters can repeat inside your word.</p>
+          <p>Word values: 4 = 100, 5 = 200, 6 = 350, 7 = 500. Every word score is multiplied by Survival.</p>
+          <p>Clear the full round for +400, earn +250 for solving in 4-5-6-7 order, and gain +10 for every second left on the timer.</p>
+          <p>In multiplayer, both players share the same board. Ready up, race through eight rounds, and the higher score wins.</p>
+        </div>
+        <button id="rulesBackButton" class="ghost-button menu-back" type="button">Back</button>
       </div>
     </section>
 
@@ -171,17 +186,6 @@
         <div class="results-actions">
           <button id="rematchButton" class="menu-button" type="button">Rematch</button>
           <button id="leaveMatchButton" class="ghost-button" type="button">Leave Match</button>
-        </div>
-      </section>
-
-      <section class="readme-panel">
-        <div class="readme-header">
-          <h2>How To Play</h2>
-        </div>
-        <div class="readme-copy">
-          <p>Build one 4-letter, 5-letter, 6-letter, and 7-letter word each round using the three highlighted reel letters. Letters can repeat inside your word.</p>
-          <p>Word values: 4 = 100, 5 = 200, 6 = 350, 7 = 500. Every word score is multiplied by your Survival multiplier.</p>
-          <p>Clear a full round for +400, get +250 for solving in 4-5-6-7 order, and gain +10 for every second left. Survival increases after a cleared round and resets if time runs out or you skip.</p>
         </div>
       </section>
     </section>
