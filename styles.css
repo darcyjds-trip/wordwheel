@@ -173,6 +173,12 @@ body::before {
   font-size: 0.78rem;
 }
 
+.mystery-letter.clue {
+  color: #ccefff;
+  border-color: rgba(78, 242, 255, 0.36);
+  background: linear-gradient(180deg, rgba(18, 44, 68, 0.98), rgba(9, 26, 42, 0.95));
+}
+
 .mystery-word.solved .mystery-letter {
   color: #07131c;
   background: linear-gradient(180deg, #fff07a, #ffc84d);

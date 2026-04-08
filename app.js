@@ -1053,6 +1053,16 @@ function getRandomPuzzleCount(length, availableCount) {
   return Math.max(minCount, Math.floor(Math.random() * maxCount) + 1);
 }
 
+function buildClueIndices(word) {
+  const indices = new Set([0]);
+  if (word.length >= 6) {
+    indices.add(word.length - 1);
+  } else if (word.length >= 5) {
+    indices.add(Math.floor(word.length / 2));
+  }
+  return [...indices].sort((left, right) => left - right);
+}
+
 function buildPuzzleWords(roundData) {
   return REQUIRED_LENGTHS.reduce((groups, length) => {
     const sourceWords = shuffle([...roundData.answersByLength[length]]);
@@ -1062,7 +1072,8 @@ function buildPuzzleWords(roundData) {
       .sort((left, right) => left.localeCompare(right))
       .map((word) => ({
         word,
-        solved: false
+        solved: false,
+        clueIndices: buildClueIndices(word)
       }));
     return groups;
   }, {});
@@ -1306,10 +1317,11 @@ function updateMysteryPanel() {
       const row = document.createElement("div");
       row.className = `mystery-word${entry.solved ? " solved" : ""}`;
 
-      entry.word.split("").forEach((letter) => {
+      entry.word.split("").forEach((letter, index) => {
         const cell = document.createElement("div");
-        cell.className = "mystery-letter";
-        cell.textContent = entry.solved ? letter.toUpperCase() : letter.toUpperCase();
+        const isClue = entry.clueIndices?.includes(index);
+        cell.className = `mystery-letter${isClue ? " clue" : ""}`;
+        cell.textContent = entry.solved || isClue ? letter.toUpperCase() : letter.toUpperCase();
         row.appendChild(cell);
       });
 
