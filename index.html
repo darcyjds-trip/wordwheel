@@ -18,14 +18,12 @@
 
     <section id="homeScreen" class="menu-screen">
       <div class="menu-card">
-        <p class="menu-kicker">Arcade word race</p>
         <h1>Word Wheel</h1>
-        <p class="menu-copy">Pick your lane and chase the board.</p>
         <div class="menu-actions">
           <button id="singlePlayerButton" class="menu-button" type="button">Single Player</button>
           <button id="multiplayerButton" class="menu-button secondary" type="button">Multiplayer</button>
         </div>
-        <p id="homeStatus" class="menu-status">Loading dictionary...</p>
+        <p id="homeStatus" class="sr-only">Loading dictionary...</p>
       </div>
     </section>
 
@@ -58,6 +56,7 @@
             <p class="menu-kicker">Room Code</p>
             <h1 id="lobbyRoomCode">----</h1>
           </div>
+          <button id="copyRoomCodeButton" class="ghost-button" type="button">Copy Code</button>
           <div class="lobby-role">
             <span>Role</span>
             <strong id="lobbyRole">Host</strong>
@@ -66,6 +65,7 @@
         <p id="lobbyStatus" class="menu-copy">Waiting for players...</p>
         <div id="lobbyPlayers" class="lobby-players"></div>
         <div class="menu-actions">
+          <button id="readyToggleButton" class="menu-button secondary" type="button">Ready Up</button>
           <button id="startMatchButton" class="menu-button" type="button" disabled>Start Match</button>
           <button id="leaveLobbyButton" class="ghost-button" type="button">Leave Room</button>
         </div>
@@ -113,6 +113,7 @@
         <div class="marker-bar"></div>
         <div class="wheel-grid" id="wheelGrid"></div>
         <div id="scorePopups" class="score-popups" aria-hidden="true"></div>
+        <div id="countdownOverlay" class="countdown-overlay" hidden>3</div>
       </div>
 
       <form id="guessForm" class="guess-bar" autocomplete="off">
@@ -161,6 +162,18 @@
         </form>
       </section>
 
+      <section id="resultsPanel" class="results-panel" hidden>
+        <div class="results-header">
+          <h2 id="resultsTitle">Match Over</h2>
+          <p id="resultsSummary">Final scores.</p>
+        </div>
+        <div id="resultsScores" class="results-scores"></div>
+        <div class="results-actions">
+          <button id="rematchButton" class="menu-button" type="button">Rematch</button>
+          <button id="leaveMatchButton" class="ghost-button" type="button">Leave Match</button>
+        </div>
+      </section>
+
       <section class="readme-panel">
         <div class="readme-header">
           <h2>How To Play</h2>
@@ -173,6 +186,7 @@
       </section>
     </section>
   </main>
+  <div id="toastStack" class="toast-stack" aria-live="polite"></div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="app.js"></script>

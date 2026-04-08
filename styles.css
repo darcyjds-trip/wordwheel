@@ -20,6 +20,10 @@
   box-sizing: border-box;
 }
 
+[hidden] {
+  display: none !important;
+}
+
 body {
   margin: 0;
   min-height: 100vh;
@@ -189,6 +193,10 @@ body::before {
   gap: 12px;
 }
 
+#copyRoomCodeButton {
+  margin-left: auto;
+}
+
 .lobby-role {
   text-align: right;
 }
@@ -226,6 +234,76 @@ body::before {
 .lobby-player span:last-child {
   color: var(--muted);
   font-size: 0.86rem;
+}
+
+.lobby-player.ready {
+  border-color: rgba(143, 255, 114, 0.42);
+  box-shadow: 0 0 14px rgba(143, 255, 114, 0.12);
+}
+
+.results-panel {
+  margin-top: 12px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, rgba(18, 24, 52, 0.96), rgba(7, 12, 28, 0.94));
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.03),
+    0 0 20px rgba(255, 79, 216, 0.08);
+}
+
+.results-header h2,
+.results-header p {
+  margin: 0;
+}
+
+.results-header p {
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.results-scores {
+  margin-top: 12px;
+  display: grid;
+  gap: 10px;
+}
+
+.results-score {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 8px;
+  border: 1px solid rgba(123, 173, 201, 0.18);
+  background: rgba(9, 18, 36, 0.84);
+}
+
+.results-score.winner {
+  border-color: rgba(255, 216, 77, 0.45);
+  box-shadow: 0 0 14px rgba(255, 216, 77, 0.12);
+}
+
+.results-score strong {
+  display: block;
+  font-size: 0.98rem;
+}
+
+.results-score span {
+  display: block;
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 0.76rem;
+}
+
+.results-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 14px;
+  flex-wrap: wrap;
 }
 
 .eyebrow {
@@ -351,6 +429,11 @@ body::before {
   background: rgba(9, 18, 36, 0.84);
 }
 
+.race-lane.leading {
+  border-color: rgba(78, 242, 255, 0.42);
+  box-shadow: 0 0 16px rgba(78, 242, 255, 0.12);
+}
+
 .race-lane.you {
   border-color: rgba(255, 216, 77, 0.35);
   box-shadow: 0 0 14px rgba(255, 216, 77, 0.12);
@@ -399,6 +482,27 @@ body::before {
   color: #07131c;
   background: linear-gradient(180deg, #fff07a, #ffc84d);
   border-color: rgba(255, 216, 77, 0.6);
+}
+
+.race-cell.flash {
+  animation: raceFlash 720ms ease-out;
+}
+
+@keyframes raceFlash {
+  0% {
+    transform: scale(0.9);
+    box-shadow: 0 0 0 rgba(255, 216, 77, 0);
+  }
+
+  40% {
+    transform: scale(1.06);
+    box-shadow: 0 0 18px rgba(255, 216, 77, 0.55);
+  }
+
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 rgba(255, 216, 77, 0);
+  }
 }
 
 .race-lane.finished {
@@ -918,6 +1022,41 @@ body::before {
   overflow: hidden;
 }
 
+.countdown-overlay {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-size: clamp(2.2rem, 9vw, 4.6rem);
+  font-weight: 800;
+  color: var(--warm);
+  background: rgba(5, 10, 20, 0.62);
+  text-shadow: 0 0 24px rgba(255, 216, 77, 0.5);
+  z-index: 5;
+}
+
+.toast-stack {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  display: grid;
+  gap: 8px;
+  z-index: 30;
+  pointer-events: none;
+}
+
+.toast {
+  min-width: 180px;
+  max-width: 260px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(123, 173, 201, 0.18);
+  background: rgba(9, 18, 36, 0.94);
+  color: var(--text);
+  box-shadow: 0 0 18px rgba(0, 0, 0, 0.24);
+  font-size: 0.82rem;
+}
+
 .score-popup {
   position: absolute;
   left: 50%;
@@ -1077,6 +1216,10 @@ body::before {
     flex-direction: column;
   }
 
+  #copyRoomCodeButton {
+    margin-left: 0;
+  }
+
   .lobby-role {
     text-align: left;
   }
@@ -1135,6 +1278,7 @@ body::before {
   .race-panel,
   .goal-panel,
   .leaderboard-panel,
+  .results-panel,
   .found-panel,
   .readme-panel {
     margin-top: 8px;
@@ -1277,6 +1421,47 @@ body::before {
   .submit-score-panel {
     margin-top: 8px;
     padding: 8px;
+  }
+
+  .results-panel {
+    margin-top: 8px;
+    padding: 8px;
+  }
+
+  .results-header h2 {
+    font-size: 0.8rem;
+  }
+
+  .results-header p {
+    font-size: 0.64rem;
+  }
+
+  .results-score {
+    padding: 10px 12px;
+  }
+
+  .results-score strong {
+    font-size: 0.8rem;
+  }
+
+  .results-score span {
+    font-size: 0.62rem;
+  }
+
+  .results-actions {
+    gap: 8px;
+  }
+
+  .toast-stack {
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+  }
+
+  .toast {
+    min-width: 0;
+    max-width: none;
+    font-size: 0.72rem;
   }
 
   .submit-score-header {
