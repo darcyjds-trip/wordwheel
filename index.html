@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Word Wheel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="scanlines" aria-hidden="true"></div>
+  <main class="app-shell">
+    <section class="hero">
+      <p class="eyebrow">Word Wheel</p>
+    </section>
+
+    <section class="game-panel">
+      <div class="hud">
+        <div class="stat-card">
+          <span class="stat-label">Score</span>
+          <strong id="score">0</strong>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">Survival</span>
+          <strong id="survivalMultiplier">x1.00</strong>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">Timer</span>
+          <strong id="timer">45s</strong>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">Round</span>
+          <strong id="round">1</strong>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">Best</span>
+          <strong id="bestScore">0</strong>
+        </div>
+      </div>
+
+      <section class="goal-panel">
+        <div id="goalGrid" class="goal-grid"></div>
+      </section>
+
+      <div class="wheel-stage">
+        <div class="wheel-stage-glow"></div>
+        <div class="marker-bar"></div>
+        <div class="wheel-grid" id="wheelGrid"></div>
+        <div id="scorePopups" class="score-popups" aria-hidden="true"></div>
+      </div>
+
+      <form id="guessForm" class="guess-bar" autocomplete="off">
+        <label class="sr-only" for="guessInput">Enter a word</label>
+        <input id="guessInput" name="guess" type="text" maxlength="24" placeholder="Type a word using the three letters" />
+      </form>
+
+      <div class="feedback-row">
+        <p id="message" class="message">The wheels are ready.</p>
+        <button id="skipButton" class="ghost-button" type="button">Skip Round</button>
+      </div>
+
+      <section class="found-panel">
+        <div class="found-header">
+          <h2>Recent Wins</h2>
+          <p id="foundCount">0 words locked in</p>
+        </div>
+        <ul id="foundList" class="found-list"></ul>
+      </section>
+
+      <section class="control-panel bottom-controls">
+        <div class="session-actions">
+          <p id="modeSummary" class="mode-summary">Loading challenge...</p>
+          <button id="leaderboardButton" class="ghost-button" type="button">Leaderboard</button>
+          <button id="restartButton" class="ghost-button" type="button">Restart Run</button>
+        </div>
+      </section>
+
+      <section id="leaderboardPanel" class="leaderboard-panel" hidden>
+        <div class="leaderboard-header">
+          <h2>Leaderboard</h2>
+          <p>Top shared runs</p>
+        </div>
+        <ol id="leaderboardList" class="leaderboard-list"></ol>
+      </section>
+
+      <section id="submitScorePanel" class="submit-score-panel" hidden>
+        <div class="submit-score-header">
+          <h2>Post Your Score</h2>
+          <p id="submitScoreStatus">Add your name to the leaderboard.</p>
+        </div>
+        <form id="submitScoreForm" class="submit-score-form" autocomplete="off">
+          <label class="sr-only" for="playerNameInput">Player name</label>
+          <input id="playerNameInput" name="playerName" type="text" maxlength="16" placeholder="Your name" />
+          <button id="submitScoreButton" class="ghost-button" type="submit">Submit Score</button>
+        </form>
+      </section>
+
+      <section class="readme-panel">
+        <div class="readme-header">
+          <h2>How To Play</h2>
+        </div>
+        <div class="readme-copy">
+          <p>Build one 4-letter, 5-letter, 6-letter, and 7-letter word each round using the three highlighted reel letters. Letters can repeat inside your word.</p>
+          <p>Word values: 4 = 100, 5 = 200, 6 = 350, 7 = 500. Every word score is multiplied by your Survival multiplier.</p>
+          <p>Clear a full round for +400, get +250 for solving in 4-5-6-7 order, and gain +10 for every second left. Survival increases after a cleared round and resets if time runs out or you skip.</p>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
