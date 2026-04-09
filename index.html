@@ -35,6 +35,7 @@
         <div class="menu-actions">
           <button id="arcadeModeButton" class="menu-button" type="button">Arcade</button>
           <button id="puzzleModeButton" class="menu-button secondary" type="button">Puzzle</button>
+          <button id="huntModeButton" class="menu-button secondary" type="button">Hunt</button>
         </div>
         <button id="singlePlayerBackButton" class="ghost-button menu-back" type="button">Back</button>
       </div>
@@ -67,9 +68,10 @@
         <p class="menu-kicker">How To Play</p>
         <h1>Rules</h1>
         <div class="rules-copy">
-          <p>Use the three highlighted wheel letters to find one 4-letter, 5-letter, 6-letter, and 7-letter word each round. Letters can repeat inside your word.</p>
-          <p>Word values: 4 = 100, 5 = 200, 6 = 350, 7 = 500. Every word score is multiplied by Survival.</p>
-          <p>Clear the full round for +400, earn +250 for solving in 4-5-6-7 order, and gain +10 for every second left on the timer.</p>
+          <p>Every board starts with three highlighted wheel letters. Your words must include all three letters, and letters can repeat.</p>
+          <p>Arcade mode is the timed score chase: solve one 4-letter, 5-letter, 6-letter, and 7-letter word before the timer expires, then roll into the next board.</p>
+          <p>Puzzle mode is the hidden-answer board: solve alphabetized mystery words in the 5-letter, 6-letter, 7-letter, and 8-letter groups before the 2 minute round timer runs out.</p>
+          <p>Hunt mode keeps one hidden board on screen while the wheel changes after every solve, feeding you a new 3-letter combo for the next remaining answer.</p>
           <p>In multiplayer, both players share the same board. Ready up, race through eight rounds, and the higher score wins.</p>
         </div>
         <button id="rulesBackButton" class="ghost-button menu-back" type="button">Back</button>
@@ -101,11 +103,11 @@
 
     <section id="gamePanel" class="game-panel" hidden>
       <div class="hud">
-        <div class="stat-card">
+        <div id="scoreCard" class="stat-card">
           <span class="stat-label">Score</span>
           <strong id="score">0</strong>
         </div>
-        <div class="stat-card">
+        <div id="survivalCard" class="stat-card">
           <span class="stat-label">Survival</span>
           <strong id="survivalMultiplier">x1.00</strong>
         </div>
@@ -117,7 +119,7 @@
           <span class="stat-label">Round</span>
           <strong id="round">1</strong>
         </div>
-        <div class="stat-card">
+        <div id="bestCard" class="stat-card">
           <span class="stat-label">Best</span>
           <strong id="bestScore">0</strong>
         </div>

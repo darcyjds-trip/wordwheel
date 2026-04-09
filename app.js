@@ -45,14 +45,18 @@ const VALIDATION_DICTIONARY_URL = "./data/enable1.txt";
 const ROUND_DICTIONARY_URL = "./data/popular.txt";
 const STORAGE_KEY = "letter-clock-scores-v3";
 const PLAYER_NAME_KEY = "word-wheel-player-name";
-const REQUIRED_LENGTHS = [4, 5, 6, 7];
+const SUPPORTED_LENGTHS = [4, 5, 6, 7, 8];
+const ARCADE_REQUIRED_LENGTHS = [4, 5, 6, 7];
+const PUZZLE_REQUIRED_LENGTHS = [5, 6, 7, 8];
 const ROUND_TIME_LIMIT = 45;
+const PUZZLE_ROUND_TIME_LIMIT = 120;
 const SESSION_ROUND_COUNT = 8;
 const LENGTH_SCORES = {
   4: 100,
   5: 200,
   6: 350,
-  7: 500
+  7: 500,
+  8: 650
 };
 const ROUND_CLEAR_BONUS = 400;
 const ORDER_BONUS = 250;
@@ -61,8 +65,8 @@ const SURVIVAL_STEP = 0.1;
 const SURVIVAL_CAP = 3;
 const REEL_BUFFER = 2;
 const RACE_RIVAL_NAME = "Rival";
-const MIN_WORD_LENGTH = REQUIRED_LENGTHS[0];
-const MAX_WORD_LENGTH = REQUIRED_LENGTHS[REQUIRED_LENGTHS.length - 1];
+const MIN_WORD_LENGTH = SUPPORTED_LENGTHS[0];
+const MAX_WORD_LENGTH = SUPPORTED_LENGTHS[SUPPORTED_LENGTHS.length - 1];
 const WHEEL_SIZE = 10;
 const LETTER_POOL = "abcdefghijklmnopqrstuvwxyz".split("");
 
@@ -106,6 +110,7 @@ const state = {
   lobbyTimerId: null,
   countdownTimerIds: [],
   puzzleWordsByLength: {},
+  huntStepIndex: 0,
   playerId: crypto.randomUUID ? crypto.randomUUID() : `player-${Math.random().toString(36).slice(2, 10)}`,
   playerName: loadStoredPlayerName(),
   playerReady: false,
@@ -127,6 +132,7 @@ const elements = {
   singlePlayerButton: document.getElementById("singlePlayerButton"),
   arcadeModeButton: document.getElementById("arcadeModeButton"),
   puzzleModeButton: document.getElementById("puzzleModeButton"),
+  huntModeButton: document.getElementById("huntModeButton"),
   singlePlayerBackButton: document.getElementById("singlePlayerBackButton"),
   multiplayerButton: document.getElementById("multiplayerButton"),
   rulesButton: document.getElementById("rulesButton"),
@@ -148,10 +154,13 @@ const elements = {
   leaveLobbyButton: document.getElementById("leaveLobbyButton"),
   wheelGrid: document.getElementById("wheelGrid"),
   score: document.getElementById("score"),
+  scoreCard: document.getElementById("scoreCard"),
   survivalMultiplier: document.getElementById("survivalMultiplier"),
+  survivalCard: document.getElementById("survivalCard"),
   timer: document.getElementById("timer"),
   round: document.getElementById("round"),
   bestScore: document.getElementById("bestScore"),
+  bestCard: document.getElementById("bestCard"),
   raceBoard: document.getElementById("raceBoard"),
   goalGrid: document.getElementById("goalGrid"),
   modeSummary: document.getElementById("modeSummary"),
@@ -187,16 +196,17 @@ function loadStoredScores() {
   try {
     const raw = window.localStorage.getItem(STORAGE_KEY);
     if (!raw) {
-      return { best: 0, leaderboard: [] };
+      return { bestArcade: 0, bestPuzzle: 0, leaderboard: [] };
     }
 
     const parsed = JSON.parse(raw);
     return {
-      best: parsed.best || 0,
+      bestArcade: parsed.bestArcade ?? parsed.best ?? 0,
+      bestPuzzle: parsed.bestPuzzle || 0,
       leaderboard: normalizeLeaderboardEntries(Array.isArray(parsed.leaderboard) ? parsed.leaderboard : [])
     };
   } catch (error) {
-    return { best: 0, leaderboard: [] };
+    return { bestArcade: 0, bestPuzzle: 0, leaderboard: [] };
   }
 }
 
@@ -234,9 +244,13 @@ function setScreen(screenName) {
 }
 
 function updateModePanels() {
+  const isBoard = isBoardMode();
   elements.racePanel.hidden = state.gameMode !== "multiplayer";
-  elements.goalGrid.parentElement.hidden = state.gameMode === "single" && state.singlePlayerVariant === "puzzle";
-  elements.mysteryPanel.hidden = !(state.gameMode === "single" && state.singlePlayerVariant === "puzzle");
+  elements.goalGrid.parentElement.hidden = isBoard;
+  elements.mysteryPanel.hidden = !isBoard;
+  elements.scoreCard.hidden = isBoard;
+  elements.survivalCard.hidden = isBoard;
+  elements.bestCard.hidden = isBoard;
 }
 
 function updateEntryButtons() {
@@ -254,6 +268,22 @@ function updateEntryButtons() {
     elements.homeStatus.textContent = "Dictionary ready.";
     elements.multiplayerStatus.textContent = "";
   }
+}
+
+function isPuzzleMode() {
+  return state.gameMode === "single" && state.singlePlayerVariant === "puzzle";
+}
+
+function isHuntMode() {
+  return state.gameMode === "single" && state.singlePlayerVariant === "hunt";
+}
+
+function isBoardMode() {
+  return isPuzzleMode() || isHuntMode();
+}
+
+function getRequiredLengths() {
+  return isBoardMode() ? PUZZLE_REQUIRED_LENGTHS : ARCADE_REQUIRED_LENGTHS;
 }
 
 function clearLobbyTimer() {
@@ -961,7 +991,7 @@ function buildRounds() {
   return [...comboMap.entries()]
     .map(([combo, words]) => {
       const answers = [...words].filter((word) => includesLetterRequirements(word, combo.split("")));
-      const answersByLength = REQUIRED_LENGTHS.reduce((bucket, length) => {
+      const answersByLength = SUPPORTED_LENGTHS.reduce((bucket, length) => {
         const ranked = answers
           .filter((word) => word.length === length)
           .sort((left, right) => wordQualityScore(right) - wordQualityScore(left));
@@ -969,7 +999,7 @@ function buildRounds() {
         return bucket;
       }, {});
 
-      const quality = REQUIRED_LENGTHS.reduce((sum, length) => sum + (answersByLength[length][0] ? wordQualityScore(answersByLength[length][0]) : 0), 0);
+      const quality = SUPPORTED_LENGTHS.reduce((sum, length) => sum + (answersByLength[length][0] ? wordQualityScore(answersByLength[length][0]) : 0), 0);
       return {
         letters: combo.split(""),
         answers,
@@ -977,10 +1007,11 @@ function buildRounds() {
         quality
       };
     })
-    .filter((round) => REQUIRED_LENGTHS.every((length) => round.answersByLength[length].length > 0))
+    .filter((round) => ARCADE_REQUIRED_LENGTHS.every((length) => round.answersByLength[length].length > 0)
+      || PUZZLE_REQUIRED_LENGTHS.every((length) => round.answersByLength[length].length > 0))
     .sort((left, right) => {
-      const leftCount = REQUIRED_LENGTHS.reduce((sum, length) => sum + left.answersByLength[length].length, 0);
-      const rightCount = REQUIRED_LENGTHS.reduce((sum, length) => sum + right.answersByLength[length].length, 0);
+      const leftCount = SUPPORTED_LENGTHS.reduce((sum, length) => sum + left.answersByLength[length].length, 0);
+      const rightCount = SUPPORTED_LENGTHS.reduce((sum, length) => sum + right.answersByLength[length].length, 0);
       return (right.quality + rightCount) - (left.quality + leftCount);
     })
     .slice(0, 700);
@@ -1035,9 +1066,17 @@ function buildRoundInstance(roundTemplate, rng, wheelPlans, roundIndex) {
 }
 
 function buildSessionRounds(seedText = null) {
+  if (isHuntMode()) {
+    return buildHuntBoards(seedText);
+  }
+
   const seed = seedText || `run-${Date.now()}`;
   const rng = createRng(seed);
-  const sourceRounds = shuffle(state.rounds, rng);
+  const requiredLengths = getRequiredLengths();
+  const sourceRounds = shuffle(
+    state.rounds.filter((round) => requiredLengths.every((length) => round.answersByLength[length]?.length > 0)),
+    rng
+  );
   const chosen = sourceRounds.slice(0, SESSION_ROUND_COUNT);
   const roundLettersByRound = chosen.map((roundTemplate) => shuffle(roundTemplate.letters, rng));
   state.sessionWheelPlans = buildWheelPlans(roundLettersByRound, rng);
@@ -1055,7 +1094,10 @@ function getRandomPuzzleCount(length, availableCount) {
 
 function buildClueIndices(word) {
   const indices = new Set([0]);
-  if (word.length >= 6) {
+  if (word.length >= 7) {
+    indices.add(Math.floor(word.length / 2));
+    indices.add(word.length - 1);
+  } else if (word.length >= 6) {
     indices.add(word.length - 1);
   } else if (word.length >= 5) {
     indices.add(Math.floor(word.length / 2));
@@ -1064,7 +1106,7 @@ function buildClueIndices(word) {
 }
 
 function buildPuzzleWords(roundData) {
-  return REQUIRED_LENGTHS.reduce((groups, length) => {
+  return PUZZLE_REQUIRED_LENGTHS.reduce((groups, length) => {
     const sourceWords = shuffle([...roundData.answersByLength[length]]);
     const targetCount = getRandomPuzzleCount(length, sourceWords.length);
     groups[length] = sourceWords
@@ -1079,8 +1121,65 @@ function buildPuzzleWords(roundData) {
   }, {});
 }
 
+function getRandomHuntCount(length, availableCount) {
+  const maxCount = Math.min(availableCount, length === 5 ? 3 : 2);
+  return Math.max(1, Math.floor(Math.random() * maxCount) + 1);
+}
+
+function buildHuntBoard(wordPool, rng) {
+  const puzzleWordsByLength = PUZZLE_REQUIRED_LENGTHS.reduce((groups, length) => {
+    const candidates = shuffle(
+      wordPool.filter((word) => word.length === length && uniqueLetters(word).length >= 3),
+      rng
+    );
+    const count = getRandomHuntCount(length, candidates.length);
+    groups[length] = candidates
+      .slice(0, count)
+      .sort((left, right) => left.localeCompare(right))
+      .map((word) => ({
+        word,
+        solved: false,
+        clueIndices: buildClueIndices(word)
+      }));
+    return groups;
+  }, {});
+
+  return {
+    roundIndex: 0,
+    solvedLengths: {},
+    solveSequence: [],
+    puzzleWordsByLength,
+    wheels: []
+  };
+}
+
+function buildHuntBoards(seedText = null) {
+  const seed = seedText || `hunt-${Date.now()}`;
+  const rng = createRng(seed);
+  return Array.from({ length: SESSION_ROUND_COUNT }, (_, roundIndex) => ({
+    ...buildHuntBoard(state.roundWords, rng),
+    roundIndex
+  }));
+}
+
+function getRemainingHuntEntries(roundData = state.currentRound) {
+  return PUZZLE_REQUIRED_LENGTHS.flatMap((length) => (roundData?.puzzleWordsByLength?.[length] || []).filter((entry) => !entry.solved));
+}
+
+function chooseHuntComboFromEntry(entry, rng = Math.random) {
+  const letters = shuffle(uniqueLetters(entry.word), rng).slice(0, 3).sort();
+  return letters;
+}
+
+function buildDynamicWheels(letters, rng = Math.random) {
+  return letters.map((letter) => makeWheelLetters(letter, rng));
+}
+
 function getBestScore() {
-  return state.scores.best || 0;
+  if (state.gameMode === "single" && state.singlePlayerVariant === "puzzle") {
+    return state.scores.bestPuzzle || 0;
+  }
+  return state.scores.bestArcade || 0;
 }
 
 function updateBestScore() {
@@ -1089,7 +1188,11 @@ function updateBestScore() {
     return;
   }
 
-  state.scores.best = state.score;
+  if (state.gameMode === "single" && state.singlePlayerVariant === "puzzle") {
+    state.scores.bestPuzzle = state.score;
+  } else {
+    state.scores.bestArcade = state.score;
+  }
   persistScores();
 }
 
@@ -1117,14 +1220,17 @@ function normalizeLeaderboardEntries(entries) {
 }
 
 function updateHud() {
-  elements.score.textContent = String(state.score);
-  elements.survivalMultiplier.textContent = `x${state.survivalMultiplier.toFixed(2)}`;
+  const isBoard = isBoardMode();
+  elements.score.textContent = isBoard ? "-" : String(state.score);
+  elements.survivalMultiplier.textContent = isBoard ? "-" : `x${state.survivalMultiplier.toFixed(2)}`;
   elements.round.textContent = `${Math.min(state.round, Math.max(state.sessionRounds.length, 1))}/${Math.max(state.sessionRounds.length, 1)}`;
-  elements.bestScore.textContent = String(getBestScore());
+  elements.bestScore.textContent = isBoard ? "-" : String(getBestScore());
   elements.foundCount.textContent = `${state.recentWords.length} word${state.recentWords.length === 1 ? "" : "s"} locked in`;
-  elements.modeSummary.textContent = state.gameMode === "single" && state.singlePlayerVariant === "puzzle"
+  elements.modeSummary.textContent = isPuzzleMode()
     ? "Puzzle Mode"
-    : "";
+    : isHuntMode()
+      ? "Hunt Mode"
+      : "";
 }
 
 function clearRivalTimers() {
@@ -1182,7 +1288,7 @@ function updateRaceBoard() {
       const progress = document.createElement("div");
       progress.className = "race-progress";
 
-      REQUIRED_LENGTHS.forEach((length) => {
+      ARCADE_REQUIRED_LENGTHS.forEach((length) => {
         const cell = document.createElement("div");
         const shouldFlash = player.flashLength === length && (player.flashUntil || 0) > Date.now();
         cell.className = `race-cell${player.currentSolved[length] ? " complete" : ""}${shouldFlash ? " flash" : ""}`;
@@ -1242,8 +1348,8 @@ async function refreshLeaderboard() {
     }
     const payload = await response.json();
     state.scores.leaderboard = normalizeLeaderboardEntries(Array.isArray(payload.scores) ? payload.scores : []);
-    state.scores.best = Math.max(
-      state.scores.best || 0,
+    state.scores.bestArcade = Math.max(
+      state.scores.bestArcade || 0,
       state.scores.leaderboard[0]?.score || 0
     );
     state.leaderboardError = "";
@@ -1279,7 +1385,7 @@ function updateGoals() {
     return;
   }
 
-  REQUIRED_LENGTHS.forEach((length) => {
+  ARCADE_REQUIRED_LENGTHS.forEach((length) => {
     const card = document.createElement("article");
     const solvedWord = state.currentRound.solvedLengths[length];
     card.className = `goal-card${solvedWord ? " complete" : ""}`;
@@ -1303,7 +1409,7 @@ function updateMysteryPanel() {
     return;
   }
 
-  REQUIRED_LENGTHS.forEach((length) => {
+  PUZZLE_REQUIRED_LENGTHS.forEach((length) => {
     const words = state.currentRound.puzzleWordsByLength?.[length] || [];
     const group = document.createElement("div");
     group.className = "mystery-group";
@@ -1315,7 +1421,7 @@ function updateMysteryPanel() {
 
     words.forEach((entry) => {
       const row = document.createElement("div");
-      row.className = `mystery-word${entry.solved ? " solved" : ""}`;
+      row.className = `mystery-word${entry.solved ? " solved" : ""}${entry.revealed && !entry.solved ? " revealed" : ""}`;
 
       entry.word.split("").forEach((letter, index) => {
         const cell = document.createElement("div");
@@ -1336,7 +1442,9 @@ function updateRecentWords() {
   elements.foundList.innerHTML = "";
   state.recentWords.slice(0, 10).forEach((entry) => {
     const item = document.createElement("li");
-    item.textContent = `${entry.word.toUpperCase()} | +${entry.points} | ${entry.letters.map((letter) => letter.toUpperCase()).join("")}`;
+    item.textContent = entry.points
+      ? `${entry.word.toUpperCase()} | +${entry.points} | ${entry.letters.map((letter) => letter.toUpperCase()).join("")}`
+      : `${entry.word.toUpperCase()} | ${entry.letters.map((letter) => letter.toUpperCase()).join("")}`;
     elements.foundList.appendChild(item);
   });
 }
@@ -1548,10 +1656,22 @@ function clearTimer() {
 }
 
 function updateTimerDisplay() {
-  if (state.gameMode === "single" && state.singlePlayerVariant === "puzzle") {
-    elements.timer.textContent = "Free";
-    elements.timer.classList.remove("danger");
-    elements.timer.parentElement.classList.remove("danger-panel");
+  if (isBoardMode()) {
+    if (!state.currentRound) {
+      elements.timer.textContent = `${PUZZLE_ROUND_TIME_LIMIT}s`;
+      elements.timer.classList.remove("danger");
+      elements.timer.parentElement.classList.remove("danger-panel");
+      return;
+    }
+
+    const remainingSeconds = Math.max(0, Math.ceil((state.roundDeadline - Date.now()) / 1000));
+    elements.timer.textContent = `${remainingSeconds}s`;
+    elements.timer.classList.toggle("danger", remainingSeconds <= 10);
+    elements.timer.parentElement.classList.toggle("danger-panel", remainingSeconds <= 10);
+    if (remainingSeconds <= 10 && remainingSeconds > 0 && state.lastTickSecond !== remainingSeconds) {
+      state.lastTickSecond = remainingSeconds;
+      playTickSound();
+    }
     return;
   }
 
@@ -1575,13 +1695,20 @@ function updateTimerDisplay() {
 
 function startRoundTimer() {
   clearTimer();
-  state.roundDeadline = Date.now() + ROUND_TIME_LIMIT * 1000;
+  const limit = isBoardMode()
+    ? PUZZLE_ROUND_TIME_LIMIT
+    : ROUND_TIME_LIMIT;
+  state.roundDeadline = Date.now() + limit * 1000;
   state.lastTickSecond = null;
   updateTimerDisplay();
   state.timerId = window.setInterval(() => {
     updateTimerDisplay();
     if (Date.now() >= state.roundDeadline) {
-      handleRoundFailure("Time ran out. The survival streak snaps and the wheels move on.");
+      if (isBoardMode()) {
+        handleRoundFailure(`Time ran out. ${isHuntMode() ? "Hunt" : "Puzzle"} run over.`);
+      } else {
+        handleRoundFailure("Time ran out. The survival streak snaps and the wheels move on.");
+      }
     }
   }, 250);
 }
@@ -1609,6 +1736,20 @@ function chooseNextRound() {
   return roundData;
 }
 
+function applyHuntStep(roundData) {
+  const remainingEntries = getRemainingHuntEntries(roundData);
+  if (remainingEntries.length === 0) {
+    return false;
+  }
+
+  const targetEntry = remainingEntries[Math.min(state.huntStepIndex, remainingEntries.length - 1)];
+  const combo = chooseHuntComboFromEntry(targetEntry);
+  const rng = createRng(`hunt-step-${roundData.roundIndex}-${state.huntStepIndex}-${targetEntry.word}`);
+  roundData.letters = combo;
+  roundData.wheels = buildDynamicWheels(combo, rng);
+  return true;
+}
+
 function loadNextRound(messageText, startAt = null) {
   const nextRound = chooseNextRound();
   if (!nextRound) {
@@ -1616,8 +1757,11 @@ function loadNextRound(messageText, startAt = null) {
   }
 
   state.currentRound = nextRound;
-  if (state.gameMode === "single" && state.singlePlayerVariant === "puzzle") {
+  if (isPuzzleMode()) {
     state.currentRound.puzzleWordsByLength = buildPuzzleWords(state.currentRound);
+  } else if (isHuntMode()) {
+    state.huntStepIndex = 0;
+    applyHuntStep(state.currentRound);
   }
   const you = getRacePlayer("you");
   if (you) {
@@ -1630,7 +1774,7 @@ function loadNextRound(messageText, startAt = null) {
   updateGoals();
   updateMysteryPanel();
   updateRecentWords();
-  setMessage(messageText || "Fresh letters at six. Make them count.");
+  setMessage(messageText || (isHuntMode() ? "Fresh hunt combo. Find the matching hidden word." : "Fresh letters at six. Make them count."));
   elements.guessInput.value = "";
   setSpinning(true);
 
@@ -1645,7 +1789,7 @@ function loadNextRound(messageText, startAt = null) {
   window.setTimeout(() => {
     setSpinning(false);
     clearCountdown();
-    if (state.gameMode === "single" && state.singlePlayerVariant === "puzzle") {
+    if (isBoardMode()) {
       clearTimer();
       updateTimerDisplay();
     } else if (startAt) {
@@ -1670,10 +1814,94 @@ function scoreWord(word) {
 }
 
 function getRemainingPuzzleWords() {
-  return REQUIRED_LENGTHS.flatMap((length) => (state.currentRound.puzzleWordsByLength?.[length] || []).filter((entry) => !entry.solved));
+  return PUZZLE_REQUIRED_LENGTHS.flatMap((length) => (state.currentRound.puzzleWordsByLength?.[length] || []).filter((entry) => !entry.solved));
+}
+
+function getRemainingBoardWords() {
+  return isHuntMode() ? getRemainingHuntEntries() : getRemainingPuzzleWords();
+}
+
+function revealPuzzleAnswers() {
+  PUZZLE_REQUIRED_LENGTHS.forEach((length) => {
+    (state.currentRound.puzzleWordsByLength?.[length] || []).forEach((entry) => {
+      entry.revealed = true;
+    });
+  });
+  updateMysteryPanel();
+}
+
+function advancePuzzleRoundAfterReveal(message, shouldEnd = false) {
+  revealPuzzleAnswers();
+  setMessage(message, shouldEnd ? "error" : "success");
+  setSpinning(true);
+  clearTimer();
+  const delay = 1800;
+  window.setTimeout(() => {
+    setSpinning(false);
+    if (shouldEnd || state.sessionIndex >= state.sessionRounds.length) {
+      endSession(shouldEnd ? "Puzzle run over." : "Puzzle run complete. Nice work.");
+      return;
+    }
+    state.round += 1;
+    loadNextRound("Fresh puzzle board.");
+  }, delay);
+}
+
+function advanceHuntStep(messageText) {
+  state.huntStepIndex += 1;
+  if (!applyHuntStep(state.currentRound)) {
+    return;
+  }
+  renderWheels(state.currentRound);
+  updateHud();
+  updateMysteryPanel();
+  setMessage(messageText || "Next hunt combo ready.");
+  elements.guessInput.value = "";
+  setSpinning(true);
+  window.setTimeout(() => {
+    setSpinning(false);
+    elements.guessInput.focus();
+  }, 950);
 }
 
 function handlePuzzleGuess(word) {
+  if (isHuntMode()) {
+    const words = state.currentRound.puzzleWordsByLength?.[word.length] || [];
+    const match = words.find((entry) => entry.word === word);
+
+    if (!match) {
+      setMessage(`"${word.toUpperCase()}" is valid, but not one of this board's hidden words.`, "error");
+      return;
+    }
+
+    if (match.solved) {
+      setMessage(`"${word.toUpperCase()}" is already solved.`, "error");
+      return;
+    }
+
+    match.solved = true;
+    state.recentWords.unshift({ word, letters: state.currentRound.letters, points: 0 });
+    updateHud();
+    updateMysteryPanel();
+    updateRecentWords();
+    playWordScoreSound();
+
+    const remaining = getRemainingBoardWords();
+    if (remaining.length === 0) {
+      if (state.sessionIndex >= state.sessionRounds.length) {
+        endSession("Congratulations. You cleared all 8 hunt boards.");
+        return;
+      }
+
+      state.round += 1;
+      loadNextRound(`Board cleared. "${word.toUpperCase()}" completed this hunt board.`);
+      return;
+    }
+
+    advanceHuntStep(`Solved "${word.toUpperCase()}". ${remaining.length} hidden word${remaining.length === 1 ? "" : "s"} left on this board.`);
+    return;
+  }
+
   const words = state.currentRound.puzzleWordsByLength?.[word.length] || [];
   const match = words.find((entry) => entry.word === word);
 
@@ -1687,21 +1915,17 @@ function handlePuzzleGuess(word) {
     return;
   }
 
-  const { points } = scoreWord(word);
   match.solved = true;
-  state.score += points;
-  state.recentWords.unshift({ word, letters: state.currentRound.letters, points });
-  updateBestScore();
+  state.recentWords.unshift({ word, letters: state.currentRound.letters, points: 0 });
   updateHud();
   updateMysteryPanel();
   updateRecentWords();
   playWordScoreSound();
-  spawnScorePopup(`+${points}`, "word", -40);
 
   const remaining = getRemainingPuzzleWords();
   if (remaining.length === 0) {
     if (state.sessionIndex >= state.sessionRounds.length) {
-      endSession(`Puzzle run complete. "${word.toUpperCase()}" finished the final board.`);
+      endSession(`Congratulations. You cleared all 8 puzzle rounds.`);
       return;
     }
 
@@ -1710,13 +1934,13 @@ function handlePuzzleGuess(word) {
     return;
   }
 
-  setMessage(`Solved "${word.toUpperCase()}" for +${points}. ${remaining.length} mystery word${remaining.length === 1 ? "" : "s"} left.`, "success");
+  setMessage(`Solved "${word.toUpperCase()}". ${remaining.length} mystery word${remaining.length === 1 ? "" : "s"} left.`, "success");
   elements.guessInput.value = "";
   elements.guessInput.focus();
 }
 
 function handleCorrectGuess(word) {
-  if (state.gameMode === "single" && state.singlePlayerVariant === "puzzle") {
+  if (isBoardMode()) {
     handlePuzzleGuess(word);
     return;
   }
@@ -1751,7 +1975,7 @@ function handleCorrectGuess(word) {
   playWordScoreSound();
   spawnScorePopup(`+${points}`, "word", -40);
 
-  const remaining = REQUIRED_LENGTHS.filter((length) => !state.currentRound.solvedLengths[length]);
+  const remaining = ARCADE_REQUIRED_LENGTHS.filter((length) => !state.currentRound.solvedLengths[length]);
   if (remaining.length === 0) {
     clearTimer();
     const secondsLeft = Math.max(0, Math.ceil((state.roundDeadline - Date.now()) / 1000));
@@ -1809,7 +2033,8 @@ function handleRoundFailure(message) {
     return;
   }
 
-  if (state.gameMode === "single" && state.singlePlayerVariant === "puzzle") {
+  if (isBoardMode()) {
+    advancePuzzleRoundAfterReveal(message, true);
     return;
   }
 
@@ -1867,7 +2092,9 @@ function endSession(reason = "Run complete.", options = {}) {
   }
   state.currentRound = null;
   state.matchEnded = state.gameMode === "multiplayer";
-  state.scores.best = Math.max(state.scores.best || 0, state.score);
+  if (!(state.gameMode === "single" && state.singlePlayerVariant === "puzzle")) {
+    state.scores.bestArcade = Math.max(state.scores.bestArcade || 0, state.score);
+  }
   state.hasSubmittedScore = false;
   persistScores();
   updateHud();
@@ -1882,6 +2109,10 @@ function endSession(reason = "Run complete.", options = {}) {
     updateOwnPresence().catch(() => {});
   }
   setSpinning(true);
+  if (state.gameMode === "single" && state.singlePlayerVariant === "puzzle") {
+    setMessage(reason, reason.toLowerCase().includes("over") ? "error" : "success");
+    return;
+  }
   const best = getBestScore();
   setMessage(`${reason} Final score: ${state.score}. Best: ${best}. Hit restart to run it again.`, "success");
 }
@@ -1896,8 +2127,11 @@ function handleGuess(event) {
   }
 
   const guess = normalizeWord(elements.guessInput.value);
-  if (guess.length < MIN_WORD_LENGTH || guess.length > MAX_WORD_LENGTH) {
-    setMessage("This round only accepts 4, 5, 6, or 7 letter words.", "error");
+  const requiredLengths = getRequiredLengths();
+  const minLength = requiredLengths[0];
+  const maxLength = requiredLengths[requiredLengths.length - 1];
+  if (guess.length < minLength || guess.length > maxLength) {
+    setMessage(`This round only accepts ${requiredLengths.join(", ")} letter words.`, "error");
     return;
   }
 
@@ -1936,6 +2170,10 @@ function handleSkip() {
   if (state.isSpinning || !state.dictionaryReady || !state.currentRound) {
     return;
   }
+  if (isBoardMode()) {
+    advancePuzzleRoundAfterReveal("Skipped. Revealing the board, then moving on.");
+    return;
+  }
   handleRoundFailure("Skipped. Survival reset. New letters incoming.");
 }
 
@@ -1970,8 +2208,8 @@ function restartSession() {
 }
 
 function hasAscendingSolveOrder() {
-  return state.currentRound.solveSequence.length === REQUIRED_LENGTHS.length
-    && state.currentRound.solveSequence.every((length, index) => length === REQUIRED_LENGTHS[index]);
+  return state.currentRound.solveSequence.length === ARCADE_REQUIRED_LENGTHS.length
+    && state.currentRound.solveSequence.every((length, index) => length === ARCADE_REQUIRED_LENGTHS[index]);
 }
 
 async function loadDictionary() {
@@ -2037,7 +2275,8 @@ elements.guessInput.addEventListener("input", () => {
   }
 
   const guess = normalizeWord(elements.guessInput.value);
-  if (guess.length < MIN_WORD_LENGTH || guess.length > MAX_WORD_LENGTH) {
+  const requiredLengths = getRequiredLengths();
+  if (guess.length < requiredLengths[0] || guess.length > requiredLengths[requiredLengths.length - 1]) {
     return;
   }
 
@@ -2073,6 +2312,10 @@ elements.arcadeModeButton.addEventListener("click", () => {
 elements.puzzleModeButton.addEventListener("click", () => {
   ensureAudioReady();
   startSinglePlayerGame("puzzle");
+});
+elements.huntModeButton.addEventListener("click", () => {
+  ensureAudioReady();
+  startSinglePlayerGame("hunt");
 });
 elements.singlePlayerBackButton.addEventListener("click", () => {
   setScreen("home");
@@ -2211,7 +2454,7 @@ elements.submitScoreForm.addEventListener("submit", async (event) => {
     }
 
     state.scores.leaderboard = Array.isArray(payload.scores) ? payload.scores : [];
-    state.scores.best = Math.max(state.scores.best || 0, state.score);
+    state.scores.bestArcade = Math.max(state.scores.bestArcade || 0, state.score);
     state.hasSubmittedScore = true;
     state.leaderboardError = "";
     persistScores();

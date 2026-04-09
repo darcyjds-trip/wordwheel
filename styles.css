@@ -185,6 +185,12 @@ body::before {
   border-color: rgba(255, 216, 77, 0.6);
 }
 
+.mystery-word.revealed .mystery-letter {
+  color: #d8e7ff;
+  background: rgba(60, 77, 116, 0.82);
+  border-color: rgba(140, 164, 224, 0.34);
+}
+
 .menu-actions {
   display: flex;
   justify-content: center;

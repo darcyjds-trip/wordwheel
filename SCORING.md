@@ -1,6 +1,10 @@
-# Letter Clock Scoring
+# Word Wheel Modes
 
-## Word Values
+## Arcade Mode
+
+Arcade is the score-chasing solo mode.
+
+### Word Values
 
 - 4-letter word: `100`
 - 5-letter word: `200`
@@ -15,14 +19,14 @@ Example:
 
 - 6-letter word at `x1.30` survival = `350 x 1.30 = 455`
 
-## Survival Multiplier
+### Survival Multiplier
 
 - Starts at `x1.00`
 - Increases by `+0.10` after clearing a full round
 - Caps at `x3.00`
 - Resets to `x1.00` if time runs out or the player skips
 
-## Round Bonuses
+### Round Bonuses
 
 When a round is fully cleared, the player earns:
 
@@ -36,33 +40,40 @@ Round bonus formula:
 
 `(400 + order bonus + time bonus) x survival multiplier`
 
-## Session Format
+### Session Format
 
 - Each run lasts `8 rounds`
-- Every round requires:
+- Every arcade round requires:
   - one 4-letter word
   - one 5-letter word
   - one 6-letter word
   - one 7-letter word
 
-## Example Round
+## Puzzle Mode
 
-If the player has `x1.20` survival and scores:
+Puzzle is the hidden-answer solo mode.
 
-- 4-letter word = `120`
-- 5-letter word = `240`
-- 6-letter word = `420`
-- 7-letter word = `600`
+- No score tracking
+- No survival multiplier
+- Each round has a `2 minute` timer
+- Every round contains mystery words in `5-letter`, `6-letter`, `7-letter`, and `8-letter` groups
+- Each mystery word shows clue letters from the start
+- If the round is skipped or time expires, the unsolved answers are revealed before the board moves on or ends
+- Clear all `8 rounds` to complete the run
 
-That subtotal is:
+## Hunt Mode
 
-`1380`
+Hunt is another hidden-answer solo mode.
 
-If they finish in perfect order and have `12` seconds left:
+- No score tracking
+- No survival multiplier
+- Each round has a `2 minute` timer
+- Every round contains hidden words in `5-letter`, `6-letter`, `7-letter`, and `8-letter` groups
+- The hidden board stays on screen while the wheel changes after each solve
+- Each new wheel combo is chosen to unlock one of the remaining answers on the board
+- Every word starts with clue letters already revealed
+- Clear all `8 rounds` to complete the run
 
-- Round bonus = `400 + 250 + 120 = 770`
-- Multiplied by survival: `770 x 1.20 = 924`
+## Multiplayer
 
-Total round score:
-
-`1380 + 924 = 2304`
+Multiplayer uses the arcade-style `4 -> 5 -> 6 -> 7` board format in a shared 8-round race.
