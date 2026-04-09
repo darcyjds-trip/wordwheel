@@ -142,7 +142,7 @@ const state = {
   lobbyTimerId: null,
   countdownTimerIds: [],
   puzzleWordsByLength: {},
-  huntStepIndex: 0,
+  boardStepIndex: 0,
   currentThemeName: "",
   playerId: crypto.randomUUID ? crypto.randomUUID() : `player-${Math.random().toString(36).slice(2, 10)}`,
   playerName: loadStoredPlayerName(),
@@ -171,7 +171,6 @@ const elements = {
   singlePlayerButton: document.getElementById("singlePlayerButton"),
   arcadeModeButton: document.getElementById("arcadeModeButton"),
   puzzleModeButton: document.getElementById("puzzleModeButton"),
-  huntModeButton: document.getElementById("huntModeButton"),
   themeModeButton: document.getElementById("themeModeButton"),
   singlePlayerBackButton: document.getElementById("singlePlayerBackButton"),
   multiplayerButton: document.getElementById("multiplayerButton"),
@@ -198,6 +197,7 @@ const elements = {
   stackWordsMessage: document.getElementById("stackWordsMessage"),
   stackWordsPool: document.getElementById("stackWordsPool"),
   stackWordsBackButton: document.getElementById("stackWordsBackButton"),
+  stackWordsDeleteButton: document.getElementById("stackWordsDeleteButton"),
   stackWordsResetButton: document.getElementById("stackWordsResetButton"),
   stackWordsSubmitButton: document.getElementById("stackWordsSubmitButton"),
   stackWordsResultsPanel: document.getElementById("stackWordsResultsPanel"),
@@ -258,6 +258,7 @@ const stackWordsController = window.StackWordsApp?.createController({
     message: elements.stackWordsMessage,
     pool: elements.stackWordsPool,
     backButton: elements.stackWordsBackButton,
+    deleteButton: elements.stackWordsDeleteButton,
     resetButton: elements.stackWordsResetButton,
     submitButton: elements.stackWordsSubmitButton,
     resultsPanel: elements.stackWordsResultsPanel,
@@ -362,20 +363,16 @@ function isPuzzleMode() {
   return state.gameMode === "single" && state.singlePlayerVariant === "puzzle";
 }
 
-function isHuntMode() {
-  return state.gameMode === "single" && state.singlePlayerVariant === "hunt";
-}
-
 function isThemeMode() {
   return state.gameMode === "single" && state.singlePlayerVariant === "theme";
 }
 
 function isBoardMode() {
-  return isPuzzleMode() || isHuntMode() || isThemeMode();
+  return isPuzzleMode() || isThemeMode();
 }
 
 function isDynamicBoardMode() {
-  return isHuntMode() || isThemeMode();
+  return isThemeMode();
 }
 
 function getRequiredLengths() {
@@ -1162,9 +1159,6 @@ function buildRoundInstance(roundTemplate, rng, wheelPlans, roundIndex) {
 }
 
 function buildSessionRounds(seedText = null) {
-  if (isHuntMode()) {
-    return buildHuntBoards(seedText);
-  }
   if (isThemeMode()) {
     return buildThemeBoards(seedText);
   }
@@ -1220,11 +1214,6 @@ function buildPuzzleWords(roundData) {
   }, {});
 }
 
-function getRandomHuntCount(length, availableCount) {
-  const maxCount = Math.min(availableCount, length === 5 ? 3 : 2);
-  return Math.max(1, Math.floor(Math.random() * maxCount) + 1);
-}
-
 function getRandomThemeCount(length, availableCount, rng = Math.random) {
   const maxCount = Math.min(availableCount, length <= 6 ? 2 : 1);
   return Math.max(1, Math.floor(rng() * maxCount) + 1);
@@ -1249,42 +1238,6 @@ function getAvailableThemePools() {
       return { themeName, wordsByLength };
     })
     .filter((theme) => PUZZLE_REQUIRED_LENGTHS.every((length) => theme.wordsByLength[length].length > 0));
-}
-
-function buildHuntBoard(wordPool, rng) {
-  const puzzleWordsByLength = PUZZLE_REQUIRED_LENGTHS.reduce((groups, length) => {
-    const candidates = shuffle(
-      wordPool.filter((word) => word.length === length && uniqueLetters(word).length >= 3),
-      rng
-    );
-    const count = getRandomHuntCount(length, candidates.length);
-    groups[length] = candidates
-      .slice(0, count)
-      .sort((left, right) => left.localeCompare(right))
-      .map((word) => ({
-        word,
-        solved: false,
-        clueIndices: buildClueIndices(word)
-      }));
-    return groups;
-  }, {});
-
-  return {
-    roundIndex: 0,
-    solvedLengths: {},
-    solveSequence: [],
-    puzzleWordsByLength,
-    wheels: []
-  };
-}
-
-function buildHuntBoards(seedText = null) {
-  const seed = seedText || `hunt-${Date.now()}`;
-  const rng = createRng(seed);
-  return Array.from({ length: SESSION_ROUND_COUNT }, (_, roundIndex) => ({
-    ...buildHuntBoard(state.roundWords, rng),
-    roundIndex
-  }));
 }
 
 function buildThemeBoard(themePool, rng) {
@@ -1318,7 +1271,7 @@ function buildThemeBoards(seedText = null) {
   const themePools = getAvailableThemePools();
 
   if (themePools.length === 0) {
-    return buildHuntBoards(seedText);
+    return [];
   }
 
   const themeSequence = Array.from({ length: SESSION_ROUND_COUNT }, (_, index) => themePools[index % themePools.length]);
@@ -1328,13 +1281,24 @@ function buildThemeBoards(seedText = null) {
   }));
 }
 
-function getRemainingHuntEntries(roundData = state.currentRound) {
+function getRemainingDynamicEntries(roundData = state.currentRound) {
   return PUZZLE_REQUIRED_LENGTHS.flatMap((length) => (roundData?.puzzleWordsByLength?.[length] || []).filter((entry) => !entry.solved));
 }
 
-function chooseHuntComboFromEntry(entry, rng = Math.random) {
-  const letters = shuffle(uniqueLetters(entry.word), rng).slice(0, 3).sort();
-  return letters;
+function chooseThemeComboFromEntry(entry, rng = Math.random) {
+  const slices = [];
+  for (let index = 0; index <= entry.word.length - 3; index += 1) {
+    const slice = entry.word.slice(index, index + 3);
+    if (new Set(slice.split("")).size === 3) {
+      slices.push(slice.split(""));
+    }
+  }
+
+  if (slices.length === 0) {
+    return shuffle(uniqueLetters(entry.word), rng).slice(0, 3);
+  }
+
+  return sample(slices, rng);
 }
 
 function buildDynamicWheels(letters, rng = Math.random) {
@@ -1394,11 +1358,9 @@ function updateHud() {
   elements.foundCount.textContent = `${state.recentWords.length} word${state.recentWords.length === 1 ? "" : "s"} locked in`;
   elements.modeSummary.textContent = isPuzzleMode()
     ? "Puzzle Mode"
-    : isHuntMode()
-      ? "Hunt Mode"
-      : isThemeMode()
+    : isThemeMode()
         ? `Theme Mode${state.currentThemeName ? ` | ${state.currentThemeName}` : ""}`
-      : "";
+        : "";
 }
 
 function clearRivalTimers() {
@@ -1879,7 +1841,7 @@ function startRoundTimer() {
     updateTimerDisplay();
     if (Date.now() >= state.roundDeadline) {
       if (isBoardMode()) {
-        handleRoundFailure(`Time ran out. ${isThemeMode() ? "Theme" : isHuntMode() ? "Hunt" : "Puzzle"} run over.`);
+        handleRoundFailure(`Time ran out. ${isThemeMode() ? "Theme" : "Puzzle"} run over.`);
       } else {
         handleRoundFailure("Time ran out. The survival streak snaps and the wheels move on.");
       }
@@ -1910,15 +1872,15 @@ function chooseNextRound() {
   return roundData;
 }
 
-function applyHuntStep(roundData) {
-  const remainingEntries = getRemainingHuntEntries(roundData);
+function applyDynamicBoardStep(roundData) {
+  const remainingEntries = getRemainingDynamicEntries(roundData);
   if (remainingEntries.length === 0) {
     return false;
   }
 
-  const targetEntry = remainingEntries[Math.min(state.huntStepIndex, remainingEntries.length - 1)];
-  const combo = chooseHuntComboFromEntry(targetEntry);
-  const rng = createRng(`hunt-step-${roundData.roundIndex}-${state.huntStepIndex}-${targetEntry.word}`);
+  const targetEntry = remainingEntries[Math.min(state.boardStepIndex, remainingEntries.length - 1)];
+  const combo = chooseThemeComboFromEntry(targetEntry);
+  const rng = createRng(`theme-step-${roundData.roundIndex}-${state.boardStepIndex}-${targetEntry.word}`);
   roundData.letters = combo;
   roundData.wheels = buildDynamicWheels(combo, rng);
   return true;
@@ -1935,8 +1897,8 @@ function loadNextRound(messageText, startAt = null) {
   if (isPuzzleMode()) {
     state.currentRound.puzzleWordsByLength = buildPuzzleWords(state.currentRound);
   } else if (isDynamicBoardMode()) {
-    state.huntStepIndex = 0;
-    applyHuntStep(state.currentRound);
+    state.boardStepIndex = 0;
+    applyDynamicBoardStep(state.currentRound);
   }
   const you = getRacePlayer("you");
   if (you) {
@@ -1953,9 +1915,7 @@ function loadNextRound(messageText, startAt = null) {
     messageText || (
       isThemeMode()
         ? `Theme: ${state.currentThemeName}. Catch the next clue word.`
-        : isHuntMode()
-          ? "Fresh hunt combo. Find the matching hidden word."
-          : "Fresh letters at six. Make them count."
+        : "Fresh letters at six. Make them count."
     )
   );
   elements.guessInput.value = "";
@@ -2000,7 +1960,7 @@ function getRemainingPuzzleWords() {
 }
 
 function getRemainingBoardWords() {
-  return isDynamicBoardMode() ? getRemainingHuntEntries() : getRemainingPuzzleWords();
+  return isDynamicBoardMode() ? getRemainingDynamicEntries() : getRemainingPuzzleWords();
 }
 
 function revealPuzzleAnswers() {
@@ -2023,8 +1983,8 @@ function advancePuzzleRoundAfterReveal(message, shouldEnd = false) {
     if (shouldEnd || state.sessionIndex >= state.sessionRounds.length) {
       endSession(
         shouldEnd
-          ? `${isThemeMode() ? "Theme" : isHuntMode() ? "Hunt" : "Puzzle"} run over.`
-          : `${isThemeMode() ? "Theme" : isHuntMode() ? "Hunt" : "Puzzle"} run complete. Nice work.`
+          ? `${isThemeMode() ? "Theme" : "Puzzle"} run over.`
+          : `${isThemeMode() ? "Theme" : "Puzzle"} run complete. Nice work.`
       );
       return;
     }
@@ -2032,22 +1992,20 @@ function advancePuzzleRoundAfterReveal(message, shouldEnd = false) {
     loadNextRound(
       isThemeMode()
         ? "Fresh themed board."
-        : isHuntMode()
-          ? "Fresh hunt board."
-          : "Fresh puzzle board."
+        : "Fresh puzzle board."
     );
   }, delay);
 }
 
-function advanceHuntStep(messageText) {
-  state.huntStepIndex += 1;
-  if (!applyHuntStep(state.currentRound)) {
+function advanceDynamicBoardStep(messageText) {
+  state.boardStepIndex += 1;
+  if (!applyDynamicBoardStep(state.currentRound)) {
     return;
   }
   renderWheels(state.currentRound);
   updateHud();
   updateMysteryPanel();
-  setMessage(messageText || "Next hunt combo ready.");
+  setMessage(messageText || "Next theme combo ready.");
   elements.guessInput.value = "";
   setSpinning(true);
   window.setTimeout(() => {
@@ -2084,7 +2042,7 @@ function handlePuzzleGuess(word) {
         endSession(
           isThemeMode()
             ? "Congratulations. You cleared all 8 themed boards."
-            : "Congratulations. You cleared all 8 hunt boards."
+            : "Congratulations. You cleared all 8 puzzle boards."
         );
         return;
       }
@@ -2093,12 +2051,12 @@ function handlePuzzleGuess(word) {
       loadNextRound(
         isThemeMode()
           ? `Board cleared. "${word.toUpperCase()}" closed out this ${state.currentThemeName} board.`
-          : `Board cleared. "${word.toUpperCase()}" completed this hunt board.`
+          : `Board cleared. "${word.toUpperCase()}" completed this puzzle board.`
       );
       return;
     }
 
-    advanceHuntStep(
+    advanceDynamicBoardStep(
       isThemeMode()
         ? `Solved "${word.toUpperCase()}". ${remaining.length} ${state.currentThemeName} word${remaining.length === 1 ? "" : "s"} left on this board.`
         : `Solved "${word.toUpperCase()}". ${remaining.length} hidden word${remaining.length === 1 ? "" : "s"} left on this board.`
@@ -2398,6 +2356,7 @@ function restartSession() {
   state.puzzleWordsByLength = {};
   state.recentWords = [];
   state.currentThemeName = "";
+  state.boardStepIndex = 0;
   state.usedWords = new Set();
   state.hasSubmittedScore = false;
   state.wheelOffsets = [0, 0, 0];
@@ -2552,10 +2511,6 @@ elements.arcadeModeButton.addEventListener("click", () => {
 elements.puzzleModeButton.addEventListener("click", () => {
   ensureAudioReady();
   startSinglePlayerGame("puzzle");
-});
-elements.huntModeButton.addEventListener("click", () => {
-  ensureAudioReady();
-  startSinglePlayerGame("hunt");
 });
 elements.themeModeButton.addEventListener("click", () => {
   ensureAudioReady();

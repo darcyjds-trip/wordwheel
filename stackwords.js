@@ -131,6 +131,41 @@
       return this.getViewModel();
     }
 
+    removeLastLetter() {
+      if (!this.state || this.state.completed) {
+        return this.getViewModel();
+      }
+
+      if (this.state.selectedIds.length === 0) {
+        this.setMessage("No letters selected yet.", "error");
+        return this.getViewModel();
+      }
+
+      this.state.selectedIds.pop();
+      this.setMessage(`Editing the ${this.activeLength}-letter slot.`, "neutral");
+      return this.getViewModel();
+    }
+
+    removeSelectedLetterAt(index) {
+      if (!this.state || this.state.completed) {
+        return this.getViewModel();
+      }
+
+      if (index < 0 || index >= this.state.selectedIds.length) {
+        return this.getViewModel();
+      }
+
+      this.state.selectedIds.splice(index, 1);
+      this.setMessage(`Editing the ${this.activeLength}-letter slot.`, "neutral");
+      return this.getViewModel();
+    }
+
+    clearSelectedLetters(message = `Try the ${this.activeLength}-letter word again.`) {
+      this.state.selectedIds = [];
+      this.setMessage(message, "error");
+      return this.getViewModel();
+    }
+
     submitCurrentWord() {
       if (!this.state || this.state.completed) {
         return this.getViewModel();
@@ -157,7 +192,7 @@
           this.state.completed = true;
           this.setMessage("Puzzle solved.", "success");
         } else {
-          this.setMessage(`Locked in ${guess}. Next up: ${this.activeLength}-letter word.`, "success");
+          this.setMessage(`Word locked in. Next: ${this.activeLength}-letter word.`, "success");
         }
 
         return this.getViewModel();
@@ -167,13 +202,11 @@
         ? this.wordValidator(guess)
         : false;
 
-      if (isValidWord) {
-        this.setMessage("Valid word but not correct here.", "error");
-      } else {
-        this.setMessage("Incorrect.", "error");
+      if (!isValidWord) {
+        return this.clearSelectedLetters("Not a valid word. Try that slot again.");
       }
 
-      return this.getViewModel();
+      return this.clearSelectedLetters("That word does not fit this puzzle. Try again.");
     }
 
     resetPuzzle() {
@@ -225,7 +258,8 @@
         completed: this.state.completed,
         message: this.message,
         messageTone: this.messageTone,
-        stars: this.getStarsEarned()
+        stars: this.getStarsEarned(),
+        canDelete: this.state.selectedIds.length > 0
       };
     }
   }
@@ -253,6 +287,10 @@
         }
       });
 
+      this.elements.deleteButton.addEventListener("click", () => {
+        this.render(this.logic.removeLastLetter());
+      });
+
       this.elements.nextButton.addEventListener("click", () => {
         this.render(this.logic.nextPuzzle());
       });
@@ -273,6 +311,7 @@
       this.elements.message.textContent = view.message;
       this.elements.message.dataset.tone = view.messageTone;
       this.elements.resetButton.disabled = view.resetsRemaining <= 0 || view.completed;
+      this.elements.deleteButton.disabled = !view.canDelete || view.completed;
 
       this.renderResetDots(view);
       this.renderSlots(view);
@@ -293,10 +332,14 @@
       this.elements.slots.innerHTML = "";
 
       view.lengths.forEach((length, index) => {
-        const row = document.createElement("div");
         const solvedWord = view.solvedWords[index];
+        if (solvedWord) {
+          return;
+        }
+
+        const row = document.createElement("div");
         const isActive = !view.completed && index === view.activeWordIndex;
-        row.className = `stackwords-slot${solvedWord ? " solved" : ""}${isActive ? " active" : ""}`;
+        row.className = `stackwords-slot${isActive ? " active" : ""}`;
 
         const label = document.createElement("div");
         label.className = "stackwords-slot-label";
@@ -307,12 +350,17 @@
 
         const activePreview = isActive ? view.selectedWord.split("") : [];
         for (let charIndex = 0; charIndex < length; charIndex += 1) {
-          const cell = document.createElement("div");
-          const char = solvedWord
-            ? solvedWord[charIndex]
-            : activePreview[charIndex] || "_";
+          const cell = document.createElement("button");
+          cell.type = "button";
+          const char = activePreview[charIndex] || "_";
           cell.className = `stackwords-box${char === "_" ? " empty" : ""}`;
           cell.textContent = char;
+          cell.disabled = !isActive || char === "_";
+          if (isActive && char !== "_") {
+            cell.addEventListener("click", () => {
+              this.render(this.logic.removeSelectedLetterAt(charIndex));
+            });
+          }
           letters.appendChild(cell);
         }
 
@@ -356,7 +404,7 @@
       for (let index = 0; index < 3; index += 1) {
         const star = document.createElement("span");
         star.className = `stackwords-star${index < stars ? " earned" : ""}`;
-        star.textContent = "★";
+        star.textContent = "*";
         this.elements.stars.appendChild(star);
       }
     }

@@ -61,19 +61,6 @@ Puzzle is the hidden-answer solo mode.
 - If the round is skipped or time expires, the unsolved answers are revealed before the board moves on or ends
 - Clear all `8 rounds` to complete the run
 
-## Hunt Mode
-
-Hunt is another hidden-answer solo mode.
-
-- No score tracking
-- No survival multiplier
-- Each round has a `2 minute` timer
-- Every round contains hidden words in `5-letter`, `6-letter`, `7-letter`, and `8-letter` groups
-- The hidden board stays on screen while the wheel changes after each solve
-- Each new wheel combo is chosen to unlock one of the remaining answers on the board
-- Every word starts with clue letters already revealed
-- Clear all `8 rounds` to complete the run
-
 ## Theme Mode
 
 Theme mode is a themed hidden-answer solo mode.
@@ -83,7 +70,7 @@ Theme mode is a themed hidden-answer solo mode.
 - Each round has a `2 minute` timer
 - Every round is built from one named theme, such as Nature or Sky
 - The hidden board is grouped into `5-letter`, `6-letter`, `7-letter`, and `8-letter` words
-- The game picks the themed answers first, then rotates the wheel to 3-letter combos that unlock one of the remaining themed words
+- The game picks the themed answers first, then rotates the wheel to real 3-letter slices from one of the remaining themed words
 - Every word starts with clue letters already revealed
 - Clear all `8 rounds` to complete the run
 
