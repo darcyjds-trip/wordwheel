@@ -409,6 +409,7 @@
     }
 
     renderResults(view) {
+      const solutionLine = `Solution: ${view.solutionWords.join(" / ")}`;
       this.elements.resultsPanel.hidden = !view.completed;
       this.elements.root.classList.toggle("results-open", view.completed);
       if (!view.completed) {
@@ -421,7 +422,7 @@
       const stars = view.stars;
       this.elements.resultsTitle.textContent = view.gaveUp ? "Answer Revealed" : "Puzzle Solved";
       this.elements.resultsSummary.textContent = view.gaveUp
-        ? "Here was the full solution."
+        ? solutionLine
         : stars === 3
           ? "Perfect clear. No resets used."
           : stars === 2
@@ -430,7 +431,7 @@
 
       this.elements.solutionText.hidden = !view.gaveUp;
       this.elements.solutionText.textContent = view.gaveUp
-        ? `Solution: ${view.solutionWords.join(" / ")}`
+        ? solutionLine
         : "";
       this.elements.revealList.hidden = !view.gaveUp;
       this.elements.revealList.innerHTML = "";

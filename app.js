@@ -1900,6 +1900,8 @@ function applyDynamicBoardStep(roundData) {
 
   const combo = chooseThemeComboFromEntry(targetEntry);
   const rng = createRng(`theme-step-${roundData.roundIndex}-${state.boardStepIndex}-${targetEntry.word}`);
+  roundData.activeTargetWord = targetEntry.word;
+  roundData.activeTargetLength = targetEntry.word.length;
   roundData.letters = combo;
   roundData.wheels = buildDynamicWheels(combo, rng);
   return true;
@@ -2035,6 +2037,19 @@ function advanceDynamicBoardStep(messageText) {
 
 function handlePuzzleGuess(word) {
   if (isDynamicBoardMode()) {
+    if (isThemeMode()) {
+      const targetWord = state.currentRound.activeTargetWord;
+      if (!targetWord) {
+        setMessage("Theme target is not ready yet.", "error");
+        return;
+      }
+
+      if (word !== targetWord) {
+        setMessage(`The current target is a ${state.currentRound.activeTargetLength}-letter ${state.currentThemeName.toLowerCase()} word.`, "error");
+        return;
+      }
+    }
+
     const words = state.currentRound.puzzleWordsByLength?.[word.length] || [];
     const match = words.find((entry) => entry.word === word);
 
