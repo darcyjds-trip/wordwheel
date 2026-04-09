@@ -1130,6 +1130,19 @@ function makeWheelLetters(targetLetter, rng) {
   return { letters, targetIndex };
 }
 
+function makeThemeWheelLetters(targetLetter, sourceWord, wheelIndex, rng) {
+  const sourceLetters = sourceWord.split("");
+  const letters = Array.from({ length: WHEEL_SIZE }, (_, slotIndex) => sourceLetters[(slotIndex + wheelIndex) % sourceLetters.length]);
+  const targetIndex = Math.floor(rng() * WHEEL_SIZE);
+  const currentIndex = letters.findIndex((letter) => letter === targetLetter);
+  if (currentIndex >= 0) {
+    [letters[targetIndex], letters[currentIndex]] = [letters[currentIndex], letters[targetIndex]];
+  } else {
+    letters[targetIndex] = targetLetter;
+  }
+  return { letters, targetIndex };
+}
+
 function buildWheelPlans(roundLettersByRound, rng) {
   return Array.from({ length: 3 }, (_, wheelIndex) => {
     const letters = Array.from({ length: WHEEL_SIZE }, (_, slotIndex) => {
@@ -1334,8 +1347,8 @@ function chooseThemeTargetEntry(roundData) {
   return remainingEntries[Math.min(state.boardStepIndex, remainingEntries.length - 1)];
 }
 
-function buildDynamicWheels(letters, rng = Math.random) {
-  return letters.map((letter) => makeWheelLetters(letter, rng));
+function buildDynamicWheels(letters, sourceWord, rng = Math.random) {
+  return letters.map((letter, wheelIndex) => makeThemeWheelLetters(letter, sourceWord, wheelIndex, rng));
 }
 
 function getBestScore() {
@@ -1917,7 +1930,7 @@ function applyDynamicBoardStep(roundData) {
   roundData.activeTargetWord = targetEntry.word;
   roundData.activeTargetLength = targetEntry.word.length;
   roundData.letters = combo;
-  roundData.wheels = buildDynamicWheels(combo, rng);
+  roundData.wheels = buildDynamicWheels(combo, targetEntry.word, rng);
   return true;
 }
 
