@@ -1297,20 +1297,33 @@ function getRemainingDynamicEntries(roundData = state.currentRound) {
 }
 
 function chooseThemeComboFromEntry(entry, rng = Math.random) {
-  const hiddenIndices = Array.from({ length: entry.word.length }, (_, index) => index)
-    .filter((index) => !(entry.clueIndices || []).includes(index));
-
-  if (hiddenIndices.length >= 3) {
-    const shuffledIndices = shuffle(hiddenIndices, rng).slice(0, 3).sort((left, right) => left - right);
-    return shuffledIndices.map((index) => entry.word[index]);
-  }
-
-  if (entry.word.length < 3) {
+  if (entry.word.length <= 3) {
     return entry.word.slice(0, 3).split("");
   }
 
-  const startIndex = Math.floor(rng() * (entry.word.length - 2));
-  return entry.word.slice(startIndex, startIndex + 3).split("");
+  const clueIndices = new Set(entry.clueIndices || []);
+  const preferredSlices = [];
+  const fallbackSlices = [];
+
+  for (let startIndex = 0; startIndex <= entry.word.length - 3; startIndex += 1) {
+    const indices = [startIndex, startIndex + 1, startIndex + 2];
+    const slice = entry.word.slice(startIndex, startIndex + 3).split("");
+    if (indices.every((index) => !clueIndices.has(index))) {
+      preferredSlices.push(slice);
+    } else {
+      fallbackSlices.push(slice);
+    }
+  }
+
+  if (preferredSlices.length > 0) {
+    return sample(preferredSlices, rng);
+  }
+
+  if (fallbackSlices.length > 0) {
+    return sample(fallbackSlices, rng);
+  }
+
+  return entry.word.slice(0, 3).split("");
 }
 
 function chooseThemeTargetEntry(roundData) {
@@ -1900,6 +1913,7 @@ function applyDynamicBoardStep(roundData) {
 
   const combo = chooseThemeComboFromEntry(targetEntry);
   const rng = createRng(`theme-step-${roundData.roundIndex}-${state.boardStepIndex}-${targetEntry.word}`);
+  roundData.activeTargetEntry = targetEntry;
   roundData.activeTargetWord = targetEntry.word;
   roundData.activeTargetLength = targetEntry.word.length;
   roundData.letters = combo;

@@ -90,7 +90,8 @@
         solvedWords: Array(this.currentPuzzle.solution.length).fill(""),
         resetsUsed: 0,
         completed: false,
-        gaveUp: false
+        gaveUp: false,
+        failed: false
       };
       this.setMessage(`Build the ${this.activeLength}-letter word first.`, "neutral");
       return this.getViewModel();
@@ -178,36 +179,24 @@
       }
 
       const guess = this.currentGuess;
-      const target = this.currentPuzzle.solution[this.activeWordIndex];
-
-      if (guess === target) {
-        this.state.solvedWords[this.activeWordIndex] = guess;
-        this.state.letters.forEach((entry) => {
-          if (this.state.selectedIds.includes(entry.id)) {
-            entry.consumed = true;
-          }
-        });
-        this.state.selectedIds = [];
-
-        if (this.state.solvedWords.every(Boolean)) {
-          this.state.completed = true;
-          this.setMessage("Puzzle solved.", "success");
-        } else {
-          this.setMessage(`Word locked in. Next: ${this.activeLength}-letter word.`, "success");
+      this.state.solvedWords[this.activeWordIndex] = guess;
+      this.state.letters.forEach((entry) => {
+        if (this.state.selectedIds.includes(entry.id)) {
+          entry.consumed = true;
         }
+      });
+      this.state.selectedIds = [];
 
-        return this.getViewModel();
+      if (this.state.solvedWords.every(Boolean)) {
+        const solved = this.state.solvedWords.every((word, index) => word === this.currentPuzzle.solution[index]);
+        this.state.completed = true;
+        this.state.failed = !solved;
+        this.setMessage(solved ? "Puzzle solved." : "Incorrect. Those 3 words do not solve this puzzle.", solved ? "success" : "error");
+      } else {
+        this.setMessage(`Word locked in. Next: ${this.activeLength}-letter word.`, "neutral");
       }
 
-      const isValidWord = typeof this.wordValidator === "function"
-        ? this.wordValidator(guess)
-        : false;
-
-      if (!isValidWord) {
-        return this.clearSelectedLetters("Not a valid word. Try that slot again.");
-      }
-
-      return this.clearSelectedLetters("That word does not fit this puzzle. Try again.");
+      return this.getViewModel();
     }
 
     resetPuzzle() {
@@ -223,7 +212,8 @@
         solvedWords: Array(this.currentPuzzle.solution.length).fill(""),
         resetsUsed,
         completed: false,
-        gaveUp: false
+        gaveUp: false,
+        failed: false
       };
       this.setMessage(`Puzzle reset. ${this.availableResets} reset${this.availableResets === 1 ? "" : "s"} left.`, "neutral");
       return this.getViewModel();
@@ -238,6 +228,7 @@
       this.state.selectedIds = [];
       this.state.completed = true;
       this.state.gaveUp = true;
+      this.state.failed = false;
       this.state.letters.forEach((entry) => {
         entry.consumed = true;
       });
@@ -275,6 +266,7 @@
         resetsRemaining: this.availableResets,
         completed: this.state.completed,
         gaveUp: this.state.gaveUp,
+        failed: this.state.failed,
         message: this.message,
         messageTone: this.messageTone,
         stars: this.getStarsEarned(),
@@ -316,6 +308,10 @@
       });
 
       this.elements.nextButton.addEventListener("click", () => {
+        if (this.logic.getViewModel().failed) {
+          this.render(this.logic.startPuzzle(this.logic.currentPuzzleIndex));
+          return;
+        }
         this.render(this.logic.nextPuzzle());
       });
 
@@ -337,6 +333,7 @@
       this.elements.resetButton.disabled = view.resetsRemaining <= 0 || view.completed;
       this.elements.deleteButton.disabled = !view.canDelete || view.completed;
       this.elements.giveUpButton.disabled = view.completed;
+      this.elements.nextButton.textContent = view.failed ? "Try Again" : "Next Puzzle";
 
       this.renderResetDots(view);
       this.renderSlots(view);
@@ -420,18 +417,26 @@
       }
 
       const stars = view.stars;
-      this.elements.resultsTitle.textContent = view.gaveUp ? "Answer Revealed" : "Puzzle Solved";
+      this.elements.resultsTitle.textContent = view.gaveUp
+        ? "Answer Revealed"
+        : view.failed
+          ? "Incorrect"
+          : "Puzzle Solved";
       this.elements.resultsSummary.textContent = view.gaveUp
         ? solutionLine
+        : view.failed
+          ? `Your set: ${view.solvedWords.join(" / ")}`
         : stars === 3
           ? "Perfect clear. No resets used."
           : stars === 2
             ? "Clean solve. A couple resets spent."
             : "Solved with grit. Last reset counted.";
 
-      this.elements.solutionText.hidden = !view.gaveUp;
+      this.elements.solutionText.hidden = !(view.gaveUp || view.failed);
       this.elements.solutionText.textContent = view.gaveUp
         ? solutionLine
+        : view.failed
+          ? "Those 3 words do not solve this puzzle."
         : "";
       this.elements.revealList.hidden = !view.gaveUp;
       this.elements.revealList.innerHTML = "";
@@ -444,7 +449,7 @@
         });
       }
 
-      this.elements.stars.hidden = !!view.gaveUp;
+      this.elements.stars.hidden = !!view.gaveUp || !!view.failed;
       this.elements.stars.innerHTML = "";
       for (let index = 0; index < 3; index += 1) {
         const star = document.createElement("span");
