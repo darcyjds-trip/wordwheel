@@ -198,6 +198,7 @@ const elements = {
   stackWordsPool: document.getElementById("stackWordsPool"),
   stackWordsBackButton: document.getElementById("stackWordsBackButton"),
   stackWordsDeleteButton: document.getElementById("stackWordsDeleteButton"),
+  stackWordsGiveUpButton: document.getElementById("stackWordsGiveUpButton"),
   stackWordsResetButton: document.getElementById("stackWordsResetButton"),
   stackWordsSubmitButton: document.getElementById("stackWordsSubmitButton"),
   stackWordsResultsPanel: document.getElementById("stackWordsResultsPanel"),
@@ -259,6 +260,7 @@ const stackWordsController = window.StackWordsApp?.createController({
     pool: elements.stackWordsPool,
     backButton: elements.stackWordsBackButton,
     deleteButton: elements.stackWordsDeleteButton,
+    giveUpButton: elements.stackWordsGiveUpButton,
     resetButton: elements.stackWordsResetButton,
     submitButton: elements.stackWordsSubmitButton,
     resultsPanel: elements.stackWordsResultsPanel,
@@ -1185,17 +1187,51 @@ function getRandomPuzzleCount(length, availableCount) {
   return Math.max(minCount, Math.floor(Math.random() * maxCount) + 1);
 }
 
-function buildClueIndices(word) {
-  const indices = new Set([0]);
-  if (word.length >= 7) {
-    indices.add(Math.floor(word.length / 2));
-    indices.add(word.length - 1);
-  } else if (word.length >= 6) {
-    indices.add(word.length - 1);
-  } else if (word.length >= 5) {
-    indices.add(Math.floor(word.length / 2));
+function getBoardClueCount(wordLength) {
+  if (wordLength >= 7) {
+    return 2;
   }
-  return [...indices].sort((left, right) => left - right);
+  if (wordLength >= 5) {
+    return 1;
+  }
+  return 1;
+}
+
+function buildClueIndices(word, options = {}) {
+  const clueCount = options.clueCount ?? getBoardClueCount(word.length);
+  const excludedLetters = new Set((options.excludedLetters || []).map((letter) => String(letter).toLowerCase()));
+  const preferredIndices = [
+    0,
+    word.length - 1,
+    Math.floor(word.length / 2),
+    1,
+    Math.max(word.length - 2, 0),
+    Math.max(Math.floor(word.length / 2) - 1, 0)
+  ];
+  const uniquePreferred = [...new Set(preferredIndices)].filter((index) => index >= 0 && index < word.length);
+  const selected = [];
+
+  uniquePreferred.forEach((index) => {
+    if (selected.length >= clueCount) {
+      return;
+    }
+    if (!excludedLetters.has(word[index])) {
+      selected.push(index);
+    }
+  });
+
+  if (selected.length < clueCount) {
+    uniquePreferred.forEach((index) => {
+      if (selected.length >= clueCount) {
+        return;
+      }
+      if (!selected.includes(index)) {
+        selected.push(index);
+      }
+    });
+  }
+
+  return selected.sort((left, right) => left - right);
 }
 
 function buildPuzzleWords(roundData) {
@@ -1299,6 +1335,25 @@ function chooseThemeComboFromEntry(entry, rng = Math.random) {
   }
 
   return sample(slices, rng);
+}
+
+function refreshThemeClues(roundData) {
+  if (!isThemeMode() || !roundData?.letters) {
+    return;
+  }
+
+  const excludedLetters = roundData.letters.map((letter) => String(letter).toLowerCase());
+  PUZZLE_REQUIRED_LENGTHS.forEach((length) => {
+    (roundData.puzzleWordsByLength?.[length] || []).forEach((entry) => {
+      if (entry.solved) {
+        return;
+      }
+      entry.clueIndices = buildClueIndices(entry.word, {
+        clueCount: getBoardClueCount(entry.word.length),
+        excludedLetters
+      });
+    });
+  });
 }
 
 function buildDynamicWheels(letters, rng = Math.random) {
@@ -1883,6 +1938,7 @@ function applyDynamicBoardStep(roundData) {
   const rng = createRng(`theme-step-${roundData.roundIndex}-${state.boardStepIndex}-${targetEntry.word}`);
   roundData.letters = combo;
   roundData.wheels = buildDynamicWheels(combo, rng);
+  refreshThemeClues(roundData);
   return true;
 }
 

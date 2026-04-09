@@ -89,7 +89,8 @@
         selectedIds: [],
         solvedWords: Array(this.currentPuzzle.solution.length).fill(""),
         resetsUsed: 0,
-        completed: false
+        completed: false,
+        gaveUp: false
       };
       this.setMessage(`Build the ${this.activeLength}-letter word first.`, "neutral");
       return this.getViewModel();
@@ -221,9 +222,26 @@
         selectedIds: [],
         solvedWords: Array(this.currentPuzzle.solution.length).fill(""),
         resetsUsed,
-        completed: false
+        completed: false,
+        gaveUp: false
       };
       this.setMessage(`Puzzle reset. ${this.availableResets} reset${this.availableResets === 1 ? "" : "s"} left.`, "neutral");
+      return this.getViewModel();
+    }
+
+    giveUp() {
+      if (!this.state || this.state.completed) {
+        return this.getViewModel();
+      }
+
+      this.state.solvedWords = [...this.currentPuzzle.solution];
+      this.state.selectedIds = [];
+      this.state.completed = true;
+      this.state.gaveUp = true;
+      this.state.letters.forEach((entry) => {
+        entry.consumed = true;
+      });
+      this.setMessage("Answer revealed.", "error");
       return this.getViewModel();
     }
 
@@ -256,6 +274,7 @@
         resetsUsed: this.state.resetsUsed,
         resetsRemaining: this.availableResets,
         completed: this.state.completed,
+        gaveUp: this.state.gaveUp,
         message: this.message,
         messageTone: this.messageTone,
         stars: this.getStarsEarned(),
@@ -291,6 +310,10 @@
         this.render(this.logic.removeLastLetter());
       });
 
+      this.elements.giveUpButton.addEventListener("click", () => {
+        this.render(this.logic.giveUp());
+      });
+
       this.elements.nextButton.addEventListener("click", () => {
         this.render(this.logic.nextPuzzle());
       });
@@ -312,6 +335,7 @@
       this.elements.message.dataset.tone = view.messageTone;
       this.elements.resetButton.disabled = view.resetsRemaining <= 0 || view.completed;
       this.elements.deleteButton.disabled = !view.canDelete || view.completed;
+      this.elements.giveUpButton.disabled = view.completed;
 
       this.renderResetDots(view);
       this.renderSlots(view);
@@ -332,14 +356,10 @@
       this.elements.slots.innerHTML = "";
 
       view.lengths.forEach((length, index) => {
-        const solvedWord = view.solvedWords[index];
-        if (solvedWord) {
-          return;
-        }
-
         const row = document.createElement("div");
+        const solvedWord = view.solvedWords[index];
         const isActive = !view.completed && index === view.activeWordIndex;
-        row.className = `stackwords-slot${isActive ? " active" : ""}`;
+        row.className = `stackwords-slot${solvedWord ? " solved" : ""}${isActive ? " active" : ""}`;
 
         const label = document.createElement("div");
         label.className = "stackwords-slot-label";
@@ -352,11 +372,13 @@
         for (let charIndex = 0; charIndex < length; charIndex += 1) {
           const cell = document.createElement("button");
           cell.type = "button";
-          const char = activePreview[charIndex] || "_";
+          const char = solvedWord
+            ? solvedWord[charIndex]
+            : activePreview[charIndex] || "_";
           cell.className = `stackwords-box${char === "_" ? " empty" : ""}`;
           cell.textContent = char;
-          cell.disabled = !isActive || char === "_";
-          if (isActive && char !== "_") {
+          cell.disabled = !!solvedWord || !isActive || char === "_";
+          if (!solvedWord && isActive && char !== "_") {
             cell.addEventListener("click", () => {
               this.render(this.logic.removeSelectedLetterAt(charIndex));
             });
@@ -393,12 +415,14 @@
       }
 
       const stars = view.stars;
-      this.elements.resultsTitle.textContent = "Puzzle Solved";
-      this.elements.resultsSummary.textContent = stars === 3
-        ? "Perfect clear. No resets used."
-        : stars === 2
-          ? "Clean solve. A couple resets spent."
-          : "Solved with grit. Last reset counted.";
+      this.elements.resultsTitle.textContent = view.gaveUp ? "Answer Revealed" : "Puzzle Solved";
+      this.elements.resultsSummary.textContent = view.gaveUp
+        ? "Here was the full solution."
+        : stars === 3
+          ? "Perfect clear. No resets used."
+          : stars === 2
+            ? "Clean solve. A couple resets spent."
+            : "Solved with grit. Last reset counted.";
 
       this.elements.stars.innerHTML = "";
       for (let index = 0; index < 3; index += 1) {
