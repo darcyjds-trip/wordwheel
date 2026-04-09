@@ -412,7 +412,9 @@
       this.elements.resultsPanel.hidden = !view.completed;
       this.elements.root.classList.toggle("results-open", view.completed);
       if (!view.completed) {
+        this.elements.solutionText.hidden = true;
         this.elements.revealList.hidden = true;
+        this.elements.stars.hidden = false;
         return;
       }
 
@@ -426,6 +428,10 @@
             ? "Clean solve. A couple resets spent."
             : "Solved with grit. Last reset counted.";
 
+      this.elements.solutionText.hidden = !view.gaveUp;
+      this.elements.solutionText.textContent = view.gaveUp
+        ? `Solution: ${view.solutionWords.join(" / ")}`
+        : "";
       this.elements.revealList.hidden = !view.gaveUp;
       this.elements.revealList.innerHTML = "";
       if (view.gaveUp) {
@@ -437,6 +443,7 @@
         });
       }
 
+      this.elements.stars.hidden = !!view.gaveUp;
       this.elements.stars.innerHTML = "";
       for (let index = 0; index < 3; index += 1) {
         const star = document.createElement("span");

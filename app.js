@@ -204,6 +204,7 @@ const elements = {
   stackWordsResultsPanel: document.getElementById("stackWordsResultsPanel"),
   stackWordsResultsTitle: document.getElementById("stackWordsResultsTitle"),
   stackWordsResultsSummary: document.getElementById("stackWordsResultsSummary"),
+  stackWordsSolutionText: document.getElementById("stackWordsSolutionText"),
   stackWordsRevealList: document.getElementById("stackWordsRevealList"),
   stackWordsStars: document.getElementById("stackWordsStars"),
   stackWordsNextButton: document.getElementById("stackWordsNextButton"),
@@ -267,6 +268,7 @@ const stackWordsController = window.StackWordsApp?.createController({
     resultsPanel: elements.stackWordsResultsPanel,
     resultsTitle: elements.stackWordsResultsTitle,
     resultsSummary: elements.stackWordsResultsSummary,
+    solutionText: elements.stackWordsSolutionText,
     revealList: elements.stackWordsRevealList,
     stars: elements.stackWordsStars,
     nextButton: elements.stackWordsNextButton,
@@ -1199,41 +1201,12 @@ function getBoardClueCount(wordLength) {
   return 1;
 }
 
-function buildClueIndices(word, options = {}) {
-  const clueCount = options.clueCount ?? getBoardClueCount(word.length);
-  const excludedLetters = new Set((options.excludedLetters || []).map((letter) => String(letter).toLowerCase()));
-  const preferredIndices = [
-    0,
-    word.length - 1,
-    Math.floor(word.length / 2),
-    1,
-    Math.max(word.length - 2, 0),
-    Math.max(Math.floor(word.length / 2) - 1, 0)
-  ];
-  const uniquePreferred = [...new Set(preferredIndices)].filter((index) => index >= 0 && index < word.length);
-  const selected = [];
-
-  uniquePreferred.forEach((index) => {
-    if (selected.length >= clueCount) {
-      return;
-    }
-    if (!excludedLetters.has(word[index])) {
-      selected.push(index);
-    }
-  });
-
-  if (selected.length < clueCount) {
-    uniquePreferred.forEach((index) => {
-      if (selected.length >= clueCount) {
-        return;
-      }
-      if (!selected.includes(index)) {
-        selected.push(index);
-      }
-    });
+function buildClueIndices(word) {
+  const clueCount = getBoardClueCount(word.length);
+  if (clueCount <= 1) {
+    return [0];
   }
-
-  return selected.sort((left, right) => left - right);
+  return [0, word.length - 1];
 }
 
 function buildPuzzleWords(roundData) {
@@ -1324,35 +1297,28 @@ function getRemainingDynamicEntries(roundData = state.currentRound) {
 }
 
 function chooseThemeComboFromEntry(entry, rng = Math.random) {
-  const slices = [];
-  for (let index = 0; index <= entry.word.length - 3; index += 1) {
-    slices.push(entry.word.slice(index, index + 3).split(""));
+  const hiddenIndices = Array.from({ length: entry.word.length }, (_, index) => index)
+    .filter((index) => !(entry.clueIndices || []).includes(index));
+
+  if (hiddenIndices.length >= 3) {
+    const shuffledIndices = shuffle(hiddenIndices, rng).slice(0, 3).sort((left, right) => left - right);
+    return shuffledIndices.map((index) => entry.word[index]);
   }
 
-  if (slices.length === 0) {
+  if (entry.word.length < 3) {
     return entry.word.slice(0, 3).split("");
   }
 
-  return sample(slices, rng);
+  const startIndex = Math.floor(rng() * (entry.word.length - 2));
+  return entry.word.slice(startIndex, startIndex + 3).split("");
 }
 
-function refreshThemeClues(roundData) {
-  if (!isThemeMode() || !roundData?.letters) {
-    return;
+function chooseThemeTargetEntry(roundData) {
+  const remainingEntries = getRemainingDynamicEntries(roundData);
+  if (remainingEntries.length === 0) {
+    return null;
   }
-
-  const excludedLetters = roundData.letters.map((letter) => String(letter).toLowerCase());
-  PUZZLE_REQUIRED_LENGTHS.forEach((length) => {
-    (roundData.puzzleWordsByLength?.[length] || []).forEach((entry) => {
-      if (entry.solved) {
-        return;
-      }
-      entry.clueIndices = buildClueIndices(entry.word, {
-        clueCount: getBoardClueCount(entry.word.length),
-        excludedLetters
-      });
-    });
-  });
+  return remainingEntries[Math.min(state.boardStepIndex, remainingEntries.length - 1)];
 }
 
 function buildDynamicWheels(letters, rng = Math.random) {
@@ -1927,17 +1893,15 @@ function chooseNextRound() {
 }
 
 function applyDynamicBoardStep(roundData) {
-  const remainingEntries = getRemainingDynamicEntries(roundData);
-  if (remainingEntries.length === 0) {
+  const targetEntry = chooseThemeTargetEntry(roundData);
+  if (!targetEntry) {
     return false;
   }
 
-  const targetEntry = remainingEntries[Math.min(state.boardStepIndex, remainingEntries.length - 1)];
   const combo = chooseThemeComboFromEntry(targetEntry);
   const rng = createRng(`theme-step-${roundData.roundIndex}-${state.boardStepIndex}-${targetEntry.word}`);
   roundData.letters = combo;
   roundData.wheels = buildDynamicWheels(combo, rng);
-  refreshThemeClues(roundData);
   return true;
 }
 
