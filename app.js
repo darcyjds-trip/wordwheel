@@ -204,6 +204,7 @@ const elements = {
   stackWordsResultsPanel: document.getElementById("stackWordsResultsPanel"),
   stackWordsResultsTitle: document.getElementById("stackWordsResultsTitle"),
   stackWordsResultsSummary: document.getElementById("stackWordsResultsSummary"),
+  stackWordsRevealList: document.getElementById("stackWordsRevealList"),
   stackWordsStars: document.getElementById("stackWordsStars"),
   stackWordsNextButton: document.getElementById("stackWordsNextButton"),
   stackWordsMenuButton: document.getElementById("stackWordsMenuButton"),
@@ -266,6 +267,7 @@ const stackWordsController = window.StackWordsApp?.createController({
     resultsPanel: elements.stackWordsResultsPanel,
     resultsTitle: elements.stackWordsResultsTitle,
     resultsSummary: elements.stackWordsResultsSummary,
+    revealList: elements.stackWordsRevealList,
     stars: elements.stackWordsStars,
     nextButton: elements.stackWordsNextButton,
     menuButton: elements.stackWordsMenuButton
@@ -1324,14 +1326,11 @@ function getRemainingDynamicEntries(roundData = state.currentRound) {
 function chooseThemeComboFromEntry(entry, rng = Math.random) {
   const slices = [];
   for (let index = 0; index <= entry.word.length - 3; index += 1) {
-    const slice = entry.word.slice(index, index + 3);
-    if (new Set(slice.split("")).size === 3) {
-      slices.push(slice.split(""));
-    }
+    slices.push(entry.word.slice(index, index + 3).split(""));
   }
 
   if (slices.length === 0) {
-    return shuffle(uniqueLetters(entry.word), rng).slice(0, 3);
+    return entry.word.slice(0, 3).split("");
   }
 
   return sample(slices, rng);

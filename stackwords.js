@@ -278,7 +278,8 @@
         message: this.message,
         messageTone: this.messageTone,
         stars: this.getStarsEarned(),
-        canDelete: this.state.selectedIds.length > 0
+        canDelete: this.state.selectedIds.length > 0,
+        solutionWords: [...this.currentPuzzle.solution]
       };
     }
   }
@@ -411,6 +412,7 @@
       this.elements.resultsPanel.hidden = !view.completed;
       this.elements.root.classList.toggle("results-open", view.completed);
       if (!view.completed) {
+        this.elements.revealList.hidden = true;
         return;
       }
 
@@ -423,6 +425,17 @@
           : stars === 2
             ? "Clean solve. A couple resets spent."
             : "Solved with grit. Last reset counted.";
+
+      this.elements.revealList.hidden = !view.gaveUp;
+      this.elements.revealList.innerHTML = "";
+      if (view.gaveUp) {
+        view.solutionWords.forEach((word, index) => {
+          const card = document.createElement("div");
+          card.className = "results-score winner";
+          card.innerHTML = `<div><strong>${word}</strong><span>${word.length} letters</span></div><strong>#${index + 1}</strong>`;
+          this.elements.revealList.appendChild(card);
+        });
+      }
 
       this.elements.stars.innerHTML = "";
       for (let index = 0; index < 3; index += 1) {
