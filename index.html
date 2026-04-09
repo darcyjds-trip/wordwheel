@@ -16,7 +16,18 @@
       <p class="eyebrow">Word Wheel</p>
     </section>
 
-    <section id="homeScreen" class="menu-screen">
+    <section id="launchScreen" class="menu-screen">
+      <div class="menu-card">
+        <h1>Choose A Game</h1>
+        <div class="menu-actions">
+          <button id="wordWheelEntryButton" class="menu-button" type="button">Word Wheel</button>
+          <button id="stackWordsEntryButton" class="menu-button secondary" type="button">StackWords</button>
+        </div>
+        <p id="launchStatus" class="sr-only">Loading games...</p>
+      </div>
+    </section>
+
+    <section id="homeScreen" class="menu-screen" hidden>
       <div class="menu-card">
         <h1>Word Wheel</h1>
         <div class="menu-actions">
@@ -24,6 +35,7 @@
           <button id="multiplayerButton" class="menu-button secondary" type="button">Multiplayer</button>
           <button id="rulesButton" class="menu-button secondary" type="button">Rules</button>
         </div>
+        <button id="wordWheelBackButton" class="ghost-button menu-back" type="button">Back</button>
         <p id="homeStatus" class="sr-only">Loading dictionary...</p>
       </div>
     </section>
@@ -36,6 +48,7 @@
           <button id="arcadeModeButton" class="menu-button" type="button">Arcade</button>
           <button id="puzzleModeButton" class="menu-button secondary" type="button">Puzzle</button>
           <button id="huntModeButton" class="menu-button secondary" type="button">Hunt</button>
+          <button id="themeModeButton" class="menu-button secondary" type="button">Theme</button>
         </div>
         <button id="singlePlayerBackButton" class="ghost-button menu-back" type="button">Back</button>
       </div>
@@ -72,6 +85,7 @@
           <p>Arcade mode is the timed score chase: solve one 4-letter, 5-letter, 6-letter, and 7-letter word before the timer expires, then roll into the next board.</p>
           <p>Puzzle mode is the hidden-answer board: solve alphabetized mystery words in the 5-letter, 6-letter, 7-letter, and 8-letter groups before the 2 minute round timer runs out.</p>
           <p>Hunt mode keeps one hidden board on screen while the wheel changes after every solve, feeding you a new 3-letter combo for the next remaining answer.</p>
+          <p>Theme mode builds a themed hidden board first, then rotates the wheel to matching 3-letter combos so you can chase down the remaining themed answers before the 2 minute timer expires.</p>
           <p>In multiplayer, both players share the same board. Ready up, race through eight rounds, and the higher score wins.</p>
         </div>
         <button id="rulesBackButton" class="ghost-button menu-back" type="button">Back</button>
@@ -99,6 +113,51 @@
           <button id="leaveLobbyButton" class="ghost-button" type="button">Leave Room</button>
         </div>
       </div>
+    </section>
+
+    <section id="stackWordsScreen" class="game-panel stackwords-screen" hidden>
+      <div class="stackwords-header">
+        <div>
+          <p class="menu-kicker">Single Player</p>
+          <h1>StackWords</h1>
+        </div>
+        <div class="stackwords-reset-panel">
+          <span class="stat-label">Resets</span>
+          <div id="stackWordsResetDots" class="stackwords-reset-dots" aria-label="Remaining resets"></div>
+        </div>
+      </div>
+
+      <div class="stackwords-subhead">
+        <p id="stackWordsPuzzleLabel" class="mode-summary">Puzzle 1</p>
+      </div>
+
+      <section id="stackWordsSlots" class="stackwords-slots"></section>
+
+      <section class="stackwords-current">
+        <p id="stackWordsMessage" class="message">Solve the smallest word first.</p>
+      </section>
+
+      <section id="stackWordsPool" class="stackwords-pool"></section>
+
+      <section class="control-panel bottom-controls stackwords-controls">
+        <div class="session-actions">
+          <button id="stackWordsBackButton" class="ghost-button" type="button">Back</button>
+          <button id="stackWordsResetButton" class="ghost-button" type="button">Reset Puzzle</button>
+          <button id="stackWordsSubmitButton" class="menu-button" type="button">Submit Word</button>
+        </div>
+      </section>
+
+      <section id="stackWordsResultsPanel" class="results-panel" hidden>
+        <div class="results-header">
+          <h2 id="stackWordsResultsTitle">Puzzle Solved</h2>
+          <p id="stackWordsResultsSummary">Three clean stars.</p>
+        </div>
+        <div id="stackWordsStars" class="stackwords-stars" aria-label="Star rating"></div>
+        <div class="results-actions">
+          <button id="stackWordsNextButton" class="menu-button" type="button">Next Puzzle</button>
+          <button id="stackWordsMenuButton" class="ghost-button" type="button">Back To Menu</button>
+        </div>
+      </section>
     </section>
 
     <section id="gamePanel" class="game-panel" hidden>
@@ -151,6 +210,9 @@
       </form>
 
       <section id="mysteryPanel" class="mystery-panel" hidden>
+        <div id="mysteryMeta" class="mystery-meta" hidden>
+          <span id="mysteryThemeLabel" class="mystery-theme-label"></span>
+        </div>
         <div id="mysteryGroups" class="mystery-groups"></div>
       </section>
 
@@ -170,6 +232,7 @@
       <section class="control-panel bottom-controls">
         <div class="session-actions">
           <p id="modeSummary" class="mode-summary">Loading challenge...</p>
+          <button id="mainMenuButton" class="ghost-button" type="button">Main Menu</button>
           <button id="leaderboardButton" class="ghost-button" type="button">Leaderboard</button>
           <button id="restartButton" class="ghost-button" type="button">Restart Run</button>
         </div>
@@ -211,6 +274,7 @@
   <div id="toastStack" class="toast-stack" aria-live="polite"></div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="stackwords.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

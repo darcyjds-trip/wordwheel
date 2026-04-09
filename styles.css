@@ -135,6 +135,27 @@ body::before {
     linear-gradient(180deg, rgba(18, 24, 52, 0.92), rgba(7, 12, 28, 0.92));
 }
 
+.mystery-meta {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-bottom: 10px;
+}
+
+.mystery-theme-label {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 0 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 216, 77, 0.28);
+  background: rgba(255, 216, 77, 0.08);
+  color: var(--warm);
+  font-size: 0.76rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
 .mystery-groups {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -189,6 +210,183 @@ body::before {
   color: #d8e7ff;
   background: rgba(60, 77, 116, 0.82);
   border-color: rgba(140, 164, 224, 0.34);
+}
+
+.stackwords-screen h1 {
+  margin: 0;
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+}
+
+.stackwords-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.stackwords-reset-panel {
+  min-width: 116px;
+  text-align: right;
+}
+
+.stackwords-reset-dots {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.stackwords-reset-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  background: rgba(255, 216, 77, 0.2);
+  border: 1px solid rgba(255, 216, 77, 0.26);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.03);
+}
+
+.stackwords-reset-dot.available {
+  background: linear-gradient(180deg, #fff07a, #ffc84d);
+  box-shadow: 0 0 12px rgba(255, 216, 77, 0.22);
+}
+
+.stackwords-subhead {
+  margin-top: 12px;
+}
+
+.stackwords-slots {
+  margin-top: 16px;
+  display: grid;
+  gap: 12px;
+}
+
+.stackwords-slot {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid rgba(123, 173, 201, 0.18);
+  border-radius: 8px;
+  background: linear-gradient(180deg, rgba(18, 24, 52, 0.92), rgba(7, 12, 28, 0.92));
+  transition: border-color 140ms ease, box-shadow 140ms ease;
+}
+
+.stackwords-slot.active {
+  border-color: rgba(78, 242, 255, 0.42);
+  box-shadow: 0 0 16px rgba(78, 242, 255, 0.12);
+}
+
+.stackwords-slot.solved {
+  border-color: rgba(143, 255, 114, 0.46);
+  box-shadow: 0 0 16px rgba(143, 255, 114, 0.12);
+}
+
+.stackwords-slot-label {
+  width: 74px;
+  flex: 0 0 74px;
+  color: var(--muted);
+  font-size: 0.76rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.stackwords-slot-letters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.stackwords-box {
+  width: 32px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border-radius: 6px;
+  border: 1px solid rgba(123, 173, 201, 0.18);
+  background: rgba(9, 18, 36, 0.84);
+  color: rgba(239, 247, 255, 0.9);
+  font-weight: 800;
+  font-size: 0.98rem;
+  text-transform: uppercase;
+}
+
+.stackwords-slot.solved .stackwords-box {
+  color: #07131c;
+  background: linear-gradient(180deg, #fff07a, #ffc84d);
+  border-color: rgba(255, 216, 77, 0.62);
+}
+
+.stackwords-box.empty {
+  color: rgba(176, 192, 215, 0.44);
+}
+
+.stackwords-current {
+  margin-top: 14px;
+}
+
+.stackwords-pool {
+  margin-top: 14px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: linear-gradient(180deg, rgba(18, 24, 52, 0.92), rgba(7, 12, 28, 0.92));
+}
+
+.stackwords-letter {
+  width: 44px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  border: 1px solid rgba(123, 173, 201, 0.18);
+  background: rgba(9, 18, 36, 0.84);
+  color: var(--text);
+  font: inherit;
+  font-weight: 800;
+  font-size: 1rem;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: transform 140ms ease, border-color 140ms ease, box-shadow 140ms ease, opacity 140ms ease;
+}
+
+.stackwords-letter:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.stackwords-letter.selected {
+  border-color: rgba(78, 242, 255, 0.48);
+  box-shadow: 0 0 16px rgba(78, 242, 255, 0.18);
+}
+
+.stackwords-letter.consumed {
+  opacity: 0.28;
+  border-color: rgba(140, 164, 224, 0.12);
+  pointer-events: none;
+}
+
+.stackwords-controls {
+  margin-top: 16px;
+}
+
+.stackwords-stars {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.stackwords-star {
+  font-size: 2rem;
+  color: rgba(255, 216, 77, 0.22);
+  text-shadow: 0 0 14px rgba(255, 216, 77, 0.12);
+}
+
+.stackwords-star.earned {
+  color: var(--warm);
+  text-shadow: 0 0 18px rgba(255, 216, 77, 0.34);
 }
 
 .menu-actions {
@@ -1297,6 +1495,35 @@ body::before {
     width: 20px;
     height: 24px;
     font-size: 0.66rem;
+  }
+
+  .stackwords-header {
+    align-items: flex-start;
+  }
+
+  .stackwords-reset-panel {
+    min-width: 88px;
+  }
+
+  .stackwords-slot {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .stackwords-slot-label {
+    width: auto;
+    flex: none;
+  }
+
+  .stackwords-box {
+    width: 28px;
+    height: 34px;
+    font-size: 0.88rem;
+  }
+
+  .stackwords-letter {
+    width: 38px;
+    height: 42px;
   }
 
   .lobby-meta {

@@ -74,6 +74,19 @@ Hunt is another hidden-answer solo mode.
 - Every word starts with clue letters already revealed
 - Clear all `8 rounds` to complete the run
 
+## Theme Mode
+
+Theme mode is a themed hidden-answer solo mode.
+
+- No score tracking
+- No survival multiplier
+- Each round has a `2 minute` timer
+- Every round is built from one named theme, such as Nature or Sky
+- The hidden board is grouped into `5-letter`, `6-letter`, `7-letter`, and `8-letter` words
+- The game picks the themed answers first, then rotates the wheel to 3-letter combos that unlock one of the remaining themed words
+- Every word starts with clue letters already revealed
+- Clear all `8 rounds` to complete the run
+
 ## Multiplayer
 
 Multiplayer uses the arcade-style `4 -> 5 -> 6 -> 7` board format in a shared 8-round race.
