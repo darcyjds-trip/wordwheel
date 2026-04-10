@@ -321,7 +321,7 @@ function updateModePanels() {
 
 function updateEntryButtons() {
   const disabled = !state.dictionaryReady;
-  elements.wordWheelEntryButton.disabled = disabled;
+  elements.wordWheelEntryButton.disabled = false;
   elements.singlePlayerButton.disabled = disabled;
   elements.multiplayerButton.disabled = disabled;
   elements.createRoomButton.disabled = disabled;

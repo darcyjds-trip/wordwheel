@@ -218,6 +218,7 @@ body::before {
 }
 
 .stackwords-shell {
+  position: relative;
   width: min(760px, 100%);
   margin: 0 auto;
 }
@@ -604,7 +605,14 @@ body::before {
   flex-wrap: wrap;
 }
 
-.game-panel.results-open > *:not(.results-panel) {
+.game-panel.results-open > *:not(.results-panel):not(.stackwords-shell) {
+  filter: blur(4px);
+  opacity: 0.24;
+  pointer-events: none;
+  user-select: none;
+}
+
+.stackwords-screen.results-open .stackwords-shell > *:not(.results-panel) {
   filter: blur(4px);
   opacity: 0.24;
   pointer-events: none;
