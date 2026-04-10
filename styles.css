@@ -212,6 +212,16 @@ body::before {
   border-color: rgba(140, 164, 224, 0.34);
 }
 
+.stackwords-screen {
+  display: grid;
+  place-items: center;
+}
+
+.stackwords-shell {
+  width: min(760px, 100%);
+  margin: 0 auto;
+}
+
 .stackwords-screen h1 {
   margin: 0;
   font-size: clamp(1.8rem, 4vw, 2.6rem);
@@ -252,6 +262,7 @@ body::before {
 
 .stackwords-subhead {
   margin-top: 12px;
+  text-align: center;
 }
 
 .stackwords-slots {
@@ -322,12 +333,14 @@ body::before {
 
 .stackwords-current {
   margin-top: 14px;
+  text-align: center;
 }
 
 .stackwords-pool {
   margin-top: 14px;
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 10px;
   padding: 14px;
   border: 1px solid var(--line);

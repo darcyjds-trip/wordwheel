@@ -1,0 +1,30 @@
+{
+  "theme": "Nature",
+  "words": [
+    {
+      "answer": "RIVER",
+      "reveals": [{ "letter": "E", "index": 4 }],
+      "wheelLetters": ["V", "R", "I"]
+    },
+    {
+      "answer": "FOREST",
+      "reveals": [{ "letter": "E", "index": 3 }],
+      "wheelLetters": ["T", "F", "R"]
+    },
+    {
+      "answer": "DESERT",
+      "reveals": [{ "letter": "S", "index": 2 }],
+      "wheelLetters": ["T", "D", "E"]
+    },
+    {
+      "answer": "VOLCANO",
+      "reveals": [{ "letter": "A", "index": 5 }],
+      "wheelLetters": ["N", "V", "O"]
+    },
+    {
+      "answer": "MOUNTAIN",
+      "reveals": [{ "letter": "A", "index": 4 }],
+      "wheelLetters": ["N", "M", "T"]
+    }
+  ]
+}

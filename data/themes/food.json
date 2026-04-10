@@ -1,0 +1,30 @@
+{
+  "theme": "Food",
+  "words": [
+    {
+      "answer": "BREAD",
+      "reveals": [{ "letter": "A", "index": 3 }],
+      "wheelLetters": ["D", "B", "R"]
+    },
+    {
+      "answer": "BURGER",
+      "reveals": [{ "letter": "E", "index": 4 }],
+      "wheelLetters": ["R", "B", "U"]
+    },
+    {
+      "answer": "PANCAKE",
+      "reveals": [{ "letter": "A", "index": 1 }],
+      "wheelLetters": ["K", "P", "N"]
+    },
+    {
+      "answer": "CHOCOLATE",
+      "reveals": [{ "letter": "A", "index": 6 }],
+      "wheelLetters": ["T", "C", "H"]
+    },
+    {
+      "answer": "SMOOTHIE",
+      "reveals": [{ "letter": "I", "index": 7 }],
+      "wheelLetters": ["S", "M", "T"]
+    }
+  ]
+}

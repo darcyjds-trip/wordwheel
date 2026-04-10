@@ -19,18 +19,18 @@
 
     validate() {
       if (this.lengths.length !== 3 || this.solution.length !== 3) {
-        throw new Error(`StackWords puzzle ${this.id} must contain exactly 3 words.`);
+        throw new Error(`Triple Stack puzzle ${this.id} must contain exactly 3 words.`);
       }
 
       this.solution.forEach((word, index) => {
         if (word.length !== this.lengths[index]) {
-          throw new Error(`StackWords puzzle ${this.id} has a length mismatch.`);
+          throw new Error(`Triple Stack puzzle ${this.id} has a length mismatch.`);
         }
       });
 
       const totalLength = this.lengths.reduce((sum, length) => sum + length, 0);
       if (totalLength !== this.letters.length) {
-        throw new Error(`StackWords puzzle ${this.id} must use every letter exactly once.`);
+        throw new Error(`Triple Stack puzzle ${this.id} must use every letter exactly once.`);
       }
     }
 
@@ -473,7 +473,7 @@
         loadPromise = fetch("./data/stackwords-puzzles.json")
           .then((response) => {
             if (!response.ok) {
-              throw new Error(`StackWords puzzles failed to load (${response.status}).`);
+              throw new Error(`Triple Stack puzzles failed to load (${response.status}).`);
             }
             return response.json();
           })

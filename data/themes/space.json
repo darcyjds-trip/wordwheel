@@ -1,0 +1,30 @@
+{
+  "theme": "Space",
+  "words": [
+    {
+      "answer": "ORBIT",
+      "reveals": [{ "letter": "I", "index": 3 }],
+      "wheelLetters": ["T", "O", "R"]
+    },
+    {
+      "answer": "PLANET",
+      "reveals": [{ "letter": "A", "index": 2 }],
+      "wheelLetters": ["T", "P", "N"]
+    },
+    {
+      "answer": "NEBULA",
+      "reveals": [{ "letter": "U", "index": 3 }],
+      "wheelLetters": ["L", "N", "B"]
+    },
+    {
+      "answer": "ECLIPSE",
+      "reveals": [{ "letter": "I", "index": 3 }],
+      "wheelLetters": ["S", "E", "C"]
+    },
+    {
+      "answer": "SUPERNOVA",
+      "reveals": [{ "letter": "A", "index": 8 }],
+      "wheelLetters": ["V", "S", "P"]
+    }
+  ]
+}

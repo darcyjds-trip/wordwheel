@@ -21,7 +21,10 @@
         <h1>Choose A Game</h1>
         <div class="menu-actions">
           <button id="wordWheelEntryButton" class="menu-button" type="button">Word Wheel</button>
-          <button id="stackWordsEntryButton" class="menu-button secondary" type="button">StackWords</button>
+          <button id="stackWordsEntryButton" class="menu-button secondary" type="button">Triple Stack</button>
+        </div>
+        <div class="menu-actions">
+          <button id="stackWordsReadmeEntryButton" class="ghost-button" type="button">Triple Stack Readme</button>
         </div>
         <p id="launchStatus" class="sr-only">Loading games...</p>
       </div>
@@ -114,52 +117,68 @@
     </section>
 
     <section id="stackWordsScreen" class="game-panel stackwords-screen" hidden>
-      <div class="stackwords-header">
-        <div>
-          <p class="menu-kicker">Single Player</p>
-          <h1>StackWords</h1>
+      <div class="stackwords-shell">
+        <div class="stackwords-header">
+          <div>
+            <p class="menu-kicker">Single Player</p>
+            <h1>Triple Stack</h1>
+          </div>
+          <div class="stackwords-reset-panel">
+            <span class="stat-label">Resets</span>
+            <div id="stackWordsResetDots" class="stackwords-reset-dots" aria-label="Remaining resets"></div>
+          </div>
         </div>
-        <div class="stackwords-reset-panel">
-          <span class="stat-label">Resets</span>
-          <div id="stackWordsResetDots" class="stackwords-reset-dots" aria-label="Remaining resets"></div>
+
+        <div class="stackwords-subhead">
+          <p id="stackWordsPuzzleLabel" class="mode-summary">Puzzle 1</p>
         </div>
+
+        <section id="stackWordsSlots" class="stackwords-slots"></section>
+
+        <section class="stackwords-current">
+          <p id="stackWordsMessage" class="message">Solve the smallest word first.</p>
+        </section>
+
+        <section id="stackWordsPool" class="stackwords-pool"></section>
+
+        <section class="control-panel bottom-controls stackwords-controls">
+          <div class="session-actions">
+            <button id="stackWordsBackButton" class="ghost-button" type="button">Back</button>
+            <button id="stackWordsDeleteButton" class="ghost-button" type="button">Delete Letter</button>
+            <button id="stackWordsGiveUpButton" class="ghost-button" type="button">Give Up</button>
+            <button id="stackWordsResetButton" class="ghost-button" type="button">Reset Puzzle</button>
+            <button id="stackWordsSubmitButton" class="menu-button" type="button">Submit Word</button>
+          </div>
+        </section>
+
+        <section id="stackWordsResultsPanel" class="results-panel" hidden>
+          <div class="results-header">
+            <h2 id="stackWordsResultsTitle">Puzzle Solved</h2>
+            <p id="stackWordsResultsSummary">Three clean stars.</p>
+          </div>
+          <p id="stackWordsSolutionText" class="menu-copy" hidden></p>
+          <div id="stackWordsRevealList" class="results-scores" hidden></div>
+          <div id="stackWordsStars" class="stackwords-stars" aria-label="Star rating"></div>
+          <div class="results-actions">
+            <button id="stackWordsNextButton" class="menu-button" type="button">Next Puzzle</button>
+            <button id="stackWordsMenuButton" class="ghost-button" type="button">Back To Menu</button>
+          </div>
+        </section>
       </div>
+    </section>
 
-      <div class="stackwords-subhead">
-        <p id="stackWordsPuzzleLabel" class="mode-summary">Puzzle 1</p>
+    <section id="stackWordsReadmeScreen" class="menu-screen" hidden>
+      <div class="menu-card rules-card">
+        <p class="menu-kicker">Triple Stack</p>
+        <h1>Readme</h1>
+        <div class="rules-copy">
+          <p>Triple Stack gives you one pool of letters and three word slots to fill from smallest to largest.</p>
+          <p>Use each letter only once. Every submitted word locks into the next slot, and the full set is checked after the third word is entered.</p>
+          <p>You can delete letters while building a word, reset the whole puzzle up to three times, or give up to reveal the answer.</p>
+          <p>No score pressure here. It is a pure solve-the-stack puzzle.</p>
+        </div>
+        <button id="stackWordsReadmeBackButton" class="ghost-button menu-back" type="button">Back</button>
       </div>
-
-      <section id="stackWordsSlots" class="stackwords-slots"></section>
-
-      <section class="stackwords-current">
-        <p id="stackWordsMessage" class="message">Solve the smallest word first.</p>
-      </section>
-
-      <section id="stackWordsPool" class="stackwords-pool"></section>
-
-      <section class="control-panel bottom-controls stackwords-controls">
-        <div class="session-actions">
-          <button id="stackWordsBackButton" class="ghost-button" type="button">Back</button>
-          <button id="stackWordsDeleteButton" class="ghost-button" type="button">Delete Letter</button>
-          <button id="stackWordsGiveUpButton" class="ghost-button" type="button">Give Up</button>
-          <button id="stackWordsResetButton" class="ghost-button" type="button">Reset Puzzle</button>
-          <button id="stackWordsSubmitButton" class="menu-button" type="button">Submit Word</button>
-        </div>
-      </section>
-
-      <section id="stackWordsResultsPanel" class="results-panel" hidden>
-        <div class="results-header">
-          <h2 id="stackWordsResultsTitle">Puzzle Solved</h2>
-          <p id="stackWordsResultsSummary">Three clean stars.</p>
-        </div>
-        <p id="stackWordsSolutionText" class="menu-copy" hidden></p>
-        <div id="stackWordsRevealList" class="results-scores" hidden></div>
-        <div id="stackWordsStars" class="stackwords-stars" aria-label="Star rating"></div>
-        <div class="results-actions">
-          <button id="stackWordsNextButton" class="menu-button" type="button">Next Puzzle</button>
-          <button id="stackWordsMenuButton" class="ghost-button" type="button">Back To Menu</button>
-        </div>
-      </section>
     </section>
 
     <section id="gamePanel" class="game-panel" hidden>

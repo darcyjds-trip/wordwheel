@@ -43,38 +43,7 @@ const FALLBACK_WORD_BANK = [
 
 const VALIDATION_DICTIONARY_URL = "./data/enable1.txt";
 const ROUND_DICTIONARY_URL = "./data/popular.txt";
-const THEME_WORD_BANK = {
-  Nature: [
-    "apple", "beach", "bloom", "cloud", "flora", "grain", "lilac", "ocean", "river", "storm",
-    "valley", "breeze", "canyon", "forest", "flower", "garden", "island", "jungle", "meadow",
-    "orchard", "prairie", "spring", "stream", "summer", "timber", "winter", "climate", "feather",
-    "jasmine", "juniper", "mountain"
-  ],
-  Sky: [
-    "amber", "comet", "cloud", "orbit", "solar", "storm", "aurora", "cosmic", "galaxy", "meteor",
-    "planet", "rocket", "sunrise", "sunset", "thunder", "twilight", "gravity", "midnight", "electric"
-  ],
-  Travel: [
-    "coast", "metro", "plane", "route", "taxi", "train", "trip", "avenue", "border", "bridge",
-    "castle", "harbor", "market", "museum", "palace", "ticket", "travel", "tunnel", "voyage",
-    "journey", "station", "kingdom", "mountain", "passport"
-  ],
-  Studio: [
-    "actor", "choir", "dance", "drama", "lyric", "novel", "piano", "poem", "story", "artist",
-    "camera", "design", "editor", "figure", "melody", "poetry", "rhythm", "singer", "studio",
-    "writer", "concert", "gallery", "theater", "painting"
-  ],
-  Science: [
-    "brain", "laser", "logic", "radar", "atom", "binary", "carbon", "device", "engine", "magnet",
-    "neuron", "oxygen", "plasma", "signal", "circuit", "physics", "printer", "quantum", "science",
-    "turbine", "electric"
-  ],
-  Kitchen: [
-    "apple", "berry", "bread", "cream", "grape", "lemon", "olive", "peach", "spice", "banana",
-    "butter", "carrot", "coffee", "cookie", "dinner", "flavor", "pepper", "tomato", "vanilla",
-    "pancake", "cinnamon"
-  ]
-};
+const THEME_MANIFEST_URL = "./data/themes/manifest.json";
 const STORAGE_KEY = "letter-clock-scores-v3";
 const PLAYER_NAME_KEY = "word-wheel-player-name";
 const SUPPORTED_LENGTHS = [4, 5, 6, 7, 8];
@@ -135,6 +104,7 @@ const state = {
   validationSet: new Set(),
   roundWords: [],
   rounds: [],
+  themeRounds: [],
   sessionRounds: [],
   sessionWheelPlans: [],
   sessionIndex: 0,
@@ -159,6 +129,7 @@ const elements = {
   singlePlayerScreen: document.getElementById("singlePlayerScreen"),
   multiplayerScreen: document.getElementById("multiplayerScreen"),
   rulesScreen: document.getElementById("rulesScreen"),
+  stackWordsReadmeScreen: document.getElementById("stackWordsReadmeScreen"),
   lobbyScreen: document.getElementById("lobbyScreen"),
   stackWordsScreen: document.getElementById("stackWordsScreen"),
   gamePanel: document.getElementById("gamePanel"),
@@ -166,6 +137,7 @@ const elements = {
   launchStatus: document.getElementById("launchStatus"),
   wordWheelEntryButton: document.getElementById("wordWheelEntryButton"),
   stackWordsEntryButton: document.getElementById("stackWordsEntryButton"),
+  stackWordsReadmeEntryButton: document.getElementById("stackWordsReadmeEntryButton"),
   homeStatus: document.getElementById("homeStatus"),
   wordWheelBackButton: document.getElementById("wordWheelBackButton"),
   singlePlayerButton: document.getElementById("singlePlayerButton"),
@@ -209,6 +181,7 @@ const elements = {
   stackWordsStars: document.getElementById("stackWordsStars"),
   stackWordsNextButton: document.getElementById("stackWordsNextButton"),
   stackWordsMenuButton: document.getElementById("stackWordsMenuButton"),
+  stackWordsReadmeBackButton: document.getElementById("stackWordsReadmeBackButton"),
   wheelGrid: document.getElementById("wheelGrid"),
   score: document.getElementById("score"),
   scoreCard: document.getElementById("scoreCard"),
@@ -329,6 +302,7 @@ function setScreen(screenName) {
   elements.singlePlayerScreen.hidden = screenName !== "single-player-menu";
   elements.multiplayerScreen.hidden = screenName !== "multiplayer-menu";
   elements.rulesScreen.hidden = screenName !== "rules";
+  elements.stackWordsReadmeScreen.hidden = screenName !== "stackwords-readme";
   elements.lobbyScreen.hidden = screenName !== "lobby";
   elements.stackWordsScreen.hidden = screenName !== "stackwords";
   elements.gamePanel.hidden = screenName !== "game";
@@ -817,6 +791,11 @@ async function leaveLobby() {
 }
 
 function startSinglePlayerGame(variant = "arcade") {
+  if (variant === "theme" && state.themeRounds.length === 0) {
+    showToast("No theme packs loaded yet.");
+    return;
+  }
+
   state.gameMode = "single";
   state.singlePlayerVariant = variant;
   state.raceOpponentName = RACE_RIVAL_NAME;
@@ -1238,53 +1217,61 @@ function buildPuzzleWords(roundData) {
   }, {});
 }
 
-function getRandomThemeCount(length, availableCount, rng = Math.random) {
-  const maxCount = Math.min(availableCount, length <= 6 ? 2 : 1);
-  return Math.max(1, Math.floor(rng() * maxCount) + 1);
-}
+function normalizeThemeRound(themeData) {
+  const words = Array.isArray(themeData?.words) ? themeData.words : [];
+  const normalizedWords = words.map((entry, index) => {
+    const answer = normalizeWord(entry?.answer || "").toUpperCase();
+    const reveals = Array.isArray(entry?.reveals) ? entry.reveals : [];
+    const wheelLetters = Array.isArray(entry?.wheelLetters)
+      ? entry.wheelLetters.map((letter) => normalizeWord(letter || "").toUpperCase()).filter(Boolean)
+      : [];
 
-function getAvailableThemePools() {
-  return Object.entries(THEME_WORD_BANK)
-    .map(([themeName, words]) => {
-      const validWords = [...new Set(words
-        .map((word) => normalizeWord(word))
-        .filter((word) => state.validationSet.has(word))
-        .filter((word) => word.length >= PUZZLE_REQUIRED_LENGTHS[0] && word.length <= PUZZLE_REQUIRED_LENGTHS[PUZZLE_REQUIRED_LENGTHS.length - 1])
-        .filter((word) => uniqueLetters(word).length >= 3))];
+    if (!answer || answer.length < 5 || answer.length > 8) {
+      throw new Error(`Theme "${themeData?.theme || "Unknown"}" has an invalid answer at index ${index + 1}.`);
+    }
 
-      const wordsByLength = PUZZLE_REQUIRED_LENGTHS.reduce((groups, length) => {
-        groups[length] = validWords
-          .filter((word) => word.length === length)
-          .sort((left, right) => wordQualityScore(right) - wordQualityScore(left));
-        return groups;
-      }, {});
+    if (wheelLetters.length !== 3) {
+      throw new Error(`Theme "${themeData?.theme || "Unknown"}" needs exactly 3 wheel letters for "${answer}".`);
+    }
 
-      return { themeName, wordsByLength };
-    })
-    .filter((theme) => PUZZLE_REQUIRED_LENGTHS.every((length) => theme.wordsByLength[length].length > 0));
-}
+    if (!wheelLetters.every((letter) => answer.includes(letter))) {
+      throw new Error(`Theme "${themeData?.theme || "Unknown"}" uses wheel letters outside "${answer}".`);
+    }
 
-function buildThemeBoard(themePool, rng) {
+    const clueIndices = reveals
+      .map((reveal) => Number(reveal?.index))
+      .filter((value) => Number.isInteger(value) && value >= 0 && value < answer.length);
+
+    return {
+      word: answer,
+      solved: false,
+      clueIndices,
+      wheelLetters
+    };
+  });
+
   const puzzleWordsByLength = PUZZLE_REQUIRED_LENGTHS.reduce((groups, length) => {
-    const candidates = shuffle(themePool.wordsByLength[length], rng);
-    const count = getRandomThemeCount(length, candidates.length, rng);
-    groups[length] = candidates
-      .slice(0, count)
-      .sort((left, right) => left.localeCompare(right))
-      .map((word) => ({
-        word,
+    groups[length] = normalizedWords
+      .filter((entry) => entry.word.length === length)
+      .map((entry) => ({
+        word: entry.word,
         solved: false,
-        clueIndices: buildClueIndices(word)
+        clueIndices: [...entry.clueIndices]
       }));
     return groups;
   }, {});
 
   return {
     roundIndex: 0,
-    themeName: themePool.themeName,
+    themeName: String(themeData.theme || "Theme"),
     solvedLengths: {},
     solveSequence: [],
     puzzleWordsByLength,
+    themeSteps: normalizedWords.map((entry) => ({
+      targetWord: entry.word,
+      targetLength: entry.word.length,
+      letters: [...entry.wheelLetters]
+    })),
     wheels: []
   };
 }
@@ -1292,15 +1279,15 @@ function buildThemeBoard(themePool, rng) {
 function buildThemeBoards(seedText = null) {
   const seed = seedText || `theme-${Date.now()}`;
   const rng = createRng(seed);
-  const themePools = getAvailableThemePools();
+  const themeTemplates = state.themeRounds;
 
-  if (themePools.length === 0) {
+  if (!themeTemplates.length) {
     return [];
   }
 
-  const themeSequence = Array.from({ length: SESSION_ROUND_COUNT }, (_, index) => themePools[index % themePools.length]);
-  return shuffle(themeSequence, rng).map((themePool, roundIndex) => ({
-    ...buildThemeBoard(themePool, rng),
+  const templateSequence = Array.from({ length: SESSION_ROUND_COUNT }, (_, index) => themeTemplates[index % themeTemplates.length]);
+  return shuffle(templateSequence, rng).map((template, roundIndex) => ({
+    ...JSON.parse(JSON.stringify(template)),
     roundIndex
   }));
 }
@@ -1309,42 +1296,12 @@ function getRemainingDynamicEntries(roundData = state.currentRound) {
   return PUZZLE_REQUIRED_LENGTHS.flatMap((length) => (roundData?.puzzleWordsByLength?.[length] || []).filter((entry) => !entry.solved));
 }
 
-function chooseThemeComboFromEntry(entry, rng = Math.random) {
-  if (entry.word.length <= 3) {
-    return entry.word.slice(0, 3).split("");
-  }
-
-  const clueIndices = new Set(entry.clueIndices || []);
-  const preferredSlices = [];
-  const fallbackSlices = [];
-
-  for (let startIndex = 0; startIndex <= entry.word.length - 3; startIndex += 1) {
-    const indices = [startIndex, startIndex + 1, startIndex + 2];
-    const slice = entry.word.slice(startIndex, startIndex + 3).split("");
-    if (indices.every((index) => !clueIndices.has(index))) {
-      preferredSlices.push(slice);
-    } else {
-      fallbackSlices.push(slice);
-    }
-  }
-
-  if (preferredSlices.length > 0) {
-    return sample(preferredSlices, rng);
-  }
-
-  if (fallbackSlices.length > 0) {
-    return sample(fallbackSlices, rng);
-  }
-
-  return entry.word.slice(0, 3).split("");
-}
-
-function chooseThemeTargetEntry(roundData) {
-  const remainingEntries = getRemainingDynamicEntries(roundData);
-  if (remainingEntries.length === 0) {
+function chooseThemeTargetStep(roundData) {
+  const steps = Array.isArray(roundData?.themeSteps) ? roundData.themeSteps : [];
+  if (state.boardStepIndex < 0 || state.boardStepIndex >= steps.length) {
     return null;
   }
-  return remainingEntries[Math.min(state.boardStepIndex, remainingEntries.length - 1)];
+  return steps[state.boardStepIndex];
 }
 
 function buildDynamicWheels(letters, sourceWord, rng = Math.random) {
@@ -1919,18 +1876,16 @@ function chooseNextRound() {
 }
 
 function applyDynamicBoardStep(roundData) {
-  const targetEntry = chooseThemeTargetEntry(roundData);
-  if (!targetEntry) {
+  const targetStep = chooseThemeTargetStep(roundData);
+  if (!targetStep) {
     return false;
   }
 
-  const combo = chooseThemeComboFromEntry(targetEntry);
-  const rng = createRng(`theme-step-${roundData.roundIndex}-${state.boardStepIndex}-${targetEntry.word}`);
-  roundData.activeTargetEntry = targetEntry;
-  roundData.activeTargetWord = targetEntry.word;
-  roundData.activeTargetLength = targetEntry.word.length;
-  roundData.letters = combo;
-  roundData.wheels = buildDynamicWheels(combo, targetEntry.word, rng);
+  const rng = createRng(`theme-step-${roundData.roundIndex}-${state.boardStepIndex}-${targetStep.targetWord}`);
+  roundData.activeTargetWord = targetStep.targetWord;
+  roundData.activeTargetLength = targetStep.targetLength;
+  roundData.letters = [...targetStep.letters];
+  roundData.wheels = buildDynamicWheels(targetStep.letters, targetStep.targetWord, rng);
   return true;
 }
 
@@ -2447,9 +2402,10 @@ async function loadDictionary() {
   updateEntryButtons();
 
   try {
-    const [validationResponse, roundResponse] = await Promise.all([
+    const [validationResponse, roundResponse, themeManifestResponse] = await Promise.all([
       fetch(VALIDATION_DICTIONARY_URL),
-      fetch(ROUND_DICTIONARY_URL)
+      fetch(ROUND_DICTIONARY_URL),
+      fetch(THEME_MANIFEST_URL)
     ]);
 
     if (!validationResponse.ok) {
@@ -2469,11 +2425,22 @@ async function loadDictionary() {
       state.roundWords = state.validationWords.filter((word) => isGameFriendlyWord(word));
       state.dictionarySource = "enable";
     }
+
+    if (themeManifestResponse.ok) {
+      const manifest = await themeManifestResponse.json();
+      const files = Array.isArray(manifest?.files) ? manifest.files : [];
+      const themeResponses = await Promise.all(files.map((file) => fetch(`./data/themes/${file}`)));
+      const themePayloads = await Promise.all(themeResponses.filter((response) => response.ok).map((response) => response.json()));
+      state.themeRounds = themePayloads.map((payload) => normalizeThemeRound(payload));
+    } else {
+      state.themeRounds = [];
+    }
   } catch (error) {
     state.validationWords = normalizeDictionary(FALLBACK_WORD_BANK);
     state.validationSet = new Set(state.validationWords);
     state.roundWords = normalizeRoundDictionary(FALLBACK_WORD_BANK);
     state.dictionarySource = "fallback";
+    state.themeRounds = [];
   }
 
   if (state.roundWords.length === 0) {
@@ -2555,9 +2522,15 @@ elements.stackWordsEntryButton.addEventListener("click", async () => {
   try {
     await stackWordsController?.start();
   } catch (error) {
-    showToast(error.message || "StackWords failed to load.");
+    showToast(error.message || "Triple Stack failed to load.");
     setScreen("launch");
   }
+});
+elements.stackWordsReadmeEntryButton.addEventListener("click", () => {
+  setScreen("stackwords-readme");
+});
+elements.stackWordsReadmeBackButton.addEventListener("click", () => {
+  setScreen("launch");
 });
 elements.wordWheelBackButton.addEventListener("click", () => {
   setScreen("launch");
