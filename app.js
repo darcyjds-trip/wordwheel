@@ -1068,7 +1068,7 @@ function normalizeAnswersByLength(rawAnswers = {}) {
   return SUPPORTED_LENGTHS.reduce((bucket, length) => {
     const words = Array.isArray(rawAnswers?.[length]) ? rawAnswers[length] : [];
     bucket[length] = words
-      .map((word) => normalizeWord(word).toUpperCase())
+      .map((word) => normalizeWord(word))
       .filter((word) => word.length === length);
     return bucket;
   }, {});
@@ -1076,7 +1076,7 @@ function normalizeAnswersByLength(rawAnswers = {}) {
 
 function normalizePrecomputedRound(roundData, index = 0) {
   const letters = Array.isArray(roundData?.letters)
-    ? roundData.letters.map((letter) => normalizeWord(letter).toUpperCase()).filter(Boolean)
+    ? roundData.letters.map((letter) => normalizeWord(letter)).filter(Boolean)
     : [];
   const answersByLength = normalizeAnswersByLength(roundData?.answersByLength);
 
@@ -1099,8 +1099,24 @@ function normalizePrecomputedRound(roundData, index = 0) {
   };
 }
 
-function normalizePuzzleEntry(entry, boardIndex, length) {
-  const word = normalizeWord(entry?.word || "").toUpperCase();
+function chooseClueIndices(word, excludedLetters = []) {
+  const clueCount = getBoardClueCount(word.length);
+  const excluded = new Set(excludedLetters.map((letter) => normalizeWord(letter)));
+  const eligible = word
+    .split("")
+    .map((letter, index) => ({ letter, index }))
+    .filter(({ letter }) => !excluded.has(letter))
+    .map(({ index }) => index);
+  const source = eligible.length >= clueCount ? eligible : word.split("").map((_, index) => index);
+
+  if (clueCount <= 1) {
+    return [source[0]];
+  }
+  return [source[0], source[source.length - 1]];
+}
+
+function normalizePuzzleEntry(entry, boardIndex, length, excludedLetters = []) {
+  const word = normalizeWord(entry?.word || "");
   const clueIndices = Array.isArray(entry?.clueIndices)
     ? entry.clueIndices
       .map((value) => Number(value))
@@ -1111,17 +1127,23 @@ function normalizePuzzleEntry(entry, boardIndex, length) {
     throw new Error(`Puzzle board ${boardIndex + 1} has an invalid ${length}-letter entry.`);
   }
 
+  const sanitizedClueIndices = clueIndices
+    .filter((value) => value < word.length)
+    .filter((value) => !excludedLetters.includes(word[value]));
+
   return {
     word,
     solved: false,
     revealed: false,
-    clueIndices: clueIndices.filter((value) => value < word.length)
+    clueIndices: sanitizedClueIndices.length === getBoardClueCount(word.length)
+      ? sanitizedClueIndices
+      : chooseClueIndices(word, excludedLetters)
   };
 }
 
 function normalizePrecomputedPuzzleBoard(boardData, index = 0) {
   const letters = Array.isArray(boardData?.letters)
-    ? boardData.letters.map((letter) => normalizeWord(letter).toUpperCase()).filter(Boolean)
+    ? boardData.letters.map((letter) => normalizeWord(letter)).filter(Boolean)
     : [];
 
   if (letters.length !== 3) {
@@ -1130,7 +1152,7 @@ function normalizePrecomputedPuzzleBoard(boardData, index = 0) {
 
   const puzzleWordsByLength = PUZZLE_REQUIRED_LENGTHS.reduce((groups, length) => {
     const rawEntries = Array.isArray(boardData?.puzzleWordsByLength?.[length]) ? boardData.puzzleWordsByLength[length] : [];
-    groups[length] = rawEntries.map((entry) => normalizePuzzleEntry(entry, index, length));
+    groups[length] = rawEntries.map((entry) => normalizePuzzleEntry(entry, index, length, letters));
     return groups;
   }, {});
 
@@ -1304,16 +1326,20 @@ function getBoardClueCount(wordLength) {
 }
 
 function buildClueIndices(word) {
-  const clueCount = getBoardClueCount(word.length);
-  if (clueCount <= 1) {
-    return [0];
-  }
-  return [0, word.length - 1];
+  return chooseClueIndices(word);
+}
+
+function hasEligiblePuzzleClues(word, excludedLetters = []) {
+  const excluded = new Set(excludedLetters.map((letter) => String(letter || "").toUpperCase()));
+  const eligibleCount = word.split("").filter((letter) => !excluded.has(letter)).length;
+  return eligibleCount >= getBoardClueCount(word.length);
 }
 
 function buildPuzzleWords(roundData) {
   return PUZZLE_REQUIRED_LENGTHS.reduce((groups, length) => {
-    const sourceWords = shuffle([...roundData.answersByLength[length]]);
+    const sourceWords = shuffle(
+      [...roundData.answersByLength[length]].filter((word) => hasEligiblePuzzleClues(word, roundData.letters))
+    );
     const targetCount = getRandomPuzzleCount(length, sourceWords.length);
     groups[length] = sourceWords
       .slice(0, targetCount)
@@ -1321,7 +1347,7 @@ function buildPuzzleWords(roundData) {
       .map((word) => ({
         word,
         solved: false,
-        clueIndices: buildClueIndices(word)
+        clueIndices: chooseClueIndices(word, roundData.letters)
       }));
     return groups;
   }, {});
@@ -1330,10 +1356,10 @@ function buildPuzzleWords(roundData) {
 function normalizeThemeRound(themeData) {
   const words = Array.isArray(themeData?.words) ? themeData.words : [];
   const normalizedWords = words.map((entry, index) => {
-    const answer = normalizeWord(entry?.answer || "").toUpperCase();
+    const answer = normalizeWord(entry?.answer || "");
     const reveals = Array.isArray(entry?.reveals) ? entry.reveals : [];
     const wheelLetters = Array.isArray(entry?.wheelLetters)
-      ? entry.wheelLetters.map((letter) => normalizeWord(letter || "").toUpperCase()).filter(Boolean)
+      ? entry.wheelLetters.map((letter) => normalizeWord(letter || "")).filter(Boolean)
       : [];
 
     if (!answer || answer.length < 5 || answer.length > 8) {
@@ -1668,7 +1694,15 @@ async function ensureThemeDataLoaded() {
       const files = Array.isArray(manifest?.files) ? manifest.files : [];
       const themeResponses = await Promise.all(files.map((file) => fetch(`./data/themes/${file}`)));
       const themePayloads = await Promise.all(themeResponses.filter((response) => response.ok).map((response) => response.json()));
-      state.themeRounds = themePayloads.map((payload) => normalizeThemeRound(payload));
+      const validThemes = [];
+      themePayloads.forEach((payload) => {
+        try {
+          validThemes.push(normalizeThemeRound(payload));
+        } catch (error) {
+          console.warn(`Skipping invalid theme pack "${payload?.theme || "Unknown"}": ${error.message}`);
+        }
+      });
+      state.themeRounds = validThemes;
     } catch (error) {
       state.themeRounds = [];
     } finally {

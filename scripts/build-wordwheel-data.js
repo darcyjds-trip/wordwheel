@@ -130,12 +130,26 @@ function getBoardClueCount(wordLength) {
   return 1;
 }
 
-function buildClueIndices(word) {
+function buildClueIndices(word, excludedLetters = []) {
   const clueCount = getBoardClueCount(word.length);
+  const excluded = new Set(excludedLetters.map((letter) => String(letter || "").toUpperCase()));
+  const eligible = word
+    .split("")
+    .map((letter, index) => ({ letter, index }))
+    .filter(({ letter }) => !excluded.has(letter))
+    .map(({ index }) => index);
+  const source = eligible.length >= clueCount ? eligible : word.split("").map((_, index) => index);
+
   if (clueCount <= 1) {
-    return [0];
+    return [source[0]];
   }
-  return [0, word.length - 1];
+  return [source[0], source[source.length - 1]];
+}
+
+function hasEligiblePuzzleClues(word, excludedLetters = []) {
+  const excluded = new Set(excludedLetters.map((letter) => String(letter || "").toUpperCase()));
+  const eligibleCount = word.split("").filter((letter) => !excluded.has(letter)).length;
+  return eligibleCount >= getBoardClueCount(word.length);
 }
 
 function buildPuzzleBoards(rounds) {
@@ -145,14 +159,17 @@ function buildPuzzleBoards(rounds) {
     .map((round, index) => {
       const rng = createRng(`puzzle-board-${index}-${round.letters.join("")}`);
       const puzzleWordsByLength = PUZZLE_REQUIRED_LENGTHS.reduce((groups, length) => {
-        const sourceWords = shuffle(round.answersByLength[length], rng);
+        const sourceWords = shuffle(
+          round.answersByLength[length].filter((word) => hasEligiblePuzzleClues(word, round.letters)),
+          rng
+        );
         const targetCount = getRandomPuzzleCount(length, sourceWords.length, rng);
         groups[length] = sourceWords
           .slice(0, targetCount)
           .sort((left, right) => left.localeCompare(right))
           .map((word) => ({
             word,
-            clueIndices: buildClueIndices(word)
+            clueIndices: buildClueIndices(word, round.letters)
           }));
         return groups;
       }, {});
