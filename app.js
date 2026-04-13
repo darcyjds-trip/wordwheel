@@ -228,6 +228,7 @@ const elements = {
   mysteryMeta: document.getElementById("mysteryMeta"),
   mysteryThemeLabel: document.getElementById("mysteryThemeLabel"),
   mysteryTargetLabel: document.getElementById("mysteryTargetLabel"),
+  mysteryWheelLettersLabel: document.getElementById("mysteryWheelLettersLabel"),
   mysteryGroups: document.getElementById("mysteryGroups"),
   skipButton: document.getElementById("skipButton"),
   message: document.getElementById("message"),
@@ -1242,7 +1243,7 @@ function makeThemeWheelLetters(targetLetter, sourceWord, wheelIndex, rng) {
   } else {
     letters[targetIndex] = targetLetter;
   }
-  return { letters, targetIndex };
+  return { letters, targetIndex, targetLetter };
 }
 
 function buildWheelPlans(roundLettersByRound, rng) {
@@ -1839,6 +1840,7 @@ function updateMysteryPanel() {
   elements.mysteryGroups.innerHTML = "";
   elements.mysteryMeta.hidden = true;
   elements.mysteryTargetLabel.hidden = true;
+  elements.mysteryWheelLettersLabel.hidden = true;
 
   if (!isBoardMode() || !state.currentRound) {
     return;
@@ -1850,6 +1852,10 @@ function updateMysteryPanel() {
     if (state.currentRound.activeTargetWord) {
       elements.mysteryTargetLabel.textContent = `Target: ${state.currentRound.activeTargetWord.toUpperCase()}`;
       elements.mysteryTargetLabel.hidden = false;
+    }
+    if (Array.isArray(state.currentRound.letters) && state.currentRound.letters.length === 3) {
+      elements.mysteryWheelLettersLabel.textContent = `Wheel: ${state.currentRound.letters.map((letter) => letter.toUpperCase()).join(" ")}`;
+      elements.mysteryWheelLettersLabel.hidden = false;
     }
   }
 
@@ -2022,9 +2028,9 @@ function renderWheels(roundData) {
         slot.className = "letter-slot";
         slot.dataset.index = String(letterIndex);
 
-        const label = document.createElement("span");
-        label.textContent = letter.toUpperCase();
-        slot.appendChild(label);
+      const label = document.createElement("span");
+      label.textContent = letter.toUpperCase();
+      slot.appendChild(label);
         wheel.appendChild(slot);
       });
 
@@ -2069,6 +2075,10 @@ function renderWheels(roundData) {
         && sourceIndex < state.currentRound.roundIndex
         && letterIndex >= REEL_BUFFER
         && letterIndex < REEL_BUFFER + WHEEL_SIZE;
+      const label = slot.querySelector("span");
+      if (label) {
+        label.textContent = (isTarget && wheelData.targetLetter ? wheelData.targetLetter : wheelData.letters[sourceIndex]).toUpperCase();
+      }
       slot.classList.toggle("is-target", isTarget);
       slot.classList.toggle("is-passed", hasPassedTarget && !isTarget);
       slot.style.height = `${stepHeight}px`;

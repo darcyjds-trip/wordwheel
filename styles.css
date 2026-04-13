@@ -164,6 +164,12 @@ body::before {
   color: var(--accent);
 }
 
+.mystery-wheel-label {
+  border-color: rgba(255, 216, 77, 0.28);
+  background: rgba(255, 216, 77, 0.08);
+  color: var(--warm);
+}
+
 .mystery-groups {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
