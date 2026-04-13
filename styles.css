@@ -235,6 +235,12 @@ body::before {
   gap: 16px;
 }
 
+.stackwords-status-panels {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
 .stackwords-reset-panel {
   min-width: 116px;
   text-align: right;
@@ -259,6 +265,16 @@ body::before {
 .stackwords-reset-dot.available {
   background: linear-gradient(180deg, #fff07a, #ffc84d);
   box-shadow: 0 0 12px rgba(255, 216, 77, 0.22);
+}
+
+.stackwords-life-dots .stackwords-reset-dot {
+  background: rgba(255, 109, 157, 0.16);
+  border-color: rgba(255, 109, 157, 0.28);
+}
+
+.stackwords-life-dots .stackwords-reset-dot.available {
+  background: linear-gradient(180deg, #ff8eb2, #ff4f88);
+  box-shadow: 0 0 12px rgba(255, 109, 157, 0.24);
 }
 
 .stackwords-subhead {
@@ -1520,6 +1536,10 @@ body::before {
 
   .stackwords-header {
     align-items: flex-start;
+  }
+
+  .stackwords-status-panels {
+    gap: 8px;
   }
 
   .stackwords-reset-panel {

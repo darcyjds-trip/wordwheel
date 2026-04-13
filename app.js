@@ -43,6 +43,8 @@ const FALLBACK_WORD_BANK = [
 
 const VALIDATION_DICTIONARY_URL = "./data/enable1.txt";
 const ROUND_DICTIONARY_URL = "./data/popular.txt";
+const ARCADE_ROUNDS_URL = "./data/arcade-rounds.json";
+const PUZZLE_BOARDS_URL = "./data/puzzle-boards.json";
 const THEME_MANIFEST_URL = "./data/themes/manifest.json";
 const STORAGE_KEY = "letter-clock-scores-v3";
 const PLAYER_NAME_KEY = "word-wheel-player-name";
@@ -104,6 +106,7 @@ const state = {
   validationSet: new Set(),
   roundWords: [],
   rounds: [],
+  puzzleBoards: [],
   themeRounds: [],
   sessionRounds: [],
   sessionWheelPlans: [],
@@ -164,6 +167,7 @@ const elements = {
   startMatchButton: document.getElementById("startMatchButton"),
   leaveLobbyButton: document.getElementById("leaveLobbyButton"),
   stackWordsPuzzleLabel: document.getElementById("stackWordsPuzzleLabel"),
+  stackWordsLivesDots: document.getElementById("stackWordsLivesDots"),
   stackWordsResetDots: document.getElementById("stackWordsResetDots"),
   stackWordsSlots: document.getElementById("stackWordsSlots"),
   stackWordsMessage: document.getElementById("stackWordsMessage"),
@@ -229,6 +233,7 @@ const stackWordsController = window.StackWordsApp?.createController({
   elements: {
     root: elements.stackWordsScreen,
     puzzleLabel: elements.stackWordsPuzzleLabel,
+    livesDots: elements.stackWordsLivesDots,
     resetDots: elements.stackWordsResetDots,
     slots: elements.stackWordsSlots,
     message: elements.stackWordsMessage,
@@ -1044,6 +1049,86 @@ function normalizeRoundDictionary(words) {
   return normalizeDictionary(words).filter((word) => isGameFriendlyWord(word));
 }
 
+function normalizeAnswersByLength(rawAnswers = {}) {
+  return SUPPORTED_LENGTHS.reduce((bucket, length) => {
+    const words = Array.isArray(rawAnswers?.[length]) ? rawAnswers[length] : [];
+    bucket[length] = words
+      .map((word) => normalizeWord(word).toUpperCase())
+      .filter((word) => word.length === length);
+    return bucket;
+  }, {});
+}
+
+function normalizePrecomputedRound(roundData, index = 0) {
+  const letters = Array.isArray(roundData?.letters)
+    ? roundData.letters.map((letter) => normalizeWord(letter).toUpperCase()).filter(Boolean)
+    : [];
+  const answersByLength = normalizeAnswersByLength(roundData?.answersByLength);
+
+  if (letters.length !== 3) {
+    throw new Error(`Arcade round ${index + 1} must contain exactly 3 letters.`);
+  }
+
+  if (!ARCADE_REQUIRED_LENGTHS.every((length) => answersByLength[length]?.length > 0)) {
+    throw new Error(`Arcade round ${index + 1} is missing one of the 4-7 answer groups.`);
+  }
+
+  const answers = SUPPORTED_LENGTHS.flatMap((length) => answersByLength[length] || []);
+  const quality = Number(roundData?.quality || 0);
+
+  return {
+    letters,
+    answersByLength,
+    answers,
+    quality
+  };
+}
+
+function normalizePuzzleEntry(entry, boardIndex, length) {
+  const word = normalizeWord(entry?.word || "").toUpperCase();
+  const clueIndices = Array.isArray(entry?.clueIndices)
+    ? entry.clueIndices
+      .map((value) => Number(value))
+      .filter((value) => Number.isInteger(value) && value >= 0)
+    : [];
+
+  if (!word || word.length !== length) {
+    throw new Error(`Puzzle board ${boardIndex + 1} has an invalid ${length}-letter entry.`);
+  }
+
+  return {
+    word,
+    solved: false,
+    revealed: false,
+    clueIndices: clueIndices.filter((value) => value < word.length)
+  };
+}
+
+function normalizePrecomputedPuzzleBoard(boardData, index = 0) {
+  const letters = Array.isArray(boardData?.letters)
+    ? boardData.letters.map((letter) => normalizeWord(letter).toUpperCase()).filter(Boolean)
+    : [];
+
+  if (letters.length !== 3) {
+    throw new Error(`Puzzle board ${index + 1} must contain exactly 3 letters.`);
+  }
+
+  const puzzleWordsByLength = PUZZLE_REQUIRED_LENGTHS.reduce((groups, length) => {
+    const rawEntries = Array.isArray(boardData?.puzzleWordsByLength?.[length]) ? boardData.puzzleWordsByLength[length] : [];
+    groups[length] = rawEntries.map((entry) => normalizePuzzleEntry(entry, index, length));
+    return groups;
+  }, {});
+
+  if (!PUZZLE_REQUIRED_LENGTHS.every((length) => puzzleWordsByLength[length]?.length > 0)) {
+    throw new Error(`Puzzle board ${index + 1} is missing one of the 5-8 word groups.`);
+  }
+
+  return {
+    letters,
+    puzzleWordsByLength
+  };
+}
+
 function buildRounds() {
   const comboMap = new Map();
 
@@ -1146,6 +1231,9 @@ function buildRoundInstance(roundTemplate, rng, wheelPlans, roundIndex) {
     letters,
     answers: roundTemplate.answers,
     answersByLength: roundTemplate.answersByLength,
+    puzzleWordsByLength: roundTemplate.puzzleWordsByLength
+      ? JSON.parse(JSON.stringify(roundTemplate.puzzleWordsByLength))
+      : undefined,
     solvedLengths: {},
     solveSequence: [],
     roundIndex,
@@ -1163,12 +1251,19 @@ function buildSessionRounds(seedText = null) {
 
   const seed = seedText || `run-${Date.now()}`;
   const rng = createRng(seed);
-  const requiredLengths = getRequiredLengths();
-  const sourceRounds = shuffle(
-    state.rounds.filter((round) => requiredLengths.every((length) => round.answersByLength[length]?.length > 0)),
-    rng
-  );
-  const chosen = sourceRounds.slice(0, SESSION_ROUND_COUNT);
+  let chosen = [];
+
+  if (isPuzzleMode() && state.puzzleBoards.length > 0) {
+    chosen = shuffle(state.puzzleBoards, rng).slice(0, SESSION_ROUND_COUNT);
+  } else {
+    const requiredLengths = getRequiredLengths();
+    const sourceRounds = shuffle(
+      state.rounds.filter((round) => requiredLengths.every((length) => round.answersByLength[length]?.length > 0)),
+      rng
+    );
+    chosen = sourceRounds.slice(0, SESSION_ROUND_COUNT);
+  }
+
   const roundLettersByRound = chosen.map((roundTemplate) => shuffle(roundTemplate.letters, rng));
   state.sessionWheelPlans = buildWheelPlans(roundLettersByRound, rng);
   return chosen.map((roundTemplate, roundIndex) => buildRoundInstance({
@@ -1898,7 +1993,9 @@ function loadNextRound(messageText, startAt = null) {
   state.currentRound = nextRound;
   state.currentThemeName = state.currentRound.themeName || "";
   if (isPuzzleMode()) {
-    state.currentRound.puzzleWordsByLength = buildPuzzleWords(state.currentRound);
+    if (!state.currentRound.puzzleWordsByLength || Object.keys(state.currentRound.puzzleWordsByLength).length === 0) {
+      state.currentRound.puzzleWordsByLength = buildPuzzleWords(state.currentRound);
+    }
   } else if (isDynamicBoardMode()) {
     state.boardStepIndex = 0;
     applyDynamicBoardStep(state.currentRound);
@@ -2402,9 +2499,10 @@ async function loadDictionary() {
   updateEntryButtons();
 
   try {
-    const [validationResponse, roundResponse, themeManifestResponse] = await Promise.all([
+    const [validationResponse, arcadeRoundsResponse, puzzleBoardsResponse, themeManifestResponse] = await Promise.all([
       fetch(VALIDATION_DICTIONARY_URL),
-      fetch(ROUND_DICTIONARY_URL),
+      fetch(ARCADE_ROUNDS_URL),
+      fetch(PUZZLE_BOARDS_URL),
       fetch(THEME_MANIFEST_URL)
     ]);
 
@@ -2416,14 +2514,30 @@ async function loadDictionary() {
     state.validationWords = normalizeDictionary(validationText.split(/\r?\n/));
     state.validationSet = new Set(state.validationWords);
 
-    if (roundResponse.ok) {
-      const roundText = await roundResponse.text();
-      state.roundWords = normalizeRoundDictionary(roundText.split(/\r?\n/))
-        .filter((word) => state.validationSet.has(word));
-      state.dictionarySource = "enable + common";
+    if (arcadeRoundsResponse.ok && puzzleBoardsResponse.ok) {
+      const arcadePayload = await arcadeRoundsResponse.json();
+      const puzzlePayload = await puzzleBoardsResponse.json();
+      state.rounds = (Array.isArray(arcadePayload) ? arcadePayload : []).map((round, index) => normalizePrecomputedRound(round, index));
+      state.puzzleBoards = (Array.isArray(puzzlePayload) ? puzzlePayload : []).map((board, index) => normalizePrecomputedPuzzleBoard(board, index));
+      state.dictionarySource = "precomputed";
     } else {
-      state.roundWords = state.validationWords.filter((word) => isGameFriendlyWord(word));
-      state.dictionarySource = "enable";
+      const roundResponse = await fetch(ROUND_DICTIONARY_URL);
+      if (roundResponse.ok) {
+        const roundText = await roundResponse.text();
+        state.roundWords = normalizeRoundDictionary(roundText.split(/\r?\n/))
+          .filter((word) => state.validationSet.has(word));
+        state.dictionarySource = "enable + common";
+      } else {
+        state.roundWords = state.validationWords.filter((word) => isGameFriendlyWord(word));
+        state.dictionarySource = "enable";
+      }
+
+      if (state.roundWords.length === 0) {
+        state.roundWords = state.validationWords.filter((word) => isGameFriendlyWord(word));
+      }
+
+      state.rounds = buildRounds();
+      state.puzzleBoards = [];
     }
 
     if (themeManifestResponse.ok) {
@@ -2440,14 +2554,16 @@ async function loadDictionary() {
     state.validationSet = new Set(state.validationWords);
     state.roundWords = normalizeRoundDictionary(FALLBACK_WORD_BANK);
     state.dictionarySource = "fallback";
+    state.puzzleBoards = [];
     state.themeRounds = [];
+    state.rounds = buildRounds();
   }
 
-  if (state.roundWords.length === 0) {
+  if (state.rounds.length === 0 && state.roundWords.length === 0) {
     state.roundWords = state.validationWords.filter((word) => isGameFriendlyWord(word));
+    state.rounds = buildRounds();
   }
 
-  state.rounds = buildRounds();
   state.dictionaryReady = state.rounds.length > 0;
 
   if (!state.dictionaryReady) {

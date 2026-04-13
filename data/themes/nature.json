@@ -1,30 +1,135 @@
 {
-  "theme": "Nature",
-  "words": [
-    {
-      "answer": "RIVER",
-      "reveals": [{ "letter": "E", "index": 4 }],
-      "wheelLetters": ["V", "R", "I"]
-    },
-    {
-      "answer": "FOREST",
-      "reveals": [{ "letter": "E", "index": 3 }],
-      "wheelLetters": ["T", "F", "R"]
-    },
-    {
-      "answer": "DESERT",
-      "reveals": [{ "letter": "S", "index": 2 }],
-      "wheelLetters": ["T", "D", "E"]
-    },
-    {
-      "answer": "VOLCANO",
-      "reveals": [{ "letter": "A", "index": 5 }],
-      "wheelLetters": ["N", "V", "O"]
-    },
-    {
-      "answer": "MOUNTAIN",
-      "reveals": [{ "letter": "A", "index": 4 }],
-      "wheelLetters": ["N", "M", "T"]
-    }
-  ]
+"theme": "Nature",
+"words": [
+{
+"answer": "RIVER",
+"reveals": [{ "letter": "E", "index": 3 }],
+"wheelLetters": ["R", "I", "V"]
+},
+{
+"answer": "OCEAN",
+"reveals": [{ "letter": "E", "index": 2 }],
+"wheelLetters": ["O", "C", "A"]
+},
+{
+"answer": "CLOUD",
+"reveals": [{ "letter": "U", "index": 3 }],
+"wheelLetters": ["C", "L", "D"]
+},
+{
+"answer": "STONE",
+"reveals": [{ "letter": "O", "index": 2 }],
+"wheelLetters": ["S", "T", "N"]
+},
+{
+"answer": "GRASS",
+"reveals": [{ "letter": "R", "index": 1 }],
+"wheelLetters": ["G", "A", "S"]
+},
+{
+"answer": "FOREST",
+"reveals": [{ "letter": "E", "index": 3 }],
+"wheelLetters": ["F", "O", "R"]
+},
+{
+"answer": "ISLAND",
+"reveals": [{ "letter": "A", "index": 3 }],
+"wheelLetters": ["I", "S", "L"]
+},
+{
+"answer": "DESERT",
+"reveals": [{ "letter": "S", "index": 2 }],
+"wheelLetters": ["D", "E", "T"]
+},
+{
+"answer": "CANYON",
+"reveals": [{ "letter": "O", "index": 4 }],
+"wheelLetters": ["C", "A", "N"]
+},
+{
+"answer": "JUNGLE",
+"reveals": [{ "letter": "E", "index": 5 }],
+"wheelLetters": ["J", "U", "N"]
+},
+{
+"answer": "GLACIER",
+"reveals": [
+{ "letter": "A", "index": 2 },
+{ "letter": "E", "index": 5 }
+],
+"wheelLetters": ["G", "L", "C"]
+},
+{
+"answer": "VOLCANO",
+"reveals": [
+{ "letter": "C", "index": 3 },
+{ "letter": "A", "index": 4 }
+],
+"wheelLetters": ["V", "L", "N"]
+},
+{
+"answer": "SAVANNA",
+"reveals": [
+{ "letter": "A", "index": 1 },
+{ "letter": "A", "index": 3 }
+],
+"wheelLetters": ["S", "V", "N"]
+},
+{
+"answer": "SUNRISE",
+"reveals": [
+{ "letter": "U", "index": 1 },
+{ "letter": "E", "index": 6 }
+],
+"wheelLetters": ["S", "N", "R"]
+},
+{
+"answer": "MEADOWS",
+"reveals": [
+{ "letter": "E", "index": 1 },
+{ "letter": "O", "index": 4 }
+],
+"wheelLetters": ["M", "D", "W"]
+},
+{
+"answer": "MOUNTAIN",
+"reveals": [
+{ "letter": "U", "index": 2 },
+{ "letter": "A", "index": 5 }
+],
+"wheelLetters": ["M", "O", "T"]
+},
+{
+"answer": "WILDLIFE",
+"reveals": [
+{ "letter": "I", "index": 1 },
+{ "letter": "E", "index": 7 }
+],
+"wheelLetters": ["W", "L", "F"]
+},
+{
+"answer": "SEASHORE",
+"reveals": [
+{ "letter": "A", "index": 2 },
+{ "letter": "O", "index": 5 }
+],
+"wheelLetters": ["S", "H", "R"]
+},
+{
+"answer": "SUNLIGHT",
+"reveals": [
+{ "letter": "U", "index": 1 },
+{ "letter": "G", "index": 5 }
+],
+"wheelLetters": ["S", "L", "T"]
+},
+{
+"answer": "TROPICAL",
+"reveals": [
+{ "letter": "I", "index": 4 },
+{ "letter": "A", "index": 6 }
+],
+"wheelLetters": ["T", "R", "P"]
+}
+]
 }

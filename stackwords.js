@@ -48,6 +48,7 @@
       this.puzzles = puzzles.map((puzzle) => new StackWordsPuzzleModel(puzzle));
       this.wordValidator = wordValidator;
       this.resetLimit = 3;
+      this.lifeLimit = 3;
       this.currentPuzzleIndex = 0;
       this.state = null;
       this.message = "Solve the smallest word first.";
@@ -74,6 +75,10 @@
       return Math.max(0, this.resetLimit - this.state.resetsUsed);
     }
 
+    get livesRemaining() {
+      return Math.max(0, this.state.livesRemaining);
+    }
+
     get currentGuess() {
       return this.state.selectedIds
         .map((id) => this.state.letters.find((letter) => letter.id === id))
@@ -89,9 +94,11 @@
         selectedIds: [],
         solvedWords: Array(this.currentPuzzle.solution.length).fill(""),
         resetsUsed: 0,
+        livesRemaining: this.lifeLimit,
         completed: false,
         gaveUp: false,
-        failed: false
+        failed: false,
+        outOfLives: false
       };
       this.setMessage(`Build the ${this.activeLength}-letter word first.`, "neutral");
       return this.getViewModel();
@@ -168,6 +175,43 @@
       return this.getViewModel();
     }
 
+    resetBoardForRetry() {
+      const resetsUsed = this.state.resetsUsed;
+      const livesRemaining = this.state.livesRemaining;
+      this.state = {
+        letters: this.currentPuzzle.createLetterPool(),
+        selectedIds: [],
+        solvedWords: Array(this.currentPuzzle.solution.length).fill(""),
+        resetsUsed,
+        livesRemaining,
+        completed: false,
+        gaveUp: false,
+        failed: false,
+        outOfLives: false
+      };
+    }
+
+    isSubmittedSetValidSolution(words) {
+      if (!Array.isArray(words) || words.length !== this.currentPuzzle.solution.length) {
+        return false;
+      }
+
+      const normalizedWords = words.map((word) => String(word || "").toUpperCase());
+      const lengthsMatch = normalizedWords.every((word, index) => word.length === this.currentPuzzle.lengths[index]);
+      if (!lengthsMatch) {
+        return false;
+      }
+
+      const dictionaryOk = normalizedWords.every((word) => typeof this.wordValidator === "function" && this.wordValidator(word));
+      if (!dictionaryOk) {
+        return false;
+      }
+
+      const submittedLetters = normalizedWords.join("").split("").sort().join("");
+      const puzzleLetters = [...this.currentPuzzle.letters].sort().join("");
+      return submittedLetters === puzzleLetters;
+    }
+
     submitCurrentWord() {
       if (!this.state || this.state.completed) {
         return this.getViewModel();
@@ -188,10 +232,28 @@
       this.state.selectedIds = [];
 
       if (this.state.solvedWords.every(Boolean)) {
-        const solved = this.state.solvedWords.every((word, index) => word === this.currentPuzzle.solution[index]);
-        this.state.completed = true;
-        this.state.failed = !solved;
-        this.setMessage(solved ? "Puzzle solved." : "Incorrect. Those 3 words do not solve this puzzle.", solved ? "success" : "error");
+        const exactSolved = this.state.solvedWords.every((word, index) => word === this.currentPuzzle.solution[index]);
+        const alternateSolved = !exactSolved && this.isSubmittedSetValidSolution(this.state.solvedWords);
+        const solved = exactSolved || alternateSolved;
+
+        if (solved) {
+          this.state.completed = true;
+          this.state.failed = false;
+          this.state.outOfLives = false;
+          this.setMessage(exactSolved ? "Puzzle solved." : "Alternate solution accepted.", "success");
+        } else {
+          this.state.livesRemaining = Math.max(0, this.state.livesRemaining - 1);
+          const outOfLives = this.state.livesRemaining <= 0;
+          this.state.completed = true;
+          this.state.failed = true;
+          this.state.outOfLives = outOfLives;
+          this.setMessage(
+            outOfLives
+              ? "Out of lives. That set does not solve the puzzle."
+              : `Incorrect. ${this.state.livesRemaining} live${this.state.livesRemaining === 1 ? "" : "s"} left.`,
+            "error"
+          );
+        }
       } else {
         this.setMessage(`Word locked in. Next: ${this.activeLength}-letter word.`, "neutral");
       }
@@ -211,9 +273,11 @@
         selectedIds: [],
         solvedWords: Array(this.currentPuzzle.solution.length).fill(""),
         resetsUsed,
+        livesRemaining: this.state.livesRemaining,
         completed: false,
         gaveUp: false,
-        failed: false
+        failed: false,
+        outOfLives: false
       };
       this.setMessage(`Puzzle reset. ${this.availableResets} reset${this.availableResets === 1 ? "" : "s"} left.`, "neutral");
       return this.getViewModel();
@@ -229,6 +293,7 @@
       this.state.completed = true;
       this.state.gaveUp = true;
       this.state.failed = false;
+      this.state.outOfLives = false;
       this.state.letters.forEach((entry) => {
         entry.consumed = true;
       });
@@ -264,9 +329,11 @@
         lengths: [...this.currentPuzzle.lengths],
         resetsUsed: this.state.resetsUsed,
         resetsRemaining: this.availableResets,
+        livesRemaining: this.livesRemaining,
         completed: this.state.completed,
         gaveUp: this.state.gaveUp,
         failed: this.state.failed,
+        outOfLives: this.state.outOfLives,
         message: this.message,
         messageTone: this.messageTone,
         stars: this.getStarsEarned(),
@@ -309,7 +376,12 @@
 
       this.elements.nextButton.addEventListener("click", () => {
         if (this.logic.getViewModel().failed) {
-          this.render(this.logic.startPuzzle(this.logic.currentPuzzleIndex));
+          if (this.logic.getViewModel().outOfLives) {
+            this.render(this.logic.nextPuzzle());
+            return;
+          }
+          this.logic.resetBoardForRetry();
+          this.render(this.logic.getViewModel());
           return;
         }
         this.render(this.logic.nextPuzzle());
@@ -335,10 +407,20 @@
       this.elements.giveUpButton.disabled = view.completed;
       this.elements.nextButton.textContent = view.failed ? "Try Again" : "Next Puzzle";
 
+      this.renderLivesDots(view);
       this.renderResetDots(view);
       this.renderSlots(view);
       this.renderPool(view);
       this.renderResults(view);
+    }
+
+    renderLivesDots(view) {
+      this.elements.livesDots.innerHTML = "";
+      for (let index = 0; index < 3; index += 1) {
+        const dot = document.createElement("span");
+        dot.className = `stackwords-reset-dot${index < view.livesRemaining ? " available" : ""}`;
+        this.elements.livesDots.appendChild(dot);
+      }
     }
 
     renderResetDots(view) {
@@ -419,11 +501,15 @@
       const stars = view.stars;
       this.elements.resultsTitle.textContent = view.gaveUp
         ? "Answer Revealed"
+        : view.outOfLives
+          ? "Out Of Lives"
         : view.failed
           ? "Incorrect"
           : "Puzzle Solved";
       this.elements.resultsSummary.textContent = view.gaveUp
         ? solutionLine
+        : view.outOfLives
+          ? `Your set: ${view.solvedWords.join(" / ")}`
         : view.failed
           ? `Your set: ${view.solvedWords.join(" / ")}`
         : stars === 3
@@ -435,12 +521,14 @@
       this.elements.solutionText.hidden = !(view.gaveUp || view.failed);
       this.elements.solutionText.textContent = view.gaveUp
         ? solutionLine
+        : view.outOfLives
+          ? solutionLine
         : view.failed
-          ? "Those 3 words do not solve this puzzle."
-        : "";
-      this.elements.revealList.hidden = !view.gaveUp;
+          ? `${view.livesRemaining} live${view.livesRemaining === 1 ? "" : "s"} left. Build a new set and go again.`
+          : "";
+      this.elements.revealList.hidden = !(view.gaveUp || view.outOfLives);
       this.elements.revealList.innerHTML = "";
-      if (view.gaveUp) {
+      if (view.gaveUp || view.outOfLives) {
         view.solutionWords.forEach((word, index) => {
           const card = document.createElement("div");
           card.className = "results-score winner";
@@ -457,6 +545,12 @@
         star.textContent = "*";
         this.elements.stars.appendChild(star);
       }
+
+      this.elements.nextButton.textContent = view.outOfLives
+        ? "Next Puzzle"
+        : view.failed
+          ? "Try Again"
+          : "Next Puzzle";
     }
   }
 

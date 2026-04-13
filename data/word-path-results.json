@@ -1,0 +1,1175 @@
+{
+  "source": "data\\popular.txt",
+  "results": [
+    {
+      "pattern": [
+        "G",
+        "R",
+        "G",
+        "G"
+      ],
+      "sequence": [
+        "ABLE",
+        "BAGEL",
+        "AGILE",
+        "GOALIE",
+        "FOLIAGE"
+      ],
+      "startLength": 4,
+      "endLength": 7,
+      "greenMoves": 3,
+      "redMoves": 1,
+      "score": 385
+    },
+    {
+      "pattern": [
+        "G",
+        "R",
+        "G",
+        "G"
+      ],
+      "sequence": [
+        "ABLE",
+        "BAGEL",
+        "ANGEL",
+        "ANGLES",
+        "ANGELUS"
+      ],
+      "startLength": 4,
+      "endLength": 7,
+      "greenMoves": 3,
+      "redMoves": 1,
+      "score": 385
+    },
+    {
+      "pattern": [
+        "G",
+        "R",
+        "G",
+        "G"
+      ],
+      "sequence": [
+        "ABLE",
+        "BAGEL",
+        "ANGEL",
+        "ANGLES",
+        "BANGLES"
+      ],
+      "startLength": 4,
+      "endLength": 7,
+      "greenMoves": 3,
+      "redMoves": 1,
+      "score": 385
+    },
+    {
+      "pattern": [
+        "G",
+        "R",
+        "G",
+        "G"
+      ],
+      "sequence": [
+        "ABLE",
+        "BAGEL",
+        "ANGEL",
+        "ANGLES",
+        "GLANCES"
+      ],
+      "startLength": 4,
+      "endLength": 7,
+      "greenMoves": 3,
+      "redMoves": 1,
+      "score": 385
+    },
+    {
+      "pattern": [
+        "G",
+        "R",
+        "G",
+        "G"
+      ],
+      "sequence": [
+        "ABLE",
+        "BAGEL",
+        "ANGEL",
+        "ANGLES",
+        "SEALING"
+      ],
+      "startLength": 4,
+      "endLength": 7,
+      "greenMoves": 3,
+      "redMoves": 1,
+      "score": 385
+    },
+    {
+      "pattern": [
+        "G",
+        "R",
+        "G",
+        "G"
+      ],
+      "sequence": [
+        "ABLE",
+        "BAGEL",
+        "ANGEL",
+        "DANGLE",
+        "DEALING"
+      ],
+      "startLength": 4,
+      "endLength": 7,
+      "greenMoves": 3,
+      "redMoves": 1,
+      "score": 385
+    },
+    {
+      "pattern": [
+        "G",
+        "R",
+        "G",
+        "G"
+      ],
+      "sequence": [
+        "ABLE",
+        "BAGEL",
+        "ANGEL",
+        "DANGLE",
+        "GLANCED"
+      ],
+      "startLength": 4,
+      "endLength": 7,
+      "greenMoves": 3,
+      "redMoves": 1,
+      "score": 385
+    },
+    {
+      "pattern": [
+        "G",
+        "R",
+        "G",
+        "G"
+      ],
+      "sequence": [
+        "ABLE",
+        "BAGEL",
+        "ANGEL",
+        "DANGLE",
+        "LEADING"
+      ],
+      "startLength": 4,
+      "endLength": 7,
+      "greenMoves": 3,
+      "redMoves": 1,
+      "score": 385
+    },
+    {
+      "pattern": [
+        "G",
+        "R",
+        "G",
+        "G"
+      ],
+      "sequence": [
+        "ABLE",
+        "BAGEL",
+        "ANGEL",
+        "ANGLES",
+        "LASAGNE"
+      ],
+      "startLength": 4,
+      "endLength": 7,
+      "greenMoves": 3,
+      "redMoves": 1,
+      "score": 384
+    },
+    {
+      "pattern": [
+        "G",
+        "R",
+        "G",
+        "G"
+      ],
+      "sequence": [
+        "ABLE",
+        "BAGEL",
+        "ANGEL",
+        "DANGLE",
+        "DANGLED"
+      ],
+      "startLength": 4,
+      "endLength": 7,
+      "greenMoves": 3,
+      "redMoves": 1,
+      "score": 384
+    },
+    {
+      "pattern": [
+        "R",
+        "G",
+        "G",
+        "G"
+      ],
+      "sequence": [
+        "ABLE",
+        "ALEC",
+        "CAMEL",
+        "CALMED",
+        "CLAIMED"
+      ],
+      "startLength": 4,
+      "endLength": 7,
+      "greenMoves": 3,
+      "redMoves": 1,
+      "score": 384
+    },
+    {
+      "pattern": [
+        "R",
+        "G",
+        "G",
+        "G"
+      ],
+      "sequence": [
+        "ABLE",
+        "ALEC",
+        "CAMEL",
+        "CALMED",
+        "CLAMPED"
+      ],
+      "startLength": 4,
+      "endLength": 7,
+      "greenMoves": 3,
+      "redMoves": 1,
+      "score": 384
+    },
+    {
+      "pattern": [
+        "R",
+        "G",
+        "G",
+        "G"
+      ],
+      "sequence": [
+        "ABLE",
+        "ALEC",
+        "CAMEL",
+        "CALMED",
+        "MEDICAL"
+      ],
+      "startLength": 4,
+      "endLength": 7,
+      "greenMoves": 3,
+      "redMoves": 1,
+      "score": 384
+    },
+    {
+      "pattern": [
+        "R",
+        "G",
+        "G",
+        "G"
+      ],
+      "sequence": [
+        "ABLE",
+        "ALEC",
+        "CAMEL",
+        "CALMER",
+        "MIRACLE"
+      ],
+      "startLength": 4,
+      "endLength": 7,
+      "greenMoves": 3,
+      "redMoves": 1,
+      "score": 384
+    },
+    {
+      "pattern": [
+        "R",
+        "G",
+        "G",
+        "G"
+      ],
+      "sequence": [
+        "ABLE",
+        "ALEC",
+        "CAMEL",
+        "CALMER",
+        "RECLAIM"
+      ],
+      "startLength": 4,
+      "endLength": 7,
+      "greenMoves": 3,
+      "redMoves": 1,
+      "score": 384
+    },
+    {
+      "pattern": [
+        "R",
+        "G",
+        "G",
+        "G"
+      ],
+      "sequence": [
+        "ABLE",
+        "ALEC",
+        "CAMEL",
+        "MALICE",
+        "CLAIMED"
+      ],
+      "startLength": 4,
+      "endLength": 7,
+      "greenMoves": 3,
+      "redMoves": 1,
+      "score": 384
+    },
+    {
+      "pattern": [
+        "R",
+        "G",
+        "G",
+        "G"
+      ],
+      "sequence": [
+        "ABLE",
+        "ALEC",
+        "CAMEL",
+        "MALICE",
+        "CLIMATE"
+      ],
+      "startLength": 4,
+      "endLength": 7,
+      "greenMoves": 3,
+      "redMoves": 1,
+      "score": 384
+    },
+    {
+      "pattern": [
+        "R",
+        "G",
+        "G",
+        "G"
+      ],
+      "sequence": [
+        "ABLE",
+        "ALEC",
+        "CAMEL",
+        "MALICE",
+        "MEDICAL"
+      ],
+      "startLength": 4,
+      "endLength": 7,
+      "greenMoves": 3,
+      "redMoves": 1,
+      "score": 384
+    },
+    {
+      "pattern": [
+        "R",
+        "G",
+        "G",
+        "G"
+      ],
+      "sequence": [
+        "ABLE",
+        "ALEC",
+        "CAMEL",
+        "MALICE",
+        "MIRACLE"
+      ],
+      "startLength": 4,
+      "endLength": 7,
+      "greenMoves": 3,
+      "redMoves": 1,
+      "score": 384
+    },
+    {
+      "pattern": [
+        "R",
+        "G",
+        "G",
+        "G"
+      ],
+      "sequence": [
+        "ABLE",
+        "ALEC",
+        "CAMEL",
+        "MALICE",
+        "RECLAIM"
+      ],
+      "startLength": 4,
+      "endLength": 7,
+      "greenMoves": 3,
+      "redMoves": 1,
+      "score": 384
+    },
+    {
+      "pattern": [
+        "R",
+        "G",
+        "G",
+        "G"
+      ],
+      "sequence": [
+        "ABLE",
+        "ALEC",
+        "CAMEL",
+        "MARCEL",
+        "MIRACLE"
+      ],
+      "startLength": 4,
+      "endLength": 7,
+      "greenMoves": 3,
+      "redMoves": 1,
+      "score": 384
+    },
+    {
+      "pattern": [
+        "R",
+        "G",
+        "G",
+        "G"
+      ],
+      "sequence": [
+        "ABLE",
+        "ALEC",
+        "CAMEL",
+        "CALMED",
+        "CLAMMED"
+      ],
+      "startLength": 4,
+      "endLength": 7,
+      "greenMoves": 3,
+      "redMoves": 1,
+      "score": 383
+    },
+    {
+      "pattern": [
+        "R",
+        "G",
+        "G",
+        "G"
+      ],
+      "sequence": [
+        "ABLE",
+        "ALEC",
+        "CAMEL",
+        "CALMER",
+        "CARAMEL"
+      ],
+      "startLength": 4,
+      "endLength": 7,
+      "greenMoves": 3,
+      "redMoves": 1,
+      "score": 383
+    },
+    {
+      "pattern": [
+        "R",
+        "G",
+        "G",
+        "G"
+      ],
+      "sequence": [
+        "ABLE",
+        "ALEC",
+        "CAMEL",
+        "MARCEL",
+        "CARAMEL"
+      ],
+      "startLength": 4,
+      "endLength": 7,
+      "greenMoves": 3,
+      "redMoves": 1,
+      "score": 383
+    },
+    {
+      "pattern": [
+        "G",
+        "G",
+        "R",
+        "G"
+      ],
+      "sequence": [
+        "ABLE",
+        "BAGEL",
+        "BAGELS",
+        "ANGELS",
+        "ANGELUS"
+      ],
+      "startLength": 4,
+      "endLength": 7,
+      "greenMoves": 3,
+      "redMoves": 1,
+      "score": 374
+    },
+    {
+      "pattern": [
+        "G",
+        "G",
+        "R",
+        "G"
+      ],
+      "sequence": [
+        "ABLE",
+        "BAGEL",
+        "BAGELS",
+        "ANGELS",
+        "BANGLES"
+      ],
+      "startLength": 4,
+      "endLength": 7,
+      "greenMoves": 3,
+      "redMoves": 1,
+      "score": 374
+    },
+    {
+      "pattern": [
+        "G",
+        "G",
+        "R",
+        "G"
+      ],
+      "sequence": [
+        "ABLE",
+        "BAGEL",
+        "BAGELS",
+        "ANGELS",
+        "GLANCES"
+      ],
+      "startLength": 4,
+      "endLength": 7,
+      "greenMoves": 3,
+      "redMoves": 1,
+      "score": 374
+    },
+    {
+      "pattern": [
+        "G",
+        "G",
+        "R",
+        "G"
+      ],
+      "sequence": [
+        "ABLE",
+        "BAGEL",
+        "BAGELS",
+        "ANGELS",
+        "SEALING"
+      ],
+      "startLength": 4,
+      "endLength": 7,
+      "greenMoves": 3,
+      "redMoves": 1,
+      "score": 374
+    },
+    {
+      "pattern": [
+        "G",
+        "G",
+        "R",
+        "G"
+      ],
+      "sequence": [
+        "ABLE",
+        "BAGEL",
+        "BAGELS",
+        "ANGLES",
+        "ANGELUS"
+      ],
+      "startLength": 4,
+      "endLength": 7,
+      "greenMoves": 3,
+      "redMoves": 1,
+      "score": 374
+    },
+    {
+      "pattern": [
+        "G",
+        "G",
+        "R",
+        "G"
+      ],
+      "sequence": [
+        "ABLE",
+        "BAGEL",
+        "BAGELS",
+        "ANGLES",
+        "BANGLES"
+      ],
+      "startLength": 4,
+      "endLength": 7,
+      "greenMoves": 3,
+      "redMoves": 1,
+      "score": 374
+    },
+    {
+      "pattern": [
+        "G",
+        "G",
+        "R",
+        "G"
+      ],
+      "sequence": [
+        "ABLE",
+        "BAGEL",
+        "BAGELS",
+        "ANGLES",
+        "GLANCES"
+      ],
+      "startLength": 4,
+      "endLength": 7,
+      "greenMoves": 3,
+      "redMoves": 1,
+      "score": 374
+    },
+    {
+      "pattern": [
+        "G",
+        "G",
+        "R",
+        "G"
+      ],
+      "sequence": [
+        "ABLE",
+        "BAGEL",
+        "BAGELS",
+        "ANGLES",
+        "SEALING"
+      ],
+      "startLength": 4,
+      "endLength": 7,
+      "greenMoves": 3,
+      "redMoves": 1,
+      "score": 374
+    },
+    {
+      "pattern": [
+        "G",
+        "G",
+        "R",
+        "G"
+      ],
+      "sequence": [
+        "ABLE",
+        "BAGEL",
+        "BAGELS",
+        "BARGES",
+        "BANGERS"
+      ],
+      "startLength": 4,
+      "endLength": 7,
+      "greenMoves": 3,
+      "redMoves": 1,
+      "score": 374
+    },
+    {
+      "pattern": [
+        "G",
+        "G",
+        "R",
+        "G"
+      ],
+      "sequence": [
+        "ABLE",
+        "BAGEL",
+        "BAGELS",
+        "BLADES",
+        "BLASTED"
+      ],
+      "startLength": 4,
+      "endLength": 7,
+      "greenMoves": 3,
+      "redMoves": 1,
+      "score": 374
+    },
+    {
+      "pattern": [
+        "G",
+        "G",
+        "R",
+        "G"
+      ],
+      "sequence": [
+        "ABLE",
+        "BAGEL",
+        "BAGELS",
+        "BLADES",
+        "DISABLE"
+      ],
+      "startLength": 4,
+      "endLength": 7,
+      "greenMoves": 3,
+      "redMoves": 1,
+      "score": 374
+    },
+    {
+      "pattern": [
+        "G",
+        "G",
+        "R",
+        "G"
+      ],
+      "sequence": [
+        "ABLE",
+        "BAGEL",
+        "BAGELS",
+        "BLAMES",
+        "MARBLES"
+      ],
+      "startLength": 4,
+      "endLength": 7,
+      "greenMoves": 3,
+      "redMoves": 1,
+      "score": 374
+    },
+    {
+      "pattern": [
+        "G",
+        "G",
+        "R",
+        "G"
+      ],
+      "sequence": [
+        "ABLE",
+        "BAGEL",
+        "BAGELS",
+        "ANGELS",
+        "LASAGNE"
+      ],
+      "startLength": 4,
+      "endLength": 7,
+      "greenMoves": 3,
+      "redMoves": 1,
+      "score": 373
+    },
+    {
+      "pattern": [
+        "G",
+        "G",
+        "R",
+        "G"
+      ],
+      "sequence": [
+        "ABLE",
+        "BAGEL",
+        "BAGELS",
+        "ANGLES",
+        "LASAGNE"
+      ],
+      "startLength": 4,
+      "endLength": 7,
+      "greenMoves": 3,
+      "redMoves": 1,
+      "score": 373
+    },
+    {
+      "pattern": [
+        "G",
+        "G",
+        "R",
+        "G"
+      ],
+      "sequence": [
+        "ABLE",
+        "BAGEL",
+        "BAGELS",
+        "BARGES",
+        "BEGGARS"
+      ],
+      "startLength": 4,
+      "endLength": 7,
+      "greenMoves": 3,
+      "redMoves": 1,
+      "score": 373
+    },
+    {
+      "pattern": [
+        "G",
+        "R",
+        "G",
+        "G"
+      ],
+      "sequence": [
+        "ABLE",
+        "BAGEL",
+        "ANGEL",
+        "ANGELS",
+        "ANGELUS"
+      ],
+      "startLength": 4,
+      "endLength": 7,
+      "greenMoves": 3,
+      "redMoves": 1,
+      "score": 373
+    },
+    {
+      "pattern": [
+        "G",
+        "R",
+        "G",
+        "G"
+      ],
+      "sequence": [
+        "ABLE",
+        "BAGEL",
+        "ANGEL",
+        "ANGELS",
+        "BANGLES"
+      ],
+      "startLength": 4,
+      "endLength": 7,
+      "greenMoves": 3,
+      "redMoves": 1,
+      "score": 373
+    },
+    {
+      "pattern": [
+        "G",
+        "R",
+        "G",
+        "G"
+      ],
+      "sequence": [
+        "ABLE",
+        "BAGEL",
+        "ANGEL",
+        "ANGELS",
+        "GLANCES"
+      ],
+      "startLength": 4,
+      "endLength": 7,
+      "greenMoves": 3,
+      "redMoves": 1,
+      "score": 373
+    },
+    {
+      "pattern": [
+        "G",
+        "R",
+        "G",
+        "G"
+      ],
+      "sequence": [
+        "ABLE",
+        "BAGEL",
+        "ANGEL",
+        "ANGELS",
+        "SEALING"
+      ],
+      "startLength": 4,
+      "endLength": 7,
+      "greenMoves": 3,
+      "redMoves": 1,
+      "score": 373
+    },
+    {
+      "pattern": [
+        "G",
+        "R",
+        "G",
+        "G"
+      ],
+      "sequence": [
+        "ABLE",
+        "BAGEL",
+        "ANGEL",
+        "ANGELS",
+        "LASAGNE"
+      ],
+      "startLength": 4,
+      "endLength": 7,
+      "greenMoves": 3,
+      "redMoves": 1,
+      "score": 372
+    },
+    {
+      "pattern": [
+        "R",
+        "G",
+        "G",
+        "G"
+      ],
+      "sequence": [
+        "ABBA",
+        "BARB",
+        "RABBI",
+        "RABBIT",
+        "RABBITS"
+      ],
+      "startLength": 4,
+      "endLength": 7,
+      "greenMoves": 3,
+      "redMoves": 1,
+      "score": 366
+    },
+    {
+      "pattern": [
+        "G",
+        "G",
+        "G"
+      ],
+      "sequence": [
+        "ABLE",
+        "BAGEL",
+        "GAMBLE",
+        "GAMBLER"
+      ],
+      "startLength": 4,
+      "endLength": 7,
+      "greenMoves": 3,
+      "redMoves": 0,
+      "score": 350
+    },
+    {
+      "pattern": [
+        "G",
+        "G",
+        "G"
+      ],
+      "sequence": [
+        "ABLE",
+        "BLADE",
+        "BAILED",
+        "AUDIBLE"
+      ],
+      "startLength": 4,
+      "endLength": 7,
+      "greenMoves": 3,
+      "redMoves": 0,
+      "score": 350
+    },
+    {
+      "pattern": [
+        "G",
+        "G",
+        "G"
+      ],
+      "sequence": [
+        "ABLE",
+        "BLADE",
+        "BAILED",
+        "DISABLE"
+      ],
+      "startLength": 4,
+      "endLength": 7,
+      "greenMoves": 3,
+      "redMoves": 0,
+      "score": 350
+    },
+    {
+      "pattern": [
+        "G",
+        "G",
+        "G"
+      ],
+      "sequence": [
+        "ABLE",
+        "BLADE",
+        "FABLED",
+        "FLATBED"
+      ],
+      "startLength": 4,
+      "endLength": 7,
+      "greenMoves": 3,
+      "redMoves": 0,
+      "score": 350
+    },
+    {
+      "pattern": [
+        "G",
+        "G",
+        "G"
+      ],
+      "sequence": [
+        "ABLE",
+        "BLAME",
+        "GAMBLE",
+        "GAMBLER"
+      ],
+      "startLength": 4,
+      "endLength": 7,
+      "greenMoves": 3,
+      "redMoves": 0,
+      "score": 350
+    },
+    {
+      "pattern": [
+        "G",
+        "G",
+        "G"
+      ],
+      "sequence": [
+        "ABLE",
+        "BLAME",
+        "MARBLE",
+        "GAMBLER"
+      ],
+      "startLength": 4,
+      "endLength": 7,
+      "greenMoves": 3,
+      "redMoves": 0,
+      "score": 350
+    },
+    {
+      "pattern": [
+        "G",
+        "G",
+        "G"
+      ],
+      "sequence": [
+        "ABLE",
+        "BLAME",
+        "MARBLE",
+        "LAMBERT"
+      ],
+      "startLength": 4,
+      "endLength": 7,
+      "greenMoves": 3,
+      "redMoves": 0,
+      "score": 350
+    },
+    {
+      "pattern": [
+        "G",
+        "G",
+        "G"
+      ],
+      "sequence": [
+        "ABLE",
+        "BLADE",
+        "FABLED",
+        "BAFFLED"
+      ],
+      "startLength": 4,
+      "endLength": 7,
+      "greenMoves": 3,
+      "redMoves": 0,
+      "score": 349
+    },
+    {
+      "pattern": [
+        "G",
+        "G",
+        "G"
+      ],
+      "sequence": [
+        "ABLE",
+        "BLADE",
+        "BALLED",
+        "LABELED"
+      ],
+      "startLength": 4,
+      "endLength": 7,
+      "greenMoves": 3,
+      "redMoves": 0,
+      "score": 347
+    },
+    {
+      "pattern": [
+        "G",
+        "G",
+        "G"
+      ],
+      "sequence": [
+        "ABLE",
+        "BLADE",
+        "DABBLE",
+        "DABBLED"
+      ],
+      "startLength": 4,
+      "endLength": 7,
+      "greenMoves": 3,
+      "redMoves": 0,
+      "score": 347
+    },
+    {
+      "pattern": [
+        "G",
+        "G",
+        "G"
+      ],
+      "sequence": [
+        "ABLE",
+        "BAGEL",
+        "BAGELS",
+        "BANGLES"
+      ],
+      "startLength": 4,
+      "endLength": 7,
+      "greenMoves": 3,
+      "redMoves": 0,
+      "score": 338
+    },
+    {
+      "pattern": [
+        "G",
+        "G",
+        "G"
+      ],
+      "sequence": [
+        "ABLE",
+        "BLADE",
+        "BLADES",
+        "BLASTED"
+      ],
+      "startLength": 4,
+      "endLength": 7,
+      "greenMoves": 3,
+      "redMoves": 0,
+      "score": 338
+    },
+    {
+      "pattern": [
+        "G",
+        "G",
+        "G"
+      ],
+      "sequence": [
+        "ABLE",
+        "BLADE",
+        "BLADES",
+        "DISABLE"
+      ],
+      "startLength": 4,
+      "endLength": 7,
+      "greenMoves": 3,
+      "redMoves": 0,
+      "score": 338
+    },
+    {
+      "pattern": [
+        "G",
+        "G",
+        "G"
+      ],
+      "sequence": [
+        "ABLE",
+        "BLAME",
+        "BLAMES",
+        "MARBLES"
+      ],
+      "startLength": 4,
+      "endLength": 7,
+      "greenMoves": 3,
+      "redMoves": 0,
+      "score": 338
+    },
+    {
+      "pattern": [
+        "G",
+        "G",
+        "G"
+      ],
+      "sequence": [
+        "ABLE",
+        "BLAME",
+        "MARBLE",
+        "MARBLES"
+      ],
+      "startLength": 4,
+      "endLength": 7,
+      "greenMoves": 3,
+      "redMoves": 0,
+      "score": 338
+    }
+  ]
+}
