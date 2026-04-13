@@ -6,6 +6,7 @@ const ENABLE_PATH = path.join(ROOT, "data", "enable1.txt");
 const POPULAR_PATH = path.join(ROOT, "data", "popular.txt");
 const ARCADE_OUTPUT = path.join(ROOT, "data", "arcade-rounds.json");
 const PUZZLE_OUTPUT = path.join(ROOT, "data", "puzzle-boards.json");
+const VALIDATION_OUTPUT = path.join(ROOT, "data", "game-validation.txt");
 
 const SUPPORTED_LENGTHS = [4, 5, 6, 7, 8];
 const ARCADE_REQUIRED_LENGTHS = [4, 5, 6, 7];
@@ -164,7 +165,12 @@ function buildPuzzleBoards(rounds) {
 }
 
 function main() {
-  const enableWords = normalizeDictionary(fs.readFileSync(ENABLE_PATH, "utf8").split(/\r?\n/));
+  const enableWords = [...new Set(
+    fs.readFileSync(ENABLE_PATH, "utf8")
+      .split(/\r?\n/)
+      .map(normalizeWord)
+      .filter((word) => word.length >= 3 && word.length <= 8)
+  )];
   const validationSet = new Set(enableWords);
   const roundWords = normalizeRoundDictionary(fs.readFileSync(POPULAR_PATH, "utf8").split(/\r?\n/))
     .filter((word) => validationSet.has(word));
@@ -181,9 +187,11 @@ function main() {
 
   fs.writeFileSync(ARCADE_OUTPUT, `${JSON.stringify(rounds, null, 2)}\n`);
   fs.writeFileSync(PUZZLE_OUTPUT, `${JSON.stringify(puzzleBoards, null, 2)}\n`);
+  fs.writeFileSync(VALIDATION_OUTPUT, `${enableWords.join("\n")}\n`);
 
   console.log(`Wrote ${rounds.length} arcade rounds to ${path.relative(ROOT, ARCADE_OUTPUT)}`);
   console.log(`Wrote ${puzzleBoards.length} puzzle boards to ${path.relative(ROOT, PUZZLE_OUTPUT)}`);
+  console.log(`Wrote ${enableWords.length} validation words to ${path.relative(ROOT, VALIDATION_OUTPUT)}`);
 }
 
 main();

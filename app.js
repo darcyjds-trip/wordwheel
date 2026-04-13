@@ -41,7 +41,7 @@ const FALLBACK_WORD_BANK = [
   "wonder", "writer", "yellow"
 ];
 
-const VALIDATION_DICTIONARY_URL = "./data/enable1.txt";
+const VALIDATION_DICTIONARY_URL = "./data/game-validation.txt";
 const ROUND_DICTIONARY_URL = "./data/popular.txt";
 const ARCADE_ROUNDS_URL = "./data/arcade-rounds.json";
 const PUZZLE_BOARDS_URL = "./data/puzzle-boards.json";
@@ -102,12 +102,16 @@ const state = {
   leaderboardError: "",
   dictionarySource: "fallback",
   dictionaryReady: false,
+  dictionaryLoading: false,
   validationWords: [],
   validationSet: new Set(),
+  validationReady: false,
+  validationLoading: false,
   roundWords: [],
   rounds: [],
   puzzleBoards: [],
   themeRounds: [],
+  themeLoading: false,
   sessionRounds: [],
   sessionWheelPlans: [],
   sessionIndex: 0,
@@ -125,6 +129,10 @@ const state = {
   usedWords: new Set(),
   scores: loadStoredScores()
 };
+
+let validationLoadPromise = null;
+let wordWheelLoadPromise = null;
+let themeLoadPromise = null;
 
 const elements = {
   launchScreen: document.getElementById("launchScreen"),
@@ -333,9 +341,13 @@ function updateEntryButtons() {
   elements.joinRoomInput.disabled = disabled;
   elements.joinRoomForm.querySelector("button").disabled = disabled;
 
-  if (!state.dictionaryReady) {
-    elements.launchStatus.textContent = "Loading Word Wheel...";
-    elements.homeStatus.textContent = "Loading dictionary...";
+  if (state.dictionaryLoading) {
+    elements.launchStatus.textContent = "Word Wheel is loading on demand.";
+    elements.homeStatus.textContent = "Loading Word Wheel...";
+    elements.multiplayerStatus.textContent = "";
+  } else if (!state.dictionaryReady) {
+    elements.launchStatus.textContent = "Choose a game.";
+    elements.homeStatus.textContent = "Open Word Wheel to load it.";
     elements.multiplayerStatus.textContent = "";
   } else {
     elements.launchStatus.textContent = "Choose a game.";
@@ -795,12 +807,15 @@ async function leaveLobby() {
   setScreen("multiplayer-menu");
 }
 
-function startSinglePlayerGame(variant = "arcade") {
-  if (variant === "theme" && state.themeRounds.length === 0) {
-    showToast("No theme packs loaded yet.");
-    return;
+async function startSinglePlayerGame(variant = "arcade") {
+  await ensureWordWheelDataLoaded();
+  if (variant === "theme") {
+    await ensureThemeDataLoaded();
+    if (state.themeRounds.length === 0) {
+      showToast("No theme packs loaded yet.");
+      return;
+    }
   }
-
   state.gameMode = "single";
   state.singlePlayerVariant = variant;
   state.raceOpponentName = RACE_RIVAL_NAME;
@@ -1587,6 +1602,161 @@ async function refreshLeaderboard() {
   } catch (error) {
     state.leaderboardError = error.message;
     updateLeaderboard();
+  }
+}
+
+async function ensureValidationLoaded() {
+  if (state.validationReady && state.validationSet.size > 0) {
+    return;
+  }
+
+  if (validationLoadPromise) {
+    return validationLoadPromise;
+  }
+
+  state.validationLoading = true;
+  validationLoadPromise = (async () => {
+    try {
+      const response = await fetch(VALIDATION_DICTIONARY_URL);
+      if (!response.ok) {
+        throw new Error(`Validation dictionary fetch failed with ${response.status}`);
+      }
+
+      const validationText = await response.text();
+      state.validationWords = normalizeDictionary(validationText.split(/\r?\n/));
+      state.validationSet = new Set(state.validationWords);
+      state.validationReady = state.validationSet.size > 0;
+      if (state.validationReady) {
+        state.dictionarySource = "game-validation";
+      }
+    } catch (error) {
+      state.validationWords = normalizeDictionary(FALLBACK_WORD_BANK);
+      state.validationSet = new Set(state.validationWords);
+      state.validationReady = true;
+      state.dictionarySource = "fallback";
+    } finally {
+      state.validationLoading = false;
+    }
+  })();
+
+  try {
+    await validationLoadPromise;
+  } finally {
+    validationLoadPromise = null;
+  }
+}
+
+async function ensureThemeDataLoaded() {
+  if (state.themeRounds.length > 0) {
+    return;
+  }
+
+  if (themeLoadPromise) {
+    return themeLoadPromise;
+  }
+
+  state.themeLoading = true;
+  themeLoadPromise = (async () => {
+    try {
+      const themeManifestResponse = await fetch(THEME_MANIFEST_URL);
+      if (!themeManifestResponse.ok) {
+        state.themeRounds = [];
+        return;
+      }
+
+      const manifest = await themeManifestResponse.json();
+      const files = Array.isArray(manifest?.files) ? manifest.files : [];
+      const themeResponses = await Promise.all(files.map((file) => fetch(`./data/themes/${file}`)));
+      const themePayloads = await Promise.all(themeResponses.filter((response) => response.ok).map((response) => response.json()));
+      state.themeRounds = themePayloads.map((payload) => normalizeThemeRound(payload));
+    } catch (error) {
+      state.themeRounds = [];
+    } finally {
+      state.themeLoading = false;
+    }
+  })();
+
+  try {
+    await themeLoadPromise;
+  } finally {
+    themeLoadPromise = null;
+  }
+}
+
+async function ensureWordWheelDataLoaded() {
+  if (state.dictionaryReady) {
+    return;
+  }
+
+  if (wordWheelLoadPromise) {
+    return wordWheelLoadPromise;
+  }
+
+  state.dictionaryLoading = true;
+  updateEntryButtons();
+
+  wordWheelLoadPromise = (async () => {
+    await ensureValidationLoaded();
+    setMessage("Loading Word Wheel data...");
+
+    try {
+      const [arcadeRoundsResponse, puzzleBoardsResponse] = await Promise.all([
+        fetch(ARCADE_ROUNDS_URL),
+        fetch(PUZZLE_BOARDS_URL)
+      ]);
+
+      if (arcadeRoundsResponse.ok && puzzleBoardsResponse.ok) {
+        const arcadePayload = await arcadeRoundsResponse.json();
+        const puzzlePayload = await puzzleBoardsResponse.json();
+        state.rounds = (Array.isArray(arcadePayload) ? arcadePayload : []).map((round, index) => normalizePrecomputedRound(round, index));
+        state.puzzleBoards = (Array.isArray(puzzlePayload) ? puzzlePayload : []).map((board, index) => normalizePrecomputedPuzzleBoard(board, index));
+        state.dictionarySource = state.validationReady ? "precomputed + validation" : "precomputed";
+      } else {
+        const roundResponse = await fetch(ROUND_DICTIONARY_URL);
+        if (roundResponse.ok) {
+          const roundText = await roundResponse.text();
+          state.roundWords = normalizeRoundDictionary(roundText.split(/\r?\n/))
+            .filter((word) => state.validationSet.has(word));
+          state.dictionarySource = "enable + common";
+        } else {
+          state.roundWords = state.validationWords.filter((word) => isGameFriendlyWord(word));
+          state.dictionarySource = state.validationReady ? "validation fallback" : "fallback";
+        }
+
+        if (state.roundWords.length === 0) {
+          state.roundWords = state.validationWords.filter((word) => isGameFriendlyWord(word));
+        }
+
+        state.rounds = buildRounds();
+        state.puzzleBoards = [];
+      }
+    } catch (error) {
+      if (state.roundWords.length === 0) {
+        state.roundWords = state.validationWords.filter((word) => isGameFriendlyWord(word));
+      }
+      state.rounds = buildRounds();
+      state.puzzleBoards = [];
+      state.dictionarySource = "fallback";
+    }
+
+    state.dictionaryReady = state.rounds.length > 0;
+    state.dictionaryLoading = false;
+    updateEntryButtons();
+
+    if (!state.dictionaryReady) {
+      elements.homeStatus.textContent = "Dictionary failed to load.";
+      setMessage("The dictionary loaded, but no playable rounds were built.", "error");
+      return;
+    }
+
+    elements.homeStatus.textContent = "Choose a mode.";
+    refreshLeaderboard();
+  })();
+
+  try {
+    await wordWheelLoadPromise;
+  } finally {
+    wordWheelLoadPromise = null;
   }
 }
 
@@ -2493,91 +2663,6 @@ function hasAscendingSolveOrder() {
     && state.currentRound.solveSequence.every((length, index) => length === ARCADE_REQUIRED_LENGTHS[index]);
 }
 
-async function loadDictionary() {
-  setSpinning(true);
-  setMessage("Loading proper game dictionary and balancing rounds...");
-  updateEntryButtons();
-
-  try {
-    const [validationResponse, arcadeRoundsResponse, puzzleBoardsResponse, themeManifestResponse] = await Promise.all([
-      fetch(VALIDATION_DICTIONARY_URL),
-      fetch(ARCADE_ROUNDS_URL),
-      fetch(PUZZLE_BOARDS_URL),
-      fetch(THEME_MANIFEST_URL)
-    ]);
-
-    if (!validationResponse.ok) {
-      throw new Error(`Validation dictionary fetch failed with ${validationResponse.status}`);
-    }
-
-    const validationText = await validationResponse.text();
-    state.validationWords = normalizeDictionary(validationText.split(/\r?\n/));
-    state.validationSet = new Set(state.validationWords);
-
-    if (arcadeRoundsResponse.ok && puzzleBoardsResponse.ok) {
-      const arcadePayload = await arcadeRoundsResponse.json();
-      const puzzlePayload = await puzzleBoardsResponse.json();
-      state.rounds = (Array.isArray(arcadePayload) ? arcadePayload : []).map((round, index) => normalizePrecomputedRound(round, index));
-      state.puzzleBoards = (Array.isArray(puzzlePayload) ? puzzlePayload : []).map((board, index) => normalizePrecomputedPuzzleBoard(board, index));
-      state.dictionarySource = "precomputed";
-    } else {
-      const roundResponse = await fetch(ROUND_DICTIONARY_URL);
-      if (roundResponse.ok) {
-        const roundText = await roundResponse.text();
-        state.roundWords = normalizeRoundDictionary(roundText.split(/\r?\n/))
-          .filter((word) => state.validationSet.has(word));
-        state.dictionarySource = "enable + common";
-      } else {
-        state.roundWords = state.validationWords.filter((word) => isGameFriendlyWord(word));
-        state.dictionarySource = "enable";
-      }
-
-      if (state.roundWords.length === 0) {
-        state.roundWords = state.validationWords.filter((word) => isGameFriendlyWord(word));
-      }
-
-      state.rounds = buildRounds();
-      state.puzzleBoards = [];
-    }
-
-    if (themeManifestResponse.ok) {
-      const manifest = await themeManifestResponse.json();
-      const files = Array.isArray(manifest?.files) ? manifest.files : [];
-      const themeResponses = await Promise.all(files.map((file) => fetch(`./data/themes/${file}`)));
-      const themePayloads = await Promise.all(themeResponses.filter((response) => response.ok).map((response) => response.json()));
-      state.themeRounds = themePayloads.map((payload) => normalizeThemeRound(payload));
-    } else {
-      state.themeRounds = [];
-    }
-  } catch (error) {
-    state.validationWords = normalizeDictionary(FALLBACK_WORD_BANK);
-    state.validationSet = new Set(state.validationWords);
-    state.roundWords = normalizeRoundDictionary(FALLBACK_WORD_BANK);
-    state.dictionarySource = "fallback";
-    state.puzzleBoards = [];
-    state.themeRounds = [];
-    state.rounds = buildRounds();
-  }
-
-  if (state.rounds.length === 0 && state.roundWords.length === 0) {
-    state.roundWords = state.validationWords.filter((word) => isGameFriendlyWord(word));
-    state.rounds = buildRounds();
-  }
-
-  state.dictionaryReady = state.rounds.length > 0;
-
-  if (!state.dictionaryReady) {
-    elements.homeStatus.textContent = "Dictionary failed to load.";
-    setMessage("The dictionary loaded, but no playable rounds were built.", "error");
-    updateEntryButtons();
-    return;
-  }
-
-  elements.homeStatus.textContent = "Choose a mode.";
-  updateEntryButtons();
-  refreshLeaderboard();
-}
-
 elements.guessForm.addEventListener("submit", handleGuess);
 elements.guessInput.addEventListener("input", () => {
   clearAutoSubmitTimer();
@@ -2629,12 +2714,14 @@ elements.restartButton.addEventListener("click", async () => {
 elements.leaderboardButton.addEventListener("click", () => {
   elements.leaderboardPanel.hidden = !elements.leaderboardPanel.hidden;
 });
-elements.wordWheelEntryButton.addEventListener("click", () => {
+elements.wordWheelEntryButton.addEventListener("click", async () => {
   setScreen("home");
+  await ensureWordWheelDataLoaded();
 });
 elements.stackWordsEntryButton.addEventListener("click", async () => {
   ensureAudioReady();
   setScreen("stackwords");
+  ensureValidationLoaded().catch(() => {});
   try {
     await stackWordsController?.start();
   } catch (error) {
@@ -2654,22 +2741,23 @@ elements.wordWheelBackButton.addEventListener("click", () => {
 elements.singlePlayerButton.addEventListener("click", () => {
   setScreen("single-player-menu");
 });
-elements.arcadeModeButton.addEventListener("click", () => {
+elements.arcadeModeButton.addEventListener("click", async () => {
   ensureAudioReady();
-  startSinglePlayerGame("arcade");
+  await startSinglePlayerGame("arcade");
 });
-elements.puzzleModeButton.addEventListener("click", () => {
+elements.puzzleModeButton.addEventListener("click", async () => {
   ensureAudioReady();
-  startSinglePlayerGame("puzzle");
+  await startSinglePlayerGame("puzzle");
 });
-elements.themeModeButton.addEventListener("click", () => {
+elements.themeModeButton.addEventListener("click", async () => {
   ensureAudioReady();
-  startSinglePlayerGame("theme");
+  await startSinglePlayerGame("theme");
 });
 elements.singlePlayerBackButton.addEventListener("click", () => {
   setScreen("home");
 });
-elements.multiplayerButton.addEventListener("click", () => {
+elements.multiplayerButton.addEventListener("click", async () => {
+  await ensureWordWheelDataLoaded();
   elements.playerNameMenuInput.value = state.playerName;
   setScreen("multiplayer-menu");
 });
