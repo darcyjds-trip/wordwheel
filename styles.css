@@ -158,18 +158,6 @@ body::before {
   text-transform: uppercase;
 }
 
-.mystery-target-label {
-  border-color: rgba(78, 242, 255, 0.28);
-  background: rgba(78, 242, 255, 0.08);
-  color: var(--accent);
-}
-
-.mystery-wheel-label {
-  border-color: rgba(255, 216, 77, 0.28);
-  background: rgba(255, 216, 77, 0.08);
-  color: var(--warm);
-}
-
 .mystery-groups {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -182,11 +170,23 @@ body::before {
   gap: 8px;
 }
 
+.mystery-group.active {
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid rgba(78, 242, 255, 0.32);
+  background: rgba(78, 242, 255, 0.06);
+  box-shadow: 0 0 16px rgba(78, 242, 255, 0.12);
+}
+
 .mystery-group-title {
   color: var(--muted);
   font-size: 0.72rem;
   font-weight: 700;
   text-transform: uppercase;
+}
+
+.mystery-group.active .mystery-group-title {
+  color: var(--accent);
 }
 
 .mystery-word {
@@ -224,6 +224,27 @@ body::before {
   color: #d8e7ff;
   background: rgba(60, 77, 116, 0.82);
   border-color: rgba(140, 164, 224, 0.34);
+}
+
+.mystery-word.prompting .mystery-letter {
+  animation: mysteryPromptGlow 1400ms ease-out 2;
+}
+
+@keyframes mysteryPromptGlow {
+  0% {
+    box-shadow: 0 0 0 rgba(255, 216, 77, 0);
+    border-color: rgba(123, 173, 201, 0.18);
+  }
+
+  35% {
+    box-shadow: 0 0 18px rgba(255, 216, 77, 0.42);
+    border-color: rgba(255, 216, 77, 0.56);
+  }
+
+  100% {
+    box-shadow: 0 0 0 rgba(255, 216, 77, 0);
+    border-color: rgba(123, 173, 201, 0.18);
+  }
 }
 
 .stackwords-screen {

@@ -121,6 +121,9 @@ const state = {
   puzzleWordsByLength: {},
   boardStepIndex: 0,
   currentThemeName: "",
+  promptWord: "",
+  promptTimeoutId: null,
+  promptClearTimeoutId: null,
   playerId: crypto.randomUUID ? crypto.randomUUID() : `player-${Math.random().toString(36).slice(2, 10)}`,
   playerName: loadStoredPlayerName(),
   playerReady: false,
@@ -227,8 +230,6 @@ const elements = {
   mysteryPanel: document.getElementById("mysteryPanel"),
   mysteryMeta: document.getElementById("mysteryMeta"),
   mysteryThemeLabel: document.getElementById("mysteryThemeLabel"),
-  mysteryTargetLabel: document.getElementById("mysteryTargetLabel"),
-  mysteryWheelLettersLabel: document.getElementById("mysteryWheelLettersLabel"),
   mysteryGroups: document.getElementById("mysteryGroups"),
   skipButton: document.getElementById("skipButton"),
   message: document.getElementById("message"),
@@ -1424,10 +1425,12 @@ function buildThemeBoards(seedText = null) {
   }
 
   const templateSequence = Array.from({ length: SESSION_ROUND_COUNT }, (_, index) => themeTemplates[index % themeTemplates.length]);
-  return shuffle(templateSequence, rng).map((template, roundIndex) => ({
-    ...JSON.parse(JSON.stringify(template)),
-    roundIndex
-  }));
+  return shuffle(templateSequence, rng).map((template, roundIndex) => {
+    const board = JSON.parse(JSON.stringify(template));
+    board.themeSteps = shuffle(board.themeSteps || [], createRng(`${seed}-theme-order-${roundIndex}-${board.themeName || "theme"}`));
+    board.roundIndex = roundIndex;
+    return board;
+  });
 }
 
 function getRemainingDynamicEntries(roundData = state.currentRound) {
@@ -1507,6 +1510,42 @@ function updateHud() {
 function clearRivalTimers() {
   state.rivalTimers.forEach((timerId) => window.clearTimeout(timerId));
   state.rivalTimers = [];
+}
+
+function clearThemePromptTimers() {
+  if (state.promptTimeoutId) {
+    window.clearTimeout(state.promptTimeoutId);
+    state.promptTimeoutId = null;
+  }
+  if (state.promptClearTimeoutId) {
+    window.clearTimeout(state.promptClearTimeoutId);
+    state.promptClearTimeoutId = null;
+  }
+  state.promptWord = "";
+}
+
+function scheduleThemePrompt() {
+  clearThemePromptTimers();
+  if (!isThemeMode() || !state.currentRound?.activeTargetWord) {
+    return;
+  }
+
+  const targetWord = state.currentRound.activeTargetWord;
+  state.promptTimeoutId = window.setTimeout(() => {
+    if (!state.currentRound || state.currentRound.activeTargetWord !== targetWord) {
+      return;
+    }
+    state.promptWord = targetWord;
+    updateMysteryPanel();
+    state.promptClearTimeoutId = window.setTimeout(() => {
+      if (state.promptWord === targetWord) {
+        state.promptWord = "";
+        updateMysteryPanel();
+      }
+      state.promptClearTimeoutId = null;
+    }, 3200);
+    state.promptTimeoutId = null;
+  }, 15000);
 }
 
 function createRacePlayers() {
@@ -1839,8 +1878,6 @@ function updateGoals() {
 function updateMysteryPanel() {
   elements.mysteryGroups.innerHTML = "";
   elements.mysteryMeta.hidden = true;
-  elements.mysteryTargetLabel.hidden = true;
-  elements.mysteryWheelLettersLabel.hidden = true;
 
   if (!isBoardMode() || !state.currentRound) {
     return;
@@ -1849,20 +1886,13 @@ function updateMysteryPanel() {
   if (isThemeMode() && state.currentRound.themeName) {
     elements.mysteryThemeLabel.textContent = `Theme: ${state.currentRound.themeName}`;
     elements.mysteryMeta.hidden = false;
-    if (state.currentRound.activeTargetWord) {
-      elements.mysteryTargetLabel.textContent = `Target: ${state.currentRound.activeTargetWord.toUpperCase()}`;
-      elements.mysteryTargetLabel.hidden = false;
-    }
-    if (Array.isArray(state.currentRound.letters) && state.currentRound.letters.length === 3) {
-      elements.mysteryWheelLettersLabel.textContent = `Wheel: ${state.currentRound.letters.map((letter) => letter.toUpperCase()).join(" ")}`;
-      elements.mysteryWheelLettersLabel.hidden = false;
-    }
   }
 
   PUZZLE_REQUIRED_LENGTHS.forEach((length) => {
     const words = state.currentRound.puzzleWordsByLength?.[length] || [];
     const group = document.createElement("div");
-    group.className = "mystery-group";
+    const isActiveGroup = isThemeMode() && state.currentRound.activeTargetLength === length;
+    group.className = `mystery-group${isActiveGroup ? " active" : ""}`;
 
     const title = document.createElement("div");
     title.className = "mystery-group-title";
@@ -1871,7 +1901,8 @@ function updateMysteryPanel() {
 
     words.forEach((entry) => {
       const row = document.createElement("div");
-      row.className = `mystery-word${entry.solved ? " solved" : ""}${entry.revealed && !entry.solved ? " revealed" : ""}`;
+      const isPrompting = isThemeMode() && !entry.solved && entry.word === state.promptWord;
+      row.className = `mystery-word${entry.solved ? " solved" : ""}${entry.revealed && !entry.solved ? " revealed" : ""}${isPrompting ? " prompting" : ""}`;
 
       entry.word.split("").forEach((letter, index) => {
         const cell = document.createElement("div");
@@ -2107,6 +2138,7 @@ function clearTimer() {
     state.timerId = null;
   }
   state.lastTickSecond = null;
+  clearThemePromptTimers();
 }
 
 function updateTimerDisplay() {
@@ -2201,6 +2233,7 @@ function applyDynamicBoardStep(roundData) {
   roundData.activeTargetLength = targetStep.targetLength;
   roundData.letters = [...targetStep.letters];
   roundData.wheels = buildDynamicWheels(targetStep.letters, targetStep.targetWord, rng);
+  state.promptWord = "";
   return true;
 }
 
@@ -2240,6 +2273,9 @@ function loadNextRound(messageText, startAt = null) {
   );
   elements.guessInput.value = "";
   setSpinning(true);
+  if (isThemeMode()) {
+    scheduleThemePrompt();
+  }
 
   const startDelay = startAt ? Math.max(startAt - Date.now(), 0) : 950;
   if (startAt) {
@@ -2328,6 +2364,9 @@ function advanceDynamicBoardStep(messageText) {
   setMessage(messageText || "Next theme combo ready.");
   elements.guessInput.value = "";
   setSpinning(true);
+  if (isThemeMode()) {
+    scheduleThemePrompt();
+  }
   window.setTimeout(() => {
     setSpinning(false);
     elements.guessInput.focus();
