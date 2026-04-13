@@ -227,6 +227,7 @@ const elements = {
   mysteryPanel: document.getElementById("mysteryPanel"),
   mysteryMeta: document.getElementById("mysteryMeta"),
   mysteryThemeLabel: document.getElementById("mysteryThemeLabel"),
+  mysteryTargetLabel: document.getElementById("mysteryTargetLabel"),
   mysteryGroups: document.getElementById("mysteryGroups"),
   skipButton: document.getElementById("skipButton"),
   message: document.getElementById("message"),
@@ -1837,6 +1838,7 @@ function updateGoals() {
 function updateMysteryPanel() {
   elements.mysteryGroups.innerHTML = "";
   elements.mysteryMeta.hidden = true;
+  elements.mysteryTargetLabel.hidden = true;
 
   if (!isBoardMode() || !state.currentRound) {
     return;
@@ -1845,6 +1847,10 @@ function updateMysteryPanel() {
   if (isThemeMode() && state.currentRound.themeName) {
     elements.mysteryThemeLabel.textContent = `Theme: ${state.currentRound.themeName}`;
     elements.mysteryMeta.hidden = false;
+    if (state.currentRound.activeTargetWord) {
+      elements.mysteryTargetLabel.textContent = `Target: ${state.currentRound.activeTargetWord.toUpperCase()}`;
+      elements.mysteryTargetLabel.hidden = false;
+    }
   }
 
   PUZZLE_REQUIRED_LENGTHS.forEach((length) => {

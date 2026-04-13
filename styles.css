@@ -139,6 +139,8 @@ body::before {
   display: flex;
   align-items: center;
   justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 8px;
   margin-bottom: 10px;
 }
 
@@ -154,6 +156,12 @@ body::before {
   font-size: 0.76rem;
   font-weight: 800;
   text-transform: uppercase;
+}
+
+.mystery-target-label {
+  border-color: rgba(78, 242, 255, 0.28);
+  background: rgba(78, 242, 255, 0.08);
+  color: var(--accent);
 }
 
 .mystery-groups {
