@@ -2921,4 +2921,3 @@ setScreen("launch");
 elements.playerNameMenuInput.value = state.playerName;
 updateModePanels();
 updateEntryButtons();
-loadDictionary();
