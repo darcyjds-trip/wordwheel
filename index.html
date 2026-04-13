@@ -21,6 +21,7 @@
         <h1>Choose A Game</h1>
         <div class="menu-actions">
           <button id="wordWheelEntryButton" class="menu-button" type="button">Word Wheel</button>
+          <button id="lexiPathEntryButton" class="menu-button secondary" type="button">LexiPath</button>
           <button id="stackWordsEntryButton" class="menu-button secondary" type="button">Triple Stack</button>
         </div>
         <div class="menu-actions">
@@ -188,6 +189,35 @@
       </div>
     </section>
 
+    <section id="lexiPathScreen" class="game-panel lexipath-screen" hidden>
+      <div class="lexipath-shell">
+        <div class="lexipath-header">
+          <div>
+            <p class="menu-kicker">Word Path</p>
+            <h1>LexiPath</h1>
+          </div>
+          <div class="lexipath-meta">
+            <span id="lexiPathDifficulty" class="mystery-theme-label" hidden></span>
+            <span id="lexiPathPuzzleLabel" class="mode-summary">Loading puzzle...</span>
+          </div>
+        </div>
+
+        <section id="lexiPathChain" class="lexipath-chain"></section>
+
+        <section class="lexipath-feedback">
+          <p id="lexiPathMessage" class="message">Loading path...</p>
+        </section>
+
+        <section class="control-panel bottom-controls lexipath-controls">
+          <div class="session-actions">
+            <button id="lexiPathBackButton" class="ghost-button" type="button">Back</button>
+            <button id="lexiPathSubmitButton" class="menu-button" type="button">Submit Chain</button>
+            <button id="lexiPathNextButton" class="ghost-button" type="button" hidden>Next Random Puzzle</button>
+          </div>
+        </section>
+      </div>
+    </section>
+
     <section id="gamePanel" class="game-panel" hidden>
       <div class="hud">
         <div id="scoreCard" class="stat-card">
@@ -302,6 +332,7 @@
   <div id="toastStack" class="toast-stack" aria-live="polite"></div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="lexipath.js"></script>
   <script src="stackwords.js"></script>
   <script src="app.js"></script>
 </body>

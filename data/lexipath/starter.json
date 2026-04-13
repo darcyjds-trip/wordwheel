@@ -1,0 +1,28 @@
+{
+  "chains": [
+    {
+      "id": "chain_001",
+      "sequence": ["CARE", "RACE", "RACER", "CRATER"],
+      "pattern": ["B", "Y", "G"],
+      "start": "CARE",
+      "end": "CRATER",
+      "difficulty": 2
+    },
+    {
+      "id": "chain_002",
+      "sequence": ["TONE", "TONER", "STORE", "SORTER"],
+      "pattern": ["Y", "R", "G"],
+      "start": "TONE",
+      "end": "SORTER",
+      "difficulty": 3
+    },
+    {
+      "id": "chain_003",
+      "sequence": ["MEAT", "TEAM", "STEAM", "STREAM"],
+      "pattern": ["B", "Y", "G"],
+      "start": "MEAT",
+      "end": "STREAM",
+      "difficulty": 3
+    }
+  ]
+}

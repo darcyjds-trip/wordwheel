@@ -1,0 +1,84 @@
+{
+  "chains": [
+    {
+      "sequence": ["CAT", "COAT", "CART", "CRATE", "TRACER"],
+      "pattern": ["Y", "R", "G", "G"]
+    },
+    {
+      "sequence": ["CARE", "RACE", "TRACE", "CRATE", "REACT"],
+      "pattern": ["B", "Y", "B", "B"]
+    },
+    {
+      "sequence": ["RATE", "TEAR", "HEART", "EARTH", "HATRED", "THREAD"],
+      "pattern": ["B", "G", "B", "G", "B"]
+    },
+    {
+      "sequence": ["ONE", "TONE", "NOTE", "STONE", "ONSET", "SETON"],
+      "pattern": ["Y", "B", "Y", "B", "B"]
+    },
+    {
+      "sequence": ["EAT", "HEAT", "HATE", "HEART", "EARTH", "HEARTS"],
+      "pattern": ["Y", "B", "G", "B", "G"]
+    },
+    {
+      "sequence": ["SEA", "SEAT", "TEAS", "TEAR", "HEART", "EARTH"],
+      "pattern": ["Y", "B", "R", "G", "B"]
+    },
+    {
+      "sequence": ["ART", "RATE", "TEAR", "HEART", "EARTH", "HEARTS"],
+      "pattern": ["G", "B", "G", "B", "G"]
+    },
+    {
+      "sequence": ["PAN", "PANE", "PEAR", "SPEAR", "SPARE"],
+      "pattern": ["Y", "R", "Y", "B"]
+    },
+    {
+      "sequence": ["MAN", "MEAN", "NAME", "AMEND"],
+      "pattern": ["Y", "B", "G"]
+    },
+    {
+      "sequence": ["TIN", "TINT", "TINE", "INLET"],
+      "pattern": ["Y", "R", "G"]
+    },
+    {
+      "sequence": ["PIN", "PINE", "PIER", "RIPEN"],
+      "pattern": ["Y", "R", "G"]
+    },
+    {
+      "sequence": ["RAT", "TAR", "STAR", "START", "STRATA"],
+      "pattern": ["B", "Y", "Y", "G"]
+    },
+    {
+      "sequence": ["POST", "SPOT", "SPORT", "PORTS", "PASTOR"],
+      "pattern": ["B", "Y", "B", "G"]
+    },
+    {
+      "sequence": ["STOP", "SPOT", "SPORT", "STROP", "POSTER"],
+      "pattern": ["B", "Y", "B", "G"]
+    },
+    {
+      "sequence": ["NOTE", "TONE", "TONER", "TENOR"],
+      "pattern": ["B", "Y", "B"]
+    },
+    {
+      "sequence": ["CARE", "CARET", "CRATE", "TRACE", "REACT"],
+      "pattern": ["Y", "B", "B", "B"]
+    },
+    {
+      "sequence": ["PEAR", "REAP", "SPEAR", "SPARE", "PARSE"],
+      "pattern": ["B", "Y", "B", "B"]
+    },
+    {
+      "sequence": ["LIST", "SILT", "SLIT", "SPLIT", "SPILT"],
+      "pattern": ["B", "B", "Y", "B"]
+    },
+    {
+      "sequence": ["MEAT", "MATE", "MATEY", "MEATY", "STEAMY"],
+      "pattern": ["B", "Y", "B", "G"]
+    },
+    {
+      "sequence": ["READ", "DEAR", "DREAD", "ADDER", "ADDERS"],
+      "pattern": ["B", "Y", "B", "Y"]
+    }
+  ]
+}

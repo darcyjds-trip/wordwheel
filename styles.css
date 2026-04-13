@@ -226,6 +226,16 @@ body::before {
   border-color: rgba(140, 164, 224, 0.34);
 }
 
+.mystery-word.current-target .mystery-letter {
+  border-color: rgba(78, 242, 255, 0.42);
+  box-shadow: 0 0 12px rgba(78, 242, 255, 0.16);
+}
+
+.mystery-word.current-target .mystery-letter.clue {
+  border-color: rgba(255, 216, 77, 0.48);
+  box-shadow: 0 0 14px rgba(255, 216, 77, 0.18);
+}
+
 .mystery-word.prompting .mystery-letter {
   animation: mysteryPromptGlow 1400ms ease-out 2;
 }
@@ -254,7 +264,7 @@ body::before {
 
 .stackwords-shell {
   position: relative;
-  width: min(760px, 100%);
+  width: min(860px, 100%);
   margin: 0 auto;
 }
 
@@ -318,16 +328,19 @@ body::before {
 }
 
 .stackwords-slots {
-  margin-top: 16px;
+  margin-top: 24px;
   display: grid;
-  gap: 12px;
+  gap: 18px;
+  justify-items: center;
 }
 
 .stackwords-slot {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 10px;
-  padding: 12px;
+  gap: 12px;
+  width: min(100%, 640px);
+  padding: 18px 20px;
   border: 1px solid rgba(123, 173, 201, 0.18);
   border-radius: 8px;
   background: linear-gradient(180deg, rgba(18, 24, 52, 0.92), rgba(7, 12, 28, 0.92));
@@ -345,23 +358,26 @@ body::before {
 }
 
 .stackwords-slot-label {
-  width: 74px;
-  flex: 0 0 74px;
+  width: auto;
+  flex: none;
   color: var(--muted);
-  font-size: 0.76rem;
+  font-size: 0.82rem;
   font-weight: 700;
   text-transform: uppercase;
+  letter-spacing: 0;
+  text-align: center;
 }
 
 .stackwords-slot-letters {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
+  justify-content: center;
+  gap: 10px;
 }
 
 .stackwords-box {
-  width: 32px;
-  height: 38px;
+  width: 44px;
+  height: 54px;
   display: grid;
   place-items: center;
   border-radius: 6px;
@@ -369,7 +385,7 @@ body::before {
   background: rgba(9, 18, 36, 0.84);
   color: rgba(239, 247, 255, 0.9);
   font-weight: 800;
-  font-size: 0.98rem;
+  font-size: 1.18rem;
   text-transform: uppercase;
 }
 
@@ -384,12 +400,12 @@ body::before {
 }
 
 .stackwords-current {
-  margin-top: 14px;
+  margin-top: 20px;
   text-align: center;
 }
 
 .stackwords-pool {
-  margin-top: 14px;
+  margin-top: 18px;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -433,7 +449,7 @@ body::before {
 }
 
 .stackwords-controls {
-  margin-top: 16px;
+  margin-top: 20px;
 }
 
 .stackwords-stars {
@@ -441,6 +457,201 @@ body::before {
   justify-content: center;
   gap: 10px;
   margin-top: 16px;
+}
+
+.lexipath-screen {
+  display: grid;
+  place-items: center;
+}
+
+.lexipath-shell {
+  width: min(820px, 100%);
+  margin: 0 auto;
+}
+
+.lexipath-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.lexipath-meta {
+  display: grid;
+  justify-items: end;
+  gap: 8px;
+}
+
+.lexipath-chain {
+  margin-top: 24px;
+  display: grid;
+  gap: 10px;
+  justify-items: center;
+}
+
+.lexipath-step {
+  width: min(100%, 520px);
+  display: grid;
+  gap: 10px;
+  justify-items: center;
+}
+
+.lexipath-word-card {
+  width: min(100%, 520px);
+  padding: 16px 18px;
+  border: 1px solid rgba(123, 173, 201, 0.18);
+  border-radius: 8px;
+  background: linear-gradient(180deg, rgba(18, 24, 52, 0.92), rgba(7, 12, 28, 0.92));
+  display: grid;
+  gap: 10px;
+  justify-items: center;
+  transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+}
+
+.lexipath-word-card.locked {
+  border-color: rgba(255, 216, 77, 0.32);
+  box-shadow: 0 0 14px rgba(255, 216, 77, 0.08);
+}
+
+.lexipath-word-card.active {
+  border-color: rgba(78, 242, 255, 0.42);
+  box-shadow: 0 0 18px rgba(78, 242, 255, 0.14);
+  transform: translateY(-1px);
+}
+
+.lexipath-word-card.valid {
+  border-color: rgba(143, 255, 114, 0.44);
+  box-shadow: 0 0 16px rgba(143, 255, 114, 0.12);
+}
+
+.lexipath-word-card.invalid {
+  border-color: rgba(255, 109, 157, 0.48);
+  box-shadow: 0 0 16px rgba(255, 109, 157, 0.14);
+}
+
+.lexipath-word-card.shake {
+  animation: lexiShake 320ms ease;
+}
+
+@keyframes lexiShake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  50% { transform: translateX(4px); }
+  75% { transform: translateX(-3px); }
+}
+
+.lexipath-word-label {
+  color: var(--muted);
+  font-size: 0.76rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.lexipath-word-value {
+  font-size: clamp(1.3rem, 3vw, 2rem);
+  font-weight: 800;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.lexipath-input {
+  width: min(100%, 300px);
+  min-height: 46px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(123, 173, 201, 0.22);
+  background: rgba(5, 12, 26, 0.94);
+  color: var(--text);
+  font: inherit;
+  font-weight: 700;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.lexipath-input:focus {
+  border-color: rgba(89, 212, 255, 0.64);
+  box-shadow: 0 0 0 3px rgba(89, 212, 255, 0.15);
+  outline: none;
+}
+
+.lexipath-step-feedback {
+  min-height: 18px;
+  color: var(--muted);
+  font-size: 0.76rem;
+  text-align: center;
+}
+
+.lexipath-step-feedback.valid {
+  color: var(--success);
+}
+
+.lexipath-step-feedback.invalid {
+  color: var(--danger);
+}
+
+.lexipath-arrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(123, 173, 201, 0.18);
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.lexipath-arrow::before {
+  content: "↓";
+  font-size: 1rem;
+}
+
+.lexipath-arrow.pulse {
+  animation: lexiArrowPulse 900ms ease-out;
+}
+
+@keyframes lexiArrowPulse {
+  0% { transform: scale(0.95); box-shadow: 0 0 0 rgba(255,255,255,0); }
+  45% { transform: scale(1.05); box-shadow: 0 0 18px currentColor; }
+  100% { transform: scale(1); box-shadow: 0 0 0 rgba(255,255,255,0); }
+}
+
+.lexipath-arrow.blue {
+  color: #7dc9ff;
+  background: rgba(125, 201, 255, 0.12);
+  border-color: rgba(125, 201, 255, 0.28);
+}
+
+.lexipath-arrow.yellow {
+  color: var(--warm);
+  background: rgba(255, 216, 77, 0.12);
+  border-color: rgba(255, 216, 77, 0.28);
+}
+
+.lexipath-arrow.green {
+  color: var(--success);
+  background: rgba(143, 255, 114, 0.12);
+  border-color: rgba(143, 255, 114, 0.28);
+}
+
+.lexipath-arrow.red {
+  color: var(--danger);
+  background: rgba(255, 109, 157, 0.12);
+  border-color: rgba(255, 109, 157, 0.28);
+}
+
+.lexipath-feedback {
+  margin-top: 18px;
+  text-align: center;
+}
+
+.lexipath-controls {
+  margin-top: 20px;
+}
+
+.lexipath-screen.solved .lexipath-word-card.locked,
+.lexipath-screen.solved .lexipath-word-card.valid {
+  box-shadow: 0 0 20px rgba(255, 216, 77, 0.18);
 }
 
 .stackwords-star {
@@ -1582,24 +1793,41 @@ body::before {
   }
 
   .stackwords-slot {
-    align-items: flex-start;
-    flex-direction: column;
+    width: 100%;
+    padding: 14px 12px;
   }
 
   .stackwords-slot-label {
-    width: auto;
-    flex: none;
+    font-size: 0.74rem;
   }
 
   .stackwords-box {
-    width: 28px;
-    height: 34px;
-    font-size: 0.88rem;
+    width: 34px;
+    height: 42px;
+    font-size: 0.98rem;
   }
 
   .stackwords-letter {
     width: 38px;
     height: 42px;
+  }
+
+  .lexipath-word-card {
+    width: 100%;
+    padding: 14px 12px;
+  }
+
+  .lexipath-word-value {
+    font-size: 1.08rem;
+  }
+
+  .lexipath-input {
+    width: 100%;
+    font-size: 0.9rem;
+  }
+
+  .lexipath-arrow {
+    font-size: 0.68rem;
   }
 
   .lobby-meta {

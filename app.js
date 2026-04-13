@@ -145,11 +145,13 @@ const elements = {
   rulesScreen: document.getElementById("rulesScreen"),
   stackWordsReadmeScreen: document.getElementById("stackWordsReadmeScreen"),
   lobbyScreen: document.getElementById("lobbyScreen"),
+  lexiPathScreen: document.getElementById("lexiPathScreen"),
   stackWordsScreen: document.getElementById("stackWordsScreen"),
   gamePanel: document.getElementById("gamePanel"),
   racePanel: document.querySelector(".race-panel"),
   launchStatus: document.getElementById("launchStatus"),
   wordWheelEntryButton: document.getElementById("wordWheelEntryButton"),
+  lexiPathEntryButton: document.getElementById("lexiPathEntryButton"),
   stackWordsEntryButton: document.getElementById("stackWordsEntryButton"),
   stackWordsReadmeEntryButton: document.getElementById("stackWordsReadmeEntryButton"),
   homeStatus: document.getElementById("homeStatus"),
@@ -197,6 +199,13 @@ const elements = {
   stackWordsNextButton: document.getElementById("stackWordsNextButton"),
   stackWordsMenuButton: document.getElementById("stackWordsMenuButton"),
   stackWordsReadmeBackButton: document.getElementById("stackWordsReadmeBackButton"),
+  lexiPathDifficulty: document.getElementById("lexiPathDifficulty"),
+  lexiPathPuzzleLabel: document.getElementById("lexiPathPuzzleLabel"),
+  lexiPathChain: document.getElementById("lexiPathChain"),
+  lexiPathMessage: document.getElementById("lexiPathMessage"),
+  lexiPathBackButton: document.getElementById("lexiPathBackButton"),
+  lexiPathSubmitButton: document.getElementById("lexiPathSubmitButton"),
+  lexiPathNextButton: document.getElementById("lexiPathNextButton"),
   wheelGrid: document.getElementById("wheelGrid"),
   score: document.getElementById("score"),
   scoreCard: document.getElementById("scoreCard"),
@@ -270,6 +279,23 @@ const stackWordsController = window.StackWordsApp?.createController({
   }
 });
 
+const lexiPathController = window.LexiPathApp?.createController({
+  elements: {
+    root: elements.lexiPathScreen,
+    difficulty: elements.lexiPathDifficulty,
+    puzzleLabel: elements.lexiPathPuzzleLabel,
+    chain: elements.lexiPathChain,
+    message: elements.lexiPathMessage,
+    backButton: elements.lexiPathBackButton,
+    submitButton: elements.lexiPathSubmitButton,
+    nextButton: elements.lexiPathNextButton
+  },
+  wordValidator: (word) => state.validationSet.has(normalizeWord(word)),
+  callbacks: {
+    onBack: () => setScreen("launch")
+  }
+});
+
 function loadStoredScores() {
   try {
     const raw = window.localStorage.getItem(STORAGE_KEY);
@@ -320,6 +346,7 @@ function setScreen(screenName) {
   elements.rulesScreen.hidden = screenName !== "rules";
   elements.stackWordsReadmeScreen.hidden = screenName !== "stackwords-readme";
   elements.lobbyScreen.hidden = screenName !== "lobby";
+  elements.lexiPathScreen.hidden = screenName !== "lexipath";
   elements.stackWordsScreen.hidden = screenName !== "stackwords";
   elements.gamePanel.hidden = screenName !== "game";
 }
@@ -1901,8 +1928,9 @@ function updateMysteryPanel() {
 
     words.forEach((entry) => {
       const row = document.createElement("div");
+      const isCurrentTarget = isThemeMode() && !entry.solved && entry.word === state.currentRound.activeTargetWord;
       const isPrompting = isThemeMode() && !entry.solved && entry.word === state.promptWord;
-      row.className = `mystery-word${entry.solved ? " solved" : ""}${entry.revealed && !entry.solved ? " revealed" : ""}${isPrompting ? " prompting" : ""}`;
+      row.className = `mystery-word${entry.solved ? " solved" : ""}${entry.revealed && !entry.solved ? " revealed" : ""}${isCurrentTarget ? " current-target" : ""}${isPrompting ? " prompting" : ""}`;
 
       entry.word.split("").forEach((letter, index) => {
         const cell = document.createElement("div");
@@ -2612,6 +2640,22 @@ function isValidGuess(word) {
   return state.validationSet.has(word) && includesLetterRequirements(word, state.currentRound.letters);
 }
 
+function getBlockedSuffixBase(word) {
+  const suffixes = ["s", "ed", "er", "ing"];
+  for (const suffix of suffixes) {
+    if (word.length <= suffix.length + 2 || !word.endsWith(suffix)) {
+      continue;
+    }
+
+    const baseWord = word.slice(0, -suffix.length);
+    if (state.usedWords.has(baseWord)) {
+      return baseWord;
+    }
+  }
+
+  return "";
+}
+
 function endSession(reason = "Run complete.", options = {}) {
   const { broadcast = true } = options;
   clearTimer();
@@ -2690,6 +2734,12 @@ function handleGuess(event) {
 
   if (state.currentRound.solvedLengths[guess.length]) {
     setMessage(`You already solved the ${guess.length} letter slot with "${state.currentRound.solvedLengths[guess.length].toUpperCase()}".`, "error");
+    return;
+  }
+
+  const blockedSuffixBase = getBlockedSuffixBase(guess);
+  if (blockedSuffixBase) {
+    setMessage(`"${guess.toUpperCase()}" is too close to "${blockedSuffixBase.toUpperCase()}". Arcade mode blocks simple suffix add-ons.`, "error");
     return;
   }
 
@@ -2806,6 +2856,17 @@ elements.leaderboardButton.addEventListener("click", () => {
 elements.wordWheelEntryButton.addEventListener("click", async () => {
   setScreen("home");
   await ensureWordWheelDataLoaded();
+});
+elements.lexiPathEntryButton.addEventListener("click", async () => {
+  ensureAudioReady();
+  await ensureValidationLoaded();
+  setScreen("lexipath");
+  try {
+    await lexiPathController?.start();
+  } catch (error) {
+    showToast(error.message || "LexiPath failed to load.");
+    setScreen("launch");
+  }
 });
 elements.stackWordsEntryButton.addEventListener("click", async () => {
   ensureAudioReady();
