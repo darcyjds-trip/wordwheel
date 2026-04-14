@@ -513,6 +513,11 @@ body::before {
   box-shadow: 0 0 14px rgba(255, 216, 77, 0.08);
 }
 
+.lexipath-word-card.committed {
+  border-color: rgba(89, 212, 255, 0.28);
+  box-shadow: 0 0 16px rgba(89, 212, 255, 0.08);
+}
+
 .lexipath-word-card.active {
   border-color: rgba(78, 242, 255, 0.42);
   box-shadow: 0 0 18px rgba(78, 242, 255, 0.14);
@@ -552,6 +557,29 @@ body::before {
   font-weight: 800;
   letter-spacing: 0;
   text-transform: uppercase;
+}
+
+.lexipath-word-button {
+  width: min(100%, 320px);
+  min-height: 52px;
+  border: 0;
+  border-radius: 8px;
+  background: rgba(11, 20, 45, 0.96);
+  color: var(--text);
+  font: inherit;
+  font-size: clamp(1.05rem, 2.8vw, 1.6rem);
+  font-weight: 800;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 160ms ease, transform 160ms ease, box-shadow 160ms ease;
+}
+
+.lexipath-word-button:hover,
+.lexipath-word-button:focus-visible {
+  background: rgba(14, 28, 58, 0.98);
+  box-shadow: 0 0 0 3px rgba(89, 212, 255, 0.14);
+  outline: none;
+  transform: translateY(-1px);
 }
 
 .lexipath-input {

@@ -151,6 +151,15 @@
         return null;
       }
 
+      for (let patternIndex = 0; patternIndex < pattern.length - 1; patternIndex += 1) {
+        if (pattern[patternIndex] === "B" && pattern[patternIndex + 1] === "B") {
+          console.warn(
+            `Skipping LexiPath chain ${chain?.id || index + 1} from ${sourceFile}: adjacent blue moves are not allowed.`
+          );
+          return null;
+        }
+      }
+
       const normalized = {
         id: chain?.id || `lexi_${index + 1}`,
         sequence,
@@ -209,6 +218,7 @@
       this.state = {
         puzzle,
         values: Array(Math.max(0, puzzle.sequence.length - 2)).fill(""),
+        committed: Array(Math.max(0, puzzle.sequence.length - 2)).fill(false),
         solved: false
       };
       this.feedback = "Trace the chain and submit when it feels right.";
@@ -221,11 +231,25 @@
       if (!this.state || this.state.solved) {
         return this.getViewModel();
       }
-      this.state.values[index] = normalizeWord(value);
-      const validation = this.validateAround(index);
-      this.feedback = validation.message;
-      this.feedbackTone = validation.valid ? "success" : validation.tone;
-      this.lastValidatedArrow = validation.arrowIndex;
+      const normalized = normalizeWord(value);
+      this.state.values[index] = normalized;
+      this.state.committed[index] = !!normalized;
+      this.feedback = normalized
+        ? "Word locked. Click it again if you want to edit it."
+        : "Slot cleared.";
+      this.feedbackTone = "neutral";
+      this.lastValidatedArrow = -1;
+      return this.getViewModel();
+    }
+
+    unlockValue(index) {
+      if (!this.state || this.state.solved) {
+        return this.getViewModel();
+      }
+      this.state.committed[index] = false;
+      this.feedback = "Editing reopened for that step.";
+      this.feedbackTone = "neutral";
+      this.lastValidatedArrow = -1;
       return this.getViewModel();
     }
 
@@ -290,8 +314,8 @@
       return {
         valid: true,
         exact,
-        message: exact ? "Success - exact chain solved." : "Your chain is valid, but it is not the intended solution.",
-        tone: exact ? "success" : "error",
+        message: exact ? "Success - exact chain solved." : "Success - alternate valid chain solved.",
+        tone: "success",
         arrowIndex: puzzle.pattern.length - 1
       };
     }
@@ -301,7 +325,7 @@
       this.feedback = result.message;
       this.feedbackTone = result.tone;
       this.lastValidatedArrow = result.arrowIndex;
-      if (result.valid && result.exact) {
+      if (result.valid) {
         this.state.solved = true;
       }
       return this.getViewModel();
@@ -319,22 +343,15 @@
       for (let index = 0; index < words.length; index += 1) {
         const locked = index === 0 || index === words.length - 1;
         const value = words[index];
-        let status = "";
-        let helper = "";
-
-        if (!locked && value) {
-          const validation = this.validateAround(index - 1);
-          status = validation.valid ? "valid" : validation.tone === "neutral" ? "" : "invalid";
-          helper = validation.message;
-        }
 
         steps.push({
           index,
           locked,
           label: index === 0 ? "Start" : index === words.length - 1 ? "End" : `Step ${index}`,
           value,
-          status,
-          helper,
+          committed: !locked ? !!this.state.committed[index - 1] : true,
+          status: "",
+          helper: "",
           moveAfter: puzzle.pattern[index] || null,
           pulseArrow: this.lastValidatedArrow === index
         });
@@ -356,6 +373,8 @@
       this.elements = elements;
       this.game = game;
       this.callbacks = callbacks;
+      this.draftValues = [];
+      this.editingIndex = -1;
       this.bindEvents();
     }
 
@@ -364,15 +383,52 @@
         this.callbacks.onBack?.();
       });
       this.elements.submitButton.addEventListener("click", () => {
+        this.commitDrafts();
         this.render(this.game.submit());
       });
       this.elements.nextButton.addEventListener("click", () => {
+        this.draftValues = [];
+        this.editingIndex = -1;
         this.render(this.game.startRandomPuzzle());
       });
     }
 
     start() {
+      this.draftValues = [];
+      this.editingIndex = -1;
       this.render(this.game.startRandomPuzzle());
+    }
+
+    ensureDraftSize(count) {
+      if (this.draftValues.length !== count) {
+        this.draftValues = Array.from({ length: count }, (_, index) => this.draftValues[index] || "");
+      }
+    }
+
+    syncDraftsFromView(view) {
+      const editableSteps = view.steps.filter((step) => !step.locked);
+      this.ensureDraftSize(editableSteps.length);
+      editableSteps.forEach((step, index) => {
+        if (!this.draftValues[index]) {
+          this.draftValues[index] = step.value || "";
+        }
+      });
+    }
+
+    commitDraft(index) {
+      const draft = this.draftValues[index] || "";
+      return this.game.setValue(index, draft);
+    }
+
+    reopenDraft(index) {
+      this.editingIndex = index;
+      return this.game.unlockValue(index);
+    }
+
+    commitDrafts() {
+      for (let index = 0; index < this.draftValues.length; index += 1) {
+        this.game.setValue(index, this.draftValues[index] || "");
+      }
     }
 
     moveLabel(code) {
@@ -389,12 +445,10 @@
         return;
       }
 
+      this.syncDraftsFromView(view);
       this.elements.root.classList.toggle("solved", !!view.solved);
       this.elements.chain.innerHTML = "";
       this.elements.puzzleLabel.textContent = view.puzzleId;
-      const activeEditableIndex = view.solved
-        ? -1
-        : Math.max(1, view.steps.findIndex((step, index) => !step.locked && !step.value));
       this.elements.difficulty.hidden = view.difficulty == null;
       if (view.difficulty != null) {
         this.elements.difficulty.textContent = `Difficulty ${view.difficulty}`;
@@ -403,9 +457,12 @@
       view.steps.forEach((step, index) => {
         const block = document.createElement("div");
         block.className = "lexipath-step";
+        const draftIndex = step.index - 1;
+        const isEditing = !step.locked && !view.solved && this.editingIndex === draftIndex;
+        const showCommittedCard = !step.locked && step.committed && !isEditing;
 
         const card = document.createElement("article");
-        card.className = `lexipath-word-card${step.locked ? " locked" : ""}${step.status ? ` ${step.status}` : ""}${!step.locked && index === activeEditableIndex ? " active" : ""}`;
+        card.className = `lexipath-word-card${step.locked ? " locked" : ""}${showCommittedCard ? " committed" : ""}${step.status ? ` ${step.status}` : ""}${isEditing ? " active" : ""}`;
 
         const label = document.createElement("div");
         label.className = "lexipath-word-label";
@@ -417,22 +474,59 @@
           value.className = "lexipath-word-value";
           value.textContent = step.value;
           card.appendChild(value);
+        } else if (showCommittedCard) {
+          const button = document.createElement("button");
+          button.type = "button";
+          button.className = "lexipath-word-button";
+          button.textContent = step.value || "ENTER WORD";
+          button.addEventListener("click", () => {
+            const nextView = this.reopenDraft(draftIndex);
+            this.render(nextView);
+            const input = this.elements.chain.querySelector(`input[data-slot="${step.index}"]`);
+            input?.focus();
+            input?.select();
+          });
+          card.appendChild(button);
+
+          const helper = document.createElement("div");
+          helper.className = "lexipath-step-feedback";
+          helper.textContent = "Locked in. Click to edit.";
+          card.appendChild(helper);
         } else {
           const input = document.createElement("input");
           input.className = "lexipath-input";
           input.type = "text";
           input.maxLength = 12;
-          input.value = step.value;
+          input.autocomplete = "off";
+          input.spellcheck = false;
+          input.enterKeyHint = "done";
+          input.value = this.draftValues[draftIndex] || "";
           input.disabled = view.solved;
           input.placeholder = "ENTER WORD";
           input.addEventListener("input", (event) => {
-            this.render(this.game.setValue(step.index - 1, event.target.value));
+            this.draftValues[draftIndex] = normalizeWord(event.target.value);
           });
+          input.addEventListener("keydown", (event) => {
+            if (event.key !== "Enter") {
+              return;
+            }
+            event.preventDefault();
+            const normalized = normalizeWord(event.currentTarget.value);
+            if (normalized.length < 2) {
+              this.draftValues[draftIndex] = normalized;
+              return;
+            }
+            this.draftValues[draftIndex] = normalized;
+            this.editingIndex = -1;
+            const nextView = this.commitDraft(draftIndex);
+            this.render(nextView);
+          });
+          input.dataset.slot = String(step.index);
           card.appendChild(input);
 
           const helper = document.createElement("div");
           helper.className = `lexipath-step-feedback${step.status ? ` ${step.status}` : ""}`;
-          helper.textContent = step.helper || " ";
+          helper.textContent = step.helper || "Press Enter to lock this word in.";
           card.appendChild(helper);
         }
 
