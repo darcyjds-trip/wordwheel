@@ -250,7 +250,10 @@
     clearPlacementsForNextAttempt() {
       // Reset only the current placement state. Tile colors persist so the most recent
       // evaluation still follows each tile back into the pool on the next attempt.
+      // The guess rows clear after every attempt so availability is only communicated
+      // through the pool once letters return home.
       this.state.guesses = this.createEmptyGuesses();
+      this.state.lastFeedbackRows = this.currentPuzzle.lengths.map((length) => Array(length).fill(null));
       this.state.letters.forEach((tile) => {
         tile.placedWordIndex = null;
         tile.placedSlotIndex = null;
