@@ -153,18 +153,9 @@ def build_green_edges(words: Iterable[str]) -> dict[str, list[str]]:
 def build_red_edges(words_by_length: dict[int, list[str]]) -> dict[str, list[str]]:
     edges: DefaultDict[str, set[str]] = defaultdict(set)
     for words in words_by_length.values():
-        buckets: DefaultDict[str, set[str]] = defaultdict(set)
-        for word in words:
-            for deleted in deletion_signatures(word):
-                buckets[deleted].add(word)
-
-        for neighbors in buckets.values():
-            neighbor_list = sorted(neighbors)
-            for index, left in enumerate(neighbor_list):
-                left_signature = signature(left)
-                for right in neighbor_list[index + 1:]:
-                    if left_signature == signature(right):
-                        continue
+        for index, left in enumerate(words):
+            for right in words[index + 1:]:
+                if is_red_move(left, right):
                     edges[left].add(right)
                     edges[right].add(left)
 
