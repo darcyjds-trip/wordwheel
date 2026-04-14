@@ -210,6 +210,7 @@ const elements = {
   lexiPathReadmeBackButton: document.getElementById("lexiPathReadmeBackButton"),
   lexiPathDifficulty: document.getElementById("lexiPathDifficulty"),
   lexiPathPuzzleLabel: document.getElementById("lexiPathPuzzleLabel"),
+  lexiPathDebugChain: document.getElementById("lexiPathDebugChain"),
   lexiPathChain: document.getElementById("lexiPathChain"),
   lexiPathMessage: document.getElementById("lexiPathMessage"),
   lexiPathBackButton: document.getElementById("lexiPathBackButton"),
