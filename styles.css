@@ -490,8 +490,10 @@ body::before {
 }
 
 .stackwords-letter.placed {
-  transform: translateY(-1px);
-  box-shadow: 0 0 16px rgba(78, 242, 255, 0.18);
+  opacity: 0;
+  pointer-events: none;
+  transform: none;
+  box-shadow: none;
 }
 
 .stackwords-controls {
