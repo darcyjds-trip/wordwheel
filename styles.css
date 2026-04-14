@@ -451,6 +451,14 @@ body::before {
   font-size: 0.92rem;
 }
 
+.stackwords-debug-answer {
+  margin: 8px auto 0;
+  color: rgba(255, 240, 122, 0.82);
+  font-size: 0.92rem;
+  font-weight: 700;
+  text-align: center;
+}
+
 .stackwords-pool {
   margin-top: 18px;
   display: grid;
@@ -1878,6 +1886,10 @@ body::before {
   }
 
   .stackwords-hint {
+    font-size: 0.82rem;
+  }
+
+  .stackwords-debug-answer {
     font-size: 0.82rem;
   }
 

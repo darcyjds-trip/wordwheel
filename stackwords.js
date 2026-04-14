@@ -539,6 +539,9 @@
       this.elements.puzzleLabel.textContent = `Puzzle ${view.puzzleIndex + 1} of ${view.puzzleCount}`;
       this.elements.message.textContent = view.message;
       this.elements.message.dataset.tone = view.messageTone;
+      if (this.elements.debugAnswer) {
+        this.elements.debugAnswer.textContent = `Answer: ${view.solutionWords.join(" / ")}`;
+      }
       this.elements.resetButton.disabled = view.resetsRemaining <= 0 || view.completed;
       this.elements.deleteButton.disabled = !view.canDelete || view.completed;
       this.elements.giveUpButton.disabled = view.completed;
