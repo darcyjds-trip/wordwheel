@@ -144,6 +144,8 @@ const elements = {
   multiplayerScreen: document.getElementById("multiplayerScreen"),
   rulesScreen: document.getElementById("rulesScreen"),
   stackWordsReadmeScreen: document.getElementById("stackWordsReadmeScreen"),
+  lexiPathMenuScreen: document.getElementById("lexiPathMenuScreen"),
+  lexiPathReadmeScreen: document.getElementById("lexiPathReadmeScreen"),
   lobbyScreen: document.getElementById("lobbyScreen"),
   lexiPathScreen: document.getElementById("lexiPathScreen"),
   stackWordsScreen: document.getElementById("stackWordsScreen"),
@@ -153,7 +155,6 @@ const elements = {
   wordWheelEntryButton: document.getElementById("wordWheelEntryButton"),
   lexiPathEntryButton: document.getElementById("lexiPathEntryButton"),
   stackWordsEntryButton: document.getElementById("stackWordsEntryButton"),
-  stackWordsReadmeEntryButton: document.getElementById("stackWordsReadmeEntryButton"),
   homeStatus: document.getElementById("homeStatus"),
   wordWheelBackButton: document.getElementById("wordWheelBackButton"),
   singlePlayerButton: document.getElementById("singlePlayerButton"),
@@ -186,6 +187,7 @@ const elements = {
   stackWordsMessage: document.getElementById("stackWordsMessage"),
   stackWordsPool: document.getElementById("stackWordsPool"),
   stackWordsBackButton: document.getElementById("stackWordsBackButton"),
+  stackWordsReadmeButton: document.getElementById("stackWordsReadmeButton"),
   stackWordsDeleteButton: document.getElementById("stackWordsDeleteButton"),
   stackWordsGiveUpButton: document.getElementById("stackWordsGiveUpButton"),
   stackWordsResetButton: document.getElementById("stackWordsResetButton"),
@@ -199,6 +201,11 @@ const elements = {
   stackWordsNextButton: document.getElementById("stackWordsNextButton"),
   stackWordsMenuButton: document.getElementById("stackWordsMenuButton"),
   stackWordsReadmeBackButton: document.getElementById("stackWordsReadmeBackButton"),
+  lexiPathPlayButton: document.getElementById("lexiPathPlayButton"),
+  lexiPathReadmeButton: document.getElementById("lexiPathReadmeButton"),
+  lexiPathMenuBackButton: document.getElementById("lexiPathMenuBackButton"),
+  lexiPathReadmePlayButton: document.getElementById("lexiPathReadmePlayButton"),
+  lexiPathReadmeBackButton: document.getElementById("lexiPathReadmeBackButton"),
   lexiPathDifficulty: document.getElementById("lexiPathDifficulty"),
   lexiPathPuzzleLabel: document.getElementById("lexiPathPuzzleLabel"),
   lexiPathChain: document.getElementById("lexiPathChain"),
@@ -292,7 +299,7 @@ const lexiPathController = window.LexiPathApp?.createController({
   },
   wordValidator: (word) => state.validationSet.has(normalizeWord(word)),
   callbacks: {
-    onBack: () => setScreen("launch")
+    onBack: () => setScreen("lexipath-menu")
   }
 });
 
@@ -345,6 +352,8 @@ function setScreen(screenName) {
   elements.multiplayerScreen.hidden = screenName !== "multiplayer-menu";
   elements.rulesScreen.hidden = screenName !== "rules";
   elements.stackWordsReadmeScreen.hidden = screenName !== "stackwords-readme";
+  elements.lexiPathMenuScreen.hidden = screenName !== "lexipath-menu";
+  elements.lexiPathReadmeScreen.hidden = screenName !== "lexipath-readme";
   elements.lobbyScreen.hidden = screenName !== "lobby";
   elements.lexiPathScreen.hidden = screenName !== "lexipath";
   elements.stackWordsScreen.hidden = screenName !== "stackwords";
@@ -2858,6 +2867,9 @@ elements.wordWheelEntryButton.addEventListener("click", async () => {
   await ensureWordWheelDataLoaded();
 });
 elements.lexiPathEntryButton.addEventListener("click", async () => {
+  setScreen("lexipath-menu");
+});
+async function startLexiPathGame() {
   ensureAudioReady();
   await ensureValidationLoaded();
   setScreen("lexipath");
@@ -2867,6 +2879,21 @@ elements.lexiPathEntryButton.addEventListener("click", async () => {
     showToast(error.message || "LexiPath failed to load.");
     setScreen("launch");
   }
+}
+elements.lexiPathPlayButton.addEventListener("click", () => {
+  startLexiPathGame();
+});
+elements.lexiPathReadmeButton.addEventListener("click", () => {
+  setScreen("lexipath-readme");
+});
+elements.lexiPathMenuBackButton.addEventListener("click", () => {
+  setScreen("launch");
+});
+elements.lexiPathReadmePlayButton.addEventListener("click", () => {
+  startLexiPathGame();
+});
+elements.lexiPathReadmeBackButton.addEventListener("click", () => {
+  setScreen("lexipath-menu");
 });
 elements.stackWordsEntryButton.addEventListener("click", async () => {
   ensureAudioReady();
@@ -2879,11 +2906,11 @@ elements.stackWordsEntryButton.addEventListener("click", async () => {
     setScreen("launch");
   }
 });
-elements.stackWordsReadmeEntryButton.addEventListener("click", () => {
+elements.stackWordsReadmeButton.addEventListener("click", () => {
   setScreen("stackwords-readme");
 });
 elements.stackWordsReadmeBackButton.addEventListener("click", () => {
-  setScreen("launch");
+  setScreen("stackwords");
 });
 elements.wordWheelBackButton.addEventListener("click", () => {
   setScreen("launch");

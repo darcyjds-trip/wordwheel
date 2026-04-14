@@ -358,7 +358,7 @@
       }
 
       return {
-        puzzleId: puzzle.id,
+        puzzleLabel: puzzle.difficulty != null ? "Random Path" : "LexiPath",
         difficulty: puzzle.difficulty,
         solved: this.state.solved,
         feedback: this.feedback,
@@ -448,7 +448,7 @@
       this.syncDraftsFromView(view);
       this.elements.root.classList.toggle("solved", !!view.solved);
       this.elements.chain.innerHTML = "";
-      this.elements.puzzleLabel.textContent = view.puzzleId;
+      this.elements.puzzleLabel.textContent = view.puzzleLabel || "Random Path";
       this.elements.difficulty.hidden = view.difficulty == null;
       if (view.difficulty != null) {
         this.elements.difficulty.textContent = `Difficulty ${view.difficulty}`;

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Word Wheel</title>
+  <title>Word Games</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -13,7 +13,7 @@
   <div class="scanlines" aria-hidden="true"></div>
   <main class="app-shell">
     <section class="hero">
-      <p class="eyebrow">Word Wheel</p>
+      <p class="eyebrow">Word Games</p>
     </section>
 
     <section id="launchScreen" class="menu-screen">
@@ -23,9 +23,6 @@
           <button id="wordWheelEntryButton" class="menu-button" type="button">Word Wheel</button>
           <button id="lexiPathEntryButton" class="menu-button secondary" type="button">LexiPath</button>
           <button id="stackWordsEntryButton" class="menu-button secondary" type="button">Triple Stack</button>
-        </div>
-        <div class="menu-actions">
-          <button id="stackWordsReadmeEntryButton" class="ghost-button" type="button">Triple Stack Readme</button>
         </div>
         <p id="launchStatus" class="sr-only">Loading games...</p>
       </div>
@@ -151,6 +148,7 @@
         <section class="control-panel bottom-controls stackwords-controls">
           <div class="session-actions">
             <button id="stackWordsBackButton" class="ghost-button" type="button">Back</button>
+            <button id="stackWordsReadmeButton" class="ghost-button" type="button">Readme</button>
             <button id="stackWordsDeleteButton" class="ghost-button" type="button">Delete Letter</button>
             <button id="stackWordsGiveUpButton" class="ghost-button" type="button">Give Up</button>
             <button id="stackWordsResetButton" class="ghost-button" type="button">Reset Puzzle</button>
@@ -189,16 +187,50 @@
       </div>
     </section>
 
+    <section id="lexiPathMenuScreen" class="menu-screen" hidden>
+      <div class="menu-card rules-card">
+        <p class="menu-kicker">Single Player</p>
+        <h1>LexiPath</h1>
+        <div class="rules-copy">
+          <p>Build a chain from the start word to the end word by following the colored arrows.</p>
+          <p>Type freely into the intermediate slots, press Enter to lock a word into place, and only press Submit Chain when you want the whole path checked.</p>
+          <p>The path can follow the move rules and still miss the authored answer. You only win when the full chain matches the intended stored sequence.</p>
+        </div>
+        <div class="menu-actions">
+          <button id="lexiPathPlayButton" class="menu-button" type="button">Play Game</button>
+          <button id="lexiPathReadmeButton" class="ghost-button" type="button">Readme</button>
+        </div>
+        <button id="lexiPathMenuBackButton" class="ghost-button menu-back" type="button">Back</button>
+      </div>
+    </section>
+
+    <section id="lexiPathReadmeScreen" class="menu-screen" hidden>
+      <div class="menu-card rules-card">
+        <p class="menu-kicker">LexiPath</p>
+        <h1>Readme</h1>
+        <div class="rules-copy">
+          <p>LexiPath is a structured word ladder. Each arrow tells you how the next word must change.</p>
+          <p>Blue means rearrange only. Yellow means add one letter without changing the original order. Green means add one letter and rearrange. Red means replace one letter and rearrange.</p>
+          <p>You can try any word that fits the rule. The puzzle only checks for the exact intended path when you press Submit Chain.</p>
+          <p>Use Enter to lock each intermediate word into its slot, then submit when the whole path feels ready.</p>
+        </div>
+        <div class="menu-actions">
+          <button id="lexiPathReadmePlayButton" class="menu-button" type="button">Play Game</button>
+        </div>
+        <button id="lexiPathReadmeBackButton" class="ghost-button menu-back" type="button">Back</button>
+      </div>
+    </section>
+
     <section id="lexiPathScreen" class="game-panel lexipath-screen" hidden>
       <div class="lexipath-shell">
         <div class="lexipath-header">
           <div>
-            <p class="menu-kicker">Word Path</p>
+            <p class="menu-kicker">Single Player</p>
             <h1>LexiPath</h1>
           </div>
           <div class="lexipath-meta">
             <span id="lexiPathDifficulty" class="mystery-theme-label" hidden></span>
-            <span id="lexiPathPuzzleLabel" class="mode-summary">Loading puzzle...</span>
+            <span id="lexiPathPuzzleLabel" class="mode-summary">Random Path</span>
           </div>
         </div>
 
