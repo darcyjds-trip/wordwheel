@@ -59,6 +59,11 @@
     return shuffleArray(puzzles).slice(0, Math.min(count, puzzles.length));
   }
 
+  function capitalizeWord(word) {
+    const normalized = String(word || "").trim();
+    return normalized ? normalized.charAt(0).toUpperCase() + normalized.slice(1).toLowerCase() : "";
+  }
+
   class LexiPathMoveValidation {
     static isBlueMove(previous, next) {
       return previous.length === next.length
@@ -209,8 +214,7 @@
     constructor(puzzles, options = {}) {
       this.puzzles = puzzles;
       this.wordValidator = options.wordValidator;
-      this.modeLabel = options.modeLabel || "Random";
-      this.lastPuzzleId = "";
+      this.modeLabel = options.modeLabel || "Mixed Session";
       this.state = null;
       this.feedback = "Trace the chain and submit when it feels right.";
       this.feedbackTone = "neutral";
@@ -218,27 +222,48 @@
     }
 
     get currentPuzzle() {
-      return this.state?.puzzle || null;
+      if (!this.state) {
+        return null;
+      }
+      return this.puzzles[this.state.puzzleIndex] || null;
     }
 
-    pickNextPuzzle() {
-      const pool = this.puzzles.filter((puzzle) => puzzle.id !== this.lastPuzzleId);
-      const source = pool.length ? pool : this.puzzles;
-      return source[Math.floor(Math.random() * source.length)];
-    }
-
-    startRandomPuzzle() {
-      const puzzle = this.pickNextPuzzle();
-      this.lastPuzzleId = puzzle.id;
+    resetPuzzleState(puzzleIndex = 0) {
+      const puzzle = this.puzzles[puzzleIndex];
       this.state = {
-        puzzle,
+        puzzleIndex,
         values: Array(Math.max(0, puzzle.sequence.length - 2)).fill(""),
         committed: Array(Math.max(0, puzzle.sequence.length - 2)).fill(false),
-        solved: false
+        solved: false,
+        sessionComplete: false
       };
+      this.lastValidatedArrow = -1;
+    }
+
+    startSession() {
+      this.resetPuzzleState(0);
       this.feedback = "Trace the chain and submit when it feels right.";
       this.feedbackTone = "neutral";
-      this.lastValidatedArrow = -1;
+      return this.getViewModel();
+    }
+
+    advancePuzzle() {
+      if (!this.state) {
+        return this.startSession();
+      }
+      if (this.state.sessionComplete) {
+        return this.startSession();
+      }
+
+      const nextIndex = this.state.puzzleIndex + 1;
+      if (nextIndex >= this.puzzles.length) {
+        this.state.sessionComplete = true;
+        return this.getViewModel();
+      }
+
+      this.resetPuzzleState(nextIndex);
+      this.feedback = "Nice. Next path ready.";
+      this.feedbackTone = "neutral";
       return this.getViewModel();
     }
 
@@ -337,11 +362,18 @@
 
     submit() {
       const result = this.validateFullChain();
+      const finalPuzzle = this.state && this.state.puzzleIndex === this.puzzles.length - 1;
       this.feedback = result.message;
       this.feedbackTone = result.tone;
       this.lastValidatedArrow = result.arrowIndex;
       if (result.valid) {
         this.state.solved = true;
+        if (finalPuzzle) {
+          this.state.sessionComplete = true;
+          this.feedback = result.exact
+            ? "Success - exact chain solved. Congratulations, you cleared all 6 LexiPaths."
+            : "Success - alternate valid chain solved. Congratulations, you cleared all 6 LexiPaths.";
+        }
       }
       return this.getViewModel();
     }
@@ -372,12 +404,18 @@
         });
       }
 
+      const sessionIndex = this.state.puzzleIndex + 1;
+      const sessionTotal = this.puzzles.length;
+      const difficultyLabel = puzzle.sessionBucket ? `${capitalizeWord(puzzle.sessionBucket)} Path` : null;
+
       return {
-        puzzleLabel: `${this.modeLabel} Path`,
-        difficulty: `${this.modeLabel} Mode`,
+        puzzleLabel: `Path ${sessionIndex} of ${sessionTotal}`,
+        difficulty: difficultyLabel,
         solved: this.state.solved,
+        sessionComplete: !!this.state.sessionComplete,
         feedback: this.feedback,
         feedbackTone: this.feedbackTone,
+        nextButtonLabel: this.state.sessionComplete ? "Play Another Session" : "Next Puzzle",
         steps
       };
     }
@@ -404,14 +442,14 @@
       this.elements.nextButton.addEventListener("click", () => {
         this.draftValues = [];
         this.editingIndex = -1;
-        this.render(this.game.startRandomPuzzle());
+        this.render(this.game.advancePuzzle());
       });
     }
 
     start() {
       this.draftValues = [];
       this.editingIndex = -1;
-      this.render(this.game.startRandomPuzzle());
+      this.render(this.game.startSession());
     }
 
     ensureDraftSize(count) {
@@ -466,7 +504,7 @@
       this.elements.puzzleLabel.textContent = view.puzzleLabel || "Random Path";
       this.elements.difficulty.hidden = view.difficulty == null;
       if (view.difficulty != null) {
-        this.elements.difficulty.textContent = `Difficulty ${view.difficulty}`;
+        this.elements.difficulty.textContent = view.difficulty;
       }
 
       view.steps.forEach((step, index) => {
@@ -565,6 +603,7 @@
       this.elements.message.textContent = view.feedback;
       this.elements.message.className = `message${view.feedbackTone && view.feedbackTone !== "neutral" ? ` ${view.feedbackTone}` : ""}`;
       this.elements.nextButton.hidden = !view.solved;
+      this.elements.nextButton.textContent = view.nextButtonLabel || "Next Puzzle";
     }
   }
 
@@ -603,6 +642,25 @@
       throw lastError || new Error(`No LexiPath puzzles loaded for ${difficulty}.`);
     }
 
+    function buildMixedSessionPuzzles(pools) {
+      const easyPicks = samplePuzzles(pools.easy, 3).map((puzzle) => ({ ...puzzle, sessionBucket: "easy" }));
+      const mediumPicks = samplePuzzles(pools.medium, 2).map((puzzle) => ({ ...puzzle, sessionBucket: "medium" }));
+      const hardPicks = samplePuzzles(pools.hard, 1).map((puzzle) => ({ ...puzzle, sessionBucket: "hard" }));
+
+      if (easyPicks.length < 3 || mediumPicks.length < 2 || hardPicks.length < 1) {
+        throw new Error("LexiPath needs 3 easy, 2 medium, and 1 hard puzzle to build a session.");
+      }
+
+      return [
+        easyPicks[0],
+        easyPicks[1],
+        mediumPicks[0],
+        easyPicks[2],
+        mediumPicks[1],
+        hardPicks[0]
+      ];
+    }
+
     async function ensureScreen() {
       if (screen) {
         return screen;
@@ -612,7 +670,7 @@
         screenPromise = Promise.resolve().then(() => {
           const game = new LexiPathGame([], {
             wordValidator: config.wordValidator,
-            modeLabel: "Easy"
+            modeLabel: "Mixed Session"
           });
           screen = new LexiPathScreen(config.elements, game, config.callbacks);
           return screen;
@@ -623,17 +681,21 @@
     }
 
     return {
-      async start(options = {}) {
+      async start() {
         const readyScreen = await ensureScreen();
-        const difficulty = String(options.difficulty || "easy").toLowerCase();
-        const puzzles = await loadDifficultyPuzzles(difficulty);
-        const selectedPuzzles = samplePuzzles(puzzles, 10);
-        if (!selectedPuzzles.length) {
-          throw new Error(`No LexiPath puzzles available for ${difficulty}.`);
-        }
-        readyScreen.game = new LexiPathGame(selectedPuzzles, {
+        const [easyPuzzles, mediumPuzzles, hardPuzzles] = await Promise.all([
+          loadDifficultyPuzzles("easy"),
+          loadDifficultyPuzzles("medium"),
+          loadDifficultyPuzzles("hard")
+        ]);
+        const sessionPuzzles = buildMixedSessionPuzzles({
+          easy: easyPuzzles,
+          medium: mediumPuzzles,
+          hard: hardPuzzles
+        });
+        readyScreen.game = new LexiPathGame(sessionPuzzles, {
           wordValidator: config.wordValidator,
-          modeLabel: difficulty.charAt(0).toUpperCase() + difficulty.slice(1)
+          modeLabel: "Mixed Session"
         });
         readyScreen.start();
       }
