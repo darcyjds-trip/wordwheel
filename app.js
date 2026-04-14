@@ -1151,7 +1151,12 @@ function chooseClueIndices(word, excludedLetters = []) {
   if (clueCount <= 1) {
     return [source[0]];
   }
-  return [source[0], source[source.length - 1]];
+  if (clueCount === 2) {
+    return [source[0], source[source.length - 1]];
+  }
+
+  const middleIndex = source[Math.floor(source.length / 2)];
+  return Array.from(new Set([source[0], middleIndex, source[source.length - 1]]));
 }
 
 function normalizePuzzleEntry(entry, boardIndex, length, excludedLetters = []) {
@@ -1356,10 +1361,10 @@ function getRandomPuzzleCount(length, availableCount) {
 
 function getBoardClueCount(wordLength) {
   if (wordLength >= 7) {
-    return 2;
+    return 3;
   }
   if (wordLength >= 5) {
-    return 1;
+    return 2;
   }
   return 1;
 }
