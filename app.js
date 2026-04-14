@@ -201,7 +201,9 @@ const elements = {
   stackWordsNextButton: document.getElementById("stackWordsNextButton"),
   stackWordsMenuButton: document.getElementById("stackWordsMenuButton"),
   stackWordsReadmeBackButton: document.getElementById("stackWordsReadmeBackButton"),
-  lexiPathPlayButton: document.getElementById("lexiPathPlayButton"),
+  lexiPathEasyButton: document.getElementById("lexiPathEasyButton"),
+  lexiPathMediumButton: document.getElementById("lexiPathMediumButton"),
+  lexiPathHardButton: document.getElementById("lexiPathHardButton"),
   lexiPathReadmeButton: document.getElementById("lexiPathReadmeButton"),
   lexiPathMenuBackButton: document.getElementById("lexiPathMenuBackButton"),
   lexiPathReadmePlayButton: document.getElementById("lexiPathReadmePlayButton"),
@@ -2869,19 +2871,25 @@ elements.wordWheelEntryButton.addEventListener("click", async () => {
 elements.lexiPathEntryButton.addEventListener("click", async () => {
   setScreen("lexipath-menu");
 });
-async function startLexiPathGame() {
+async function startLexiPathGame(difficulty = "easy") {
   ensureAudioReady();
   await ensureValidationLoaded();
-  setScreen("lexipath");
   try {
-    await lexiPathController?.start();
+    setScreen("lexipath");
+    await lexiPathController?.start({ difficulty });
   } catch (error) {
     showToast(error.message || "LexiPath failed to load.");
-    setScreen("launch");
+    setScreen("lexipath-menu");
   }
 }
-elements.lexiPathPlayButton.addEventListener("click", () => {
-  startLexiPathGame();
+elements.lexiPathEasyButton.addEventListener("click", () => {
+  startLexiPathGame("easy");
+});
+elements.lexiPathMediumButton.addEventListener("click", () => {
+  startLexiPathGame("medium");
+});
+elements.lexiPathHardButton.addEventListener("click", () => {
+  startLexiPathGame("hard");
 });
 elements.lexiPathReadmeButton.addEventListener("click", () => {
   setScreen("lexipath-readme");
@@ -2890,7 +2898,7 @@ elements.lexiPathMenuBackButton.addEventListener("click", () => {
   setScreen("launch");
 });
 elements.lexiPathReadmePlayButton.addEventListener("click", () => {
-  startLexiPathGame();
+  setScreen("lexipath-menu");
 });
 elements.lexiPathReadmeBackButton.addEventListener("click", () => {
   setScreen("lexipath-menu");

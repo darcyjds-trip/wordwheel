@@ -46,6 +46,19 @@
     return signatures;
   }
 
+  function shuffleArray(values) {
+    const copy = [...values];
+    for (let index = copy.length - 1; index > 0; index -= 1) {
+      const swapIndex = Math.floor(Math.random() * (index + 1));
+      [copy[index], copy[swapIndex]] = [copy[swapIndex], copy[index]];
+    }
+    return copy;
+  }
+
+  function samplePuzzles(puzzles, count) {
+    return shuffleArray(puzzles).slice(0, Math.min(count, puzzles.length));
+  }
+
   class LexiPathMoveValidation {
     static isBlueMove(previous, next) {
       return previous.length === next.length
@@ -195,6 +208,7 @@
     constructor(puzzles, options = {}) {
       this.puzzles = puzzles;
       this.wordValidator = options.wordValidator;
+      this.modeLabel = options.modeLabel || "Random";
       this.lastPuzzleId = "";
       this.state = null;
       this.feedback = "Trace the chain and submit when it feels right.";
@@ -358,8 +372,8 @@
       }
 
       return {
-        puzzleLabel: puzzle.difficulty != null ? "Random Path" : "LexiPath",
-        difficulty: puzzle.difficulty,
+        puzzleLabel: `${this.modeLabel} Path`,
+        difficulty: `${this.modeLabel} Mode`,
         solved: this.state.solved,
         feedback: this.feedback,
         feedbackTone: this.feedbackTone,
@@ -555,44 +569,71 @@
 
   function createLexiPathController(config) {
     let screen = null;
-    let loadPromise = null;
+    let screenPromise = null;
+    const puzzleCache = new Map();
+
+    const DIFFICULTY_FILE_CANDIDATES = {
+      easy: ["./data/lexipath/generated-quality-overlap-filtered-pooled-easy.json"],
+      medium: ["./data/lexipath/generated-quality-overlap-filtered-pooled-medium.json"],
+      hard: ["./data/lexipath/generated-quality-overlap-filtered-pooled-hard.json"]
+    };
+
+    async function loadDifficultyPuzzles(difficulty) {
+      if (puzzleCache.has(difficulty)) {
+        return puzzleCache.get(difficulty);
+      }
+
+      const files = DIFFICULTY_FILE_CANDIDATES[difficulty] || DIFFICULTY_FILE_CANDIDATES.easy;
+      let lastError = null;
+
+      for (const file of files) {
+        try {
+          const loader = new LexiPathPuzzleLoader([file]);
+          const puzzles = await loader.load();
+          if (puzzles.length) {
+            puzzleCache.set(difficulty, puzzles);
+            return puzzles;
+          }
+        } catch (error) {
+          lastError = error;
+        }
+      }
+
+      throw lastError || new Error(`No LexiPath puzzles loaded for ${difficulty}.`);
+    }
 
     async function ensureScreen() {
       if (screen) {
         return screen;
       }
 
-      if (!loadPromise) {
-        loadPromise = fetch("./data/lexipath/manifest.json")
-          .then((response) => {
-            if (!response.ok) {
-              throw new Error(`LexiPath manifest failed to load (${response.status}).`);
-            }
-            return response.json();
-          })
-          .then(async (manifest) => {
-            const files = Array.isArray(manifest?.files)
-              ? manifest.files.map((file) => `./data/lexipath/${file}`)
-              : ["./data/lexipath/starter.json"];
-            const loader = new LexiPathPuzzleLoader(files);
-            const puzzles = await loader.load();
-            if (!puzzles.length) {
-              throw new Error("No LexiPath puzzles loaded.");
-            }
-            const game = new LexiPathGame(puzzles, {
-              wordValidator: config.wordValidator
-            });
-            screen = new LexiPathScreen(config.elements, game, config.callbacks);
-            return screen;
+      if (!screenPromise) {
+        screenPromise = Promise.resolve().then(() => {
+          const game = new LexiPathGame([], {
+            wordValidator: config.wordValidator,
+            modeLabel: "Easy"
           });
+          screen = new LexiPathScreen(config.elements, game, config.callbacks);
+          return screen;
+        });
       }
 
-      return loadPromise;
+      return screenPromise;
     }
 
     return {
-      async start() {
+      async start(options = {}) {
         const readyScreen = await ensureScreen();
+        const difficulty = String(options.difficulty || "easy").toLowerCase();
+        const puzzles = await loadDifficultyPuzzles(difficulty);
+        const selectedPuzzles = samplePuzzles(puzzles, 10);
+        if (!selectedPuzzles.length) {
+          throw new Error(`No LexiPath puzzles available for ${difficulty}.`);
+        }
+        readyScreen.game = new LexiPathGame(selectedPuzzles, {
+          wordValidator: config.wordValidator,
+          modeLabel: difficulty.charAt(0).toUpperCase() + difficulty.slice(1)
+        });
         readyScreen.start();
       }
     };
