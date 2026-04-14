@@ -1421,11 +1421,15 @@ function normalizeThemeRound(themeData) {
     const clueIndices = reveals
       .map((reveal) => Number(reveal?.index))
       .filter((value) => Number.isInteger(value) && value >= 0 && value < answer.length);
+    const sanitizedClueIndices = Array.from(new Set(clueIndices))
+      .filter((value) => !wheelLetters.includes(answer[value]));
 
     return {
       word: answer,
       solved: false,
-      clueIndices,
+      clueIndices: sanitizedClueIndices.length === getBoardClueCount(answer.length)
+        ? sanitizedClueIndices
+        : chooseClueIndices(answer, wheelLetters),
       wheelLetters
     };
   });
