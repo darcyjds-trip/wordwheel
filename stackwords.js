@@ -8,6 +8,42 @@
     return clone;
   }
 
+  function getClueCount(length) {
+    if (length >= 7) {
+      return 3;
+    }
+    if (length >= 5) {
+      return 2;
+    }
+    return 1;
+  }
+
+  function getClueIndexes(length) {
+    if (length <= 0) {
+      return [];
+    }
+
+    const clueCount = Math.min(getClueCount(length), length);
+    if (clueCount === 1) {
+      return [0];
+    }
+    if (clueCount === 2) {
+      return [0, length - 1];
+    }
+
+    const middle = Math.floor(length / 2);
+    return Array.from(new Set([0, middle, length - 1])).sort((left, right) => left - right);
+  }
+
+  function buildCluePattern(word) {
+    const normalized = String(word || "").toUpperCase();
+    const clueIndexes = new Set(getClueIndexes(normalized.length));
+    return normalized
+      .split("")
+      .map((letter, index) => (clueIndexes.has(index) ? letter : "_"))
+      .join(" ");
+  }
+
   class StackWordsPuzzleModel {
     constructor(data) {
       this.id = Number(data.id);
@@ -445,6 +481,10 @@
         label.className = "stackwords-slot-label";
         label.textContent = `${length} Letters`;
 
+        const clue = document.createElement("div");
+        clue.className = "stackwords-slot-clue";
+        clue.textContent = `Clue: ${buildCluePattern(view.solutionWords[index])}`;
+
         const letters = document.createElement("div");
         letters.className = "stackwords-slot-letters";
 
@@ -466,7 +506,7 @@
           letters.appendChild(cell);
         }
 
-        row.append(label, letters);
+        row.append(label, clue, letters);
         this.elements.slots.appendChild(row);
       });
     }
