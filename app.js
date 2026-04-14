@@ -294,6 +294,7 @@ const lexiPathController = window.LexiPathApp?.createController({
     root: elements.lexiPathScreen,
     difficulty: elements.lexiPathDifficulty,
     puzzleLabel: elements.lexiPathPuzzleLabel,
+    debugChain: elements.lexiPathDebugChain,
     chain: elements.lexiPathChain,
     message: elements.lexiPathMessage,
     backButton: elements.lexiPathBackButton,
