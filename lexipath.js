@@ -375,7 +375,6 @@
       return {
         puzzleLabel: `${this.modeLabel} Path`,
         difficulty: `${this.modeLabel} Mode`,
-        solutionChain: puzzle.sequence.join(" -> "),
         solved: this.state.solved,
         feedback: this.feedback,
         feedbackTone: this.feedbackTone,
@@ -465,7 +464,6 @@
       this.elements.root.classList.toggle("solved", !!view.solved);
       this.elements.chain.innerHTML = "";
       this.elements.puzzleLabel.textContent = view.puzzleLabel || "Random Path";
-      this.elements.debugChain.textContent = `Test chain: ${view.solutionChain || ""}`;
       this.elements.difficulty.hidden = view.difficulty == null;
       if (view.difficulty != null) {
         this.elements.difficulty.textContent = `Difficulty ${view.difficulty}`;
