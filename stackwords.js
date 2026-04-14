@@ -550,10 +550,14 @@
       this.logic = logic;
       this.callbacks = callbacks;
       this.draggingTileId = "";
+      this.pointerDrag = null;
+      this.suppressClick = false;
       this.bindEvents();
     }
 
     bindEvents() {
+      this.handlePointerMove = this.handlePointerMove.bind(this);
+      this.handlePointerUp = this.handlePointerUp.bind(this);
       this.elements.resetButton.addEventListener("click", () => {
         this.render(this.logic.resetPuzzle());
       });
@@ -589,24 +593,81 @@
           this.callbacks.onMenu();
         }
       });
-
-      this.elements.pool.addEventListener("dragover", (event) => {
-        event.preventDefault();
-      });
-
-      this.elements.pool.addEventListener("drop", (event) => {
-        event.preventDefault();
-        const tileId = event.dataTransfer?.getData("text/plain") || this.draggingTileId;
-        if (!tileId) {
-          return;
-        }
-        this.render(this.logic.returnTileToPool(tileId));
-        this.draggingTileId = "";
-      });
+      this.elements.pool.dataset.stackwordsDrop = "pool";
+      window.addEventListener("pointermove", this.handlePointerMove);
+      window.addEventListener("pointerup", this.handlePointerUp);
+      window.addEventListener("pointercancel", this.handlePointerUp);
     }
 
     start() {
       this.render(this.logic.startPuzzle(this.logic.currentPuzzleIndex));
+    }
+
+    shouldIgnoreClick() {
+      if (!this.suppressClick) {
+        return false;
+      }
+      this.suppressClick = false;
+      return true;
+    }
+
+    startPointerDrag(event, tileId) {
+      if (!tileId) {
+        return;
+      }
+      this.pointerDrag = {
+        tileId,
+        pointerId: event.pointerId,
+        startX: event.clientX,
+        startY: event.clientY,
+        moved: false
+      };
+      this.draggingTileId = tileId;
+    }
+
+    handlePointerMove(event) {
+      if (!this.pointerDrag || event.pointerId !== this.pointerDrag.pointerId) {
+        return;
+      }
+
+      const deltaX = event.clientX - this.pointerDrag.startX;
+      const deltaY = event.clientY - this.pointerDrag.startY;
+      if (Math.abs(deltaX) > 6 || Math.abs(deltaY) > 6) {
+        this.pointerDrag.moved = true;
+      }
+    }
+
+    handlePointerUp(event) {
+      if (!this.pointerDrag || event.pointerId !== this.pointerDrag.pointerId) {
+        return;
+      }
+
+      const { tileId, moved } = this.pointerDrag;
+      this.pointerDrag = null;
+      this.draggingTileId = "";
+      this.suppressClick = moved;
+
+      if (!moved) {
+        return;
+      }
+
+      const dropTarget = document.elementFromPoint(event.clientX, event.clientY)?.closest("[data-stackwords-drop]");
+      if (!dropTarget) {
+        return;
+      }
+
+      if (dropTarget.dataset.stackwordsDrop === "pool") {
+        this.render(this.logic.returnTileToPool(tileId));
+        return;
+      }
+
+      if (dropTarget.dataset.stackwordsDrop === "slot") {
+        const wordIndex = Number(dropTarget.dataset.wordIndex);
+        const slotIndex = Number(dropTarget.dataset.slotIndex);
+        if (Number.isInteger(wordIndex) && Number.isInteger(slotIndex)) {
+          this.render(this.logic.moveTileToSlot(tileId, wordIndex, slotIndex));
+        }
+      }
     }
 
     render(view) {
@@ -669,41 +730,29 @@
           cell.type = "button";
           cell.className = `stackwords-box${cellData.filled ? "" : " empty"}${cellData.feedback ? ` feedback-${cellData.color}` : ""}`;
           cell.textContent = cellData.letter || "_";
-          cell.addEventListener("dragover", (event) => {
-            if (view.completed) {
-              return;
-            }
-            event.preventDefault();
-          });
-          cell.addEventListener("drop", (event) => {
-            if (view.completed) {
-              return;
-            }
-            event.preventDefault();
-            event.stopPropagation();
-            const tileId = event.dataTransfer?.getData("text/plain") || this.draggingTileId;
-            if (!tileId) {
-              return;
-            }
-            this.render(this.logic.moveTileToSlot(tileId, rowData.index, slotIndex));
-            this.draggingTileId = "";
-          });
+          cell.dataset.stackwordsDrop = "slot";
+          cell.dataset.wordIndex = String(rowData.index);
+          cell.dataset.slotIndex = String(slotIndex);
           if (cellData.tileId) {
-            cell.draggable = !view.completed;
-            cell.addEventListener("dragstart", (event) => {
-              this.draggingTileId = cellData.tileId;
-              event.dataTransfer?.setData("text/plain", cellData.tileId);
-            });
-            cell.addEventListener("dragend", () => {
-              this.draggingTileId = "";
+            cell.addEventListener("pointerdown", (event) => {
+              if (view.completed) {
+                return;
+              }
+              this.startPointerDrag(event, cellData.tileId);
             });
             cell.addEventListener("click", (event) => {
               event.stopPropagation();
+              if (this.shouldIgnoreClick()) {
+                return;
+              }
               this.render(this.logic.removeSelectedLetterAt(rowData.index, slotIndex));
             });
           } else {
             cell.addEventListener("click", (event) => {
               event.stopPropagation();
+              if (this.shouldIgnoreClick()) {
+                return;
+              }
               this.render(this.logic.setActiveWord(rowData.index));
             });
           }
@@ -724,15 +773,16 @@
         button.className = `stackwords-letter feedback-${entry.color}${entry.placed ? " placed" : ""}`;
         button.textContent = entry.letter;
         button.disabled = view.completed;
-        button.draggable = !view.completed && !entry.placed;
-        button.addEventListener("dragstart", (event) => {
-          this.draggingTileId = entry.id;
-          event.dataTransfer?.setData("text/plain", entry.id);
-        });
-        button.addEventListener("dragend", () => {
-          this.draggingTileId = "";
+        button.addEventListener("pointerdown", (event) => {
+          if (view.completed || entry.placed) {
+            return;
+          }
+          this.startPointerDrag(event, entry.id);
         });
         button.addEventListener("click", () => {
+          if (this.shouldIgnoreClick()) {
+            return;
+          }
           this.render(this.logic.toggleLetter(entry.id));
         });
         this.elements.pool.appendChild(button);
