@@ -247,6 +247,65 @@
       return this.getViewModel();
     }
 
+    moveTileToSlot(tileId, wordIndex, slotIndex) {
+      if (!this.state || this.state.completed) {
+        return this.getViewModel();
+      }
+
+      const tile = this.getLetterById(tileId);
+      if (!tile) {
+        return this.getViewModel();
+      }
+
+      const sourceWordIndex = tile.placedWordIndex;
+      const sourceSlotIndex = tile.placedSlotIndex;
+      if (sourceWordIndex === wordIndex && sourceSlotIndex === slotIndex) {
+        this.state.activeWordIndex = wordIndex;
+        return this.getViewModel();
+      }
+
+      const destinationTileId = this.state.guesses[wordIndex][slotIndex];
+      if (sourceWordIndex != null && sourceSlotIndex != null) {
+        this.state.guesses[sourceWordIndex][sourceSlotIndex] = null;
+      }
+
+      if (destinationTileId && destinationTileId !== tileId) {
+        const destinationTile = this.getLetterById(destinationTileId);
+        if (destinationTile) {
+          if (sourceWordIndex != null && sourceSlotIndex != null) {
+            this.state.guesses[sourceWordIndex][sourceSlotIndex] = destinationTileId;
+            destinationTile.placedWordIndex = sourceWordIndex;
+            destinationTile.placedSlotIndex = sourceSlotIndex;
+          } else {
+            destinationTile.placedWordIndex = null;
+            destinationTile.placedSlotIndex = null;
+          }
+        }
+      }
+
+      this.state.guesses[wordIndex][slotIndex] = tileId;
+      tile.placedWordIndex = wordIndex;
+      tile.placedSlotIndex = slotIndex;
+      this.state.activeWordIndex = wordIndex;
+      this.setMessage(`Moved ${tile.letter} into the ${this.currentPuzzle.lengths[wordIndex]}-letter word.`, "neutral");
+      return this.getViewModel();
+    }
+
+    returnTileToPool(tileId) {
+      if (!this.state || this.state.completed) {
+        return this.getViewModel();
+      }
+
+      const tile = this.getLetterById(tileId);
+      if (!tile || tile.placedWordIndex == null) {
+        return this.getViewModel();
+      }
+
+      this.removeTileFromGuess(tileId);
+      this.setMessage(`Returned ${tile.letter} to the pool.`, "neutral");
+      return this.getViewModel();
+    }
+
     clearPlacementsForNextAttempt() {
       // Reset only the current placement state. Tile colors persist so the most recent
       // evaluation still follows each tile back into the pool on the next attempt.
@@ -490,6 +549,7 @@
       this.elements = elements;
       this.logic = logic;
       this.callbacks = callbacks;
+      this.draggingTileId = "";
       this.bindEvents();
     }
 
@@ -528,6 +588,20 @@
         if (typeof this.callbacks.onMenu === "function") {
           this.callbacks.onMenu();
         }
+      });
+
+      this.elements.pool.addEventListener("dragover", (event) => {
+        event.preventDefault();
+      });
+
+      this.elements.pool.addEventListener("drop", (event) => {
+        event.preventDefault();
+        const tileId = event.dataTransfer?.getData("text/plain") || this.draggingTileId;
+        if (!tileId) {
+          return;
+        }
+        this.render(this.logic.returnTileToPool(tileId));
+        this.draggingTileId = "";
       });
     }
 
@@ -595,7 +669,34 @@
           cell.type = "button";
           cell.className = `stackwords-box${cellData.filled ? "" : " empty"}${cellData.feedback ? ` feedback-${cellData.color}` : ""}`;
           cell.textContent = cellData.letter || "_";
+          cell.addEventListener("dragover", (event) => {
+            if (view.completed) {
+              return;
+            }
+            event.preventDefault();
+          });
+          cell.addEventListener("drop", (event) => {
+            if (view.completed) {
+              return;
+            }
+            event.preventDefault();
+            event.stopPropagation();
+            const tileId = event.dataTransfer?.getData("text/plain") || this.draggingTileId;
+            if (!tileId) {
+              return;
+            }
+            this.render(this.logic.moveTileToSlot(tileId, rowData.index, slotIndex));
+            this.draggingTileId = "";
+          });
           if (cellData.tileId) {
+            cell.draggable = !view.completed;
+            cell.addEventListener("dragstart", (event) => {
+              this.draggingTileId = cellData.tileId;
+              event.dataTransfer?.setData("text/plain", cellData.tileId);
+            });
+            cell.addEventListener("dragend", () => {
+              this.draggingTileId = "";
+            });
             cell.addEventListener("click", (event) => {
               event.stopPropagation();
               this.render(this.logic.removeSelectedLetterAt(rowData.index, slotIndex));
@@ -623,6 +724,14 @@
         button.className = `stackwords-letter feedback-${entry.color}${entry.placed ? " placed" : ""}`;
         button.textContent = entry.letter;
         button.disabled = view.completed;
+        button.draggable = !view.completed && !entry.placed;
+        button.addEventListener("dragstart", (event) => {
+          this.draggingTileId = entry.id;
+          event.dataTransfer?.setData("text/plain", entry.id);
+        });
+        button.addEventListener("dragend", () => {
+          this.draggingTileId = "";
+        });
         button.addEventListener("click", () => {
           this.render(this.logic.toggleLetter(entry.id));
         });

@@ -399,6 +399,7 @@ body::before {
   font-weight: 800;
   font-size: 1.18rem;
   text-transform: uppercase;
+  cursor: pointer;
 }
 
 .stackwords-slot.solved .stackwords-box {
@@ -490,6 +491,7 @@ body::before {
   font-size: 1rem;
   text-transform: uppercase;
   cursor: pointer;
+  user-select: none;
   transition: transform 140ms ease, border-color 140ms ease, box-shadow 140ms ease, opacity 140ms ease;
 }
 
