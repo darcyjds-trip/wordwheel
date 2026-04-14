@@ -93,9 +93,10 @@ def is_green_move(previous: str, next_word: str) -> bool:
 
 
 def is_red_move(previous: str, next_word: str) -> bool:
-    if len(previous) != len(next_word) or previous == next_word or is_blue_move(previous, next_word):
+    if len(previous) != len(next_word) or previous == next_word:
         return False
-    return bool(deletion_signatures(previous) & deletion_signatures(next_word))
+    differences = sum(1 for left, right in zip(previous, next_word) if left != right)
+    return differences == 1
 
 
 def build_index_maps(words: Iterable[str]) -> tuple[dict[str, list[str]], dict[int, list[str]]]:

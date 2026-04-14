@@ -81,18 +81,19 @@
     }
 
     static isRedMove(previous, next) {
-      if (previous.length !== next.length || previous === next || this.isBlueMove(previous, next)) {
+      if (previous.length !== next.length || previous === next) {
         return false;
       }
-
-      const previousDeleted = deletionSignatures(previous);
-      const nextDeleted = deletionSignatures(next);
-      for (const signature of previousDeleted) {
-        if (nextDeleted.has(signature)) {
-          return true;
+      let differences = 0;
+      for (let index = 0; index < previous.length; index += 1) {
+        if (previous[index] !== next[index]) {
+          differences += 1;
+          if (differences > 1) {
+            return false;
+          }
         }
       }
-      return false;
+      return differences === 1;
     }
 
     static validateMove(previous, next, moveCode) {
@@ -117,7 +118,7 @@
         }),
         R: () => ({
           valid: this.isRedMove(normalizedPrevious, normalizedNext),
-          message: "This step should replace one letter."
+          message: "This step should replace one letter without rearranging."
         })
       };
 
@@ -451,7 +452,7 @@
         B: "Blue - Rearrange",
         Y: "Yellow - Add",
         G: "Green - Add + Rearrange",
-        R: "Red - Replace"
+        R: "Red - Replace In Place"
       }[code] || code;
     }
 
