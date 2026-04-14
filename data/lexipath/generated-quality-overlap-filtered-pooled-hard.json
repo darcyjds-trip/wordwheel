@@ -2,50 +2,50 @@
   "source": "C:\\Users\\86137\\Documents\\Word app\\data\\lexipath\\generated-quality-overlap-filtered.json",
   "pool": "hard",
   "summary": {
-    "count": 76,
+    "count": 90,
     "difficultyCounts": {
       "1": 0,
       "2": 0,
       "3": 0,
-      "4": 59,
-      "5": 17
+      "4": 54,
+      "5": 36
     }
   },
   "chains": [
     {
-      "id": "generated_0092",
+      "id": "generated_0021",
       "sequence": [
-        "LAST",
-        "LEAST",
-        "LATEST",
-        "STATES",
-        "ESTATES",
-        "CASSETTE"
+        "COST",
+        "COAST",
+        "SCOTIA",
+        "ACTION",
+        "AUCTION",
+        "ACCOUNT"
       ],
       "pattern": [
         "Y",
         "G",
         "R",
         "Y",
-        "G"
+        "R"
       ],
-      "start": "LAST",
-      "end": "CASSETTE",
+      "start": "COST",
+      "end": "ACCOUNT",
       "difficulty": 5,
-      "score": 454,
+      "score": 416,
       "blueMoves": 0,
       "yellowMoves": 2,
-      "greenMoves": 2,
-      "redMoves": 1,
+      "greenMoves": 1,
+      "redMoves": 2,
       "curation": {
-        "baseScore": 454,
-        "curatedScore": 598,
+        "baseScore": 416,
+        "curatedScore": 567,
         "rankedWordCount": 6,
         "totalWords": 6,
         "frequencyCoverage": 1.0,
         "unrankedWords": [],
-        "averageRankScore": 22.7,
-        "endRank": 4409,
+        "averageRankScore": 24.2,
+        "endRank": 255,
         "moveVariety": 3,
         "quality": "EXCELLENT",
         "curatedDifficulty": 4,
@@ -53,143 +53,191 @@
         "filterStatus": "KEPT"
       },
       "curationReasons": [
+        "end word is very common",
         "all words are ranked in the source list",
         "very high frequency-list coverage",
         "strong average frequency rank",
-        "good move variety",
-        "strong ending word length"
+        "good move variety"
       ]
     },
     {
-      "id": "generated_0103",
+      "id": "generated_0013",
       "sequence": [
-        "LATE",
-        "LATER",
-        "TRAVEL",
+        "CAST",
+        "COAST",
+        "SCOTIA",
+        "ACTION",
+        "AUCTION",
+        "ACCOUNT"
+      ],
+      "pattern": [
+        "Y",
+        "G",
+        "R",
+        "Y",
+        "R"
+      ],
+      "start": "CAST",
+      "end": "ACCOUNT",
+      "difficulty": 5,
+      "score": 416,
+      "blueMoves": 0,
+      "yellowMoves": 2,
+      "greenMoves": 1,
+      "redMoves": 2,
+      "curation": {
+        "baseScore": 416,
+        "curatedScore": 565,
+        "rankedWordCount": 6,
+        "totalWords": 6,
+        "frequencyCoverage": 1.0,
+        "unrankedWords": [],
+        "averageRankScore": 23.2,
+        "endRank": 255,
+        "moveVariety": 3,
+        "quality": "EXCELLENT",
+        "curatedDifficulty": 4,
+        "difficultyLabel": "Hard",
+        "filterStatus": "KEPT"
+      },
+      "curationReasons": [
+        "end word is very common",
+        "all words are ranked in the source list",
+        "very high frequency-list coverage",
+        "strong average frequency rank",
+        "good move variety"
+      ]
+    },
+    {
+      "id": "generated_0210",
+      "sequence": [
+        "CORE",
+        "SCORE",
+        "SECTOR",
+        "STORES",
+        "STORIES",
+        "POSTERS"
+      ],
+      "pattern": [
+        "Y",
+        "G",
+        "R",
+        "Y",
+        "R"
+      ],
+      "start": "CORE",
+      "end": "POSTERS",
+      "difficulty": 5,
+      "score": 408,
+      "blueMoves": 0,
+      "yellowMoves": 2,
+      "greenMoves": 1,
+      "redMoves": 2,
+      "curation": {
+        "baseScore": 408,
+        "curatedScore": 560,
+        "rankedWordCount": 6,
+        "totalWords": 6,
+        "frequencyCoverage": 1.0,
+        "unrankedWords": [],
+        "averageRankScore": 26.2,
+        "endRank": 1807,
+        "moveVariety": 3,
+        "quality": "EXCELLENT",
+        "curatedDifficulty": 4,
+        "difficultyLabel": "Hard",
+        "filterStatus": "KEPT"
+      },
+      "curationReasons": [
+        "end word is common",
+        "all words are ranked in the source list",
+        "very high frequency-list coverage",
+        "strong average frequency rank",
+        "good move variety"
+      ]
+    },
+    {
+      "id": "generated_0213",
+      "sequence": [
+        "CORE",
+        "SCORE",
+        "SECTOR",
+        "STORES",
+        "STORIES",
+        "SERIOUS"
+      ],
+      "pattern": [
+        "Y",
+        "G",
+        "R",
+        "Y",
+        "R"
+      ],
+      "start": "CORE",
+      "end": "SERIOUS",
+      "difficulty": 5,
+      "score": 408,
+      "blueMoves": 0,
+      "yellowMoves": 2,
+      "greenMoves": 1,
+      "redMoves": 2,
+      "curation": {
+        "baseScore": 408,
+        "curatedScore": 560,
+        "rankedWordCount": 6,
+        "totalWords": 6,
+        "frequencyCoverage": 1.0,
+        "unrankedWords": [],
+        "averageRankScore": 26.3,
+        "endRank": 1640,
+        "moveVariety": 3,
+        "quality": "EXCELLENT",
+        "curatedDifficulty": 4,
+        "difficultyLabel": "Hard",
+        "filterStatus": "KEPT"
+      },
+      "curationReasons": [
+        "end word is common",
+        "all words are ranked in the source list",
+        "very high frequency-list coverage",
+        "strong average frequency rank",
+        "good move variety"
+      ]
+    },
+    {
+      "id": "generated_0353",
+      "sequence": [
+        "EARN",
+        "LEARN",
+        "RENTAL",
         "REALTY",
         "REALITY",
-        "LITERACY"
+        "ARTICLE"
       ],
       "pattern": [
         "Y",
         "G",
         "R",
         "Y",
-        "G"
+        "R"
       ],
-      "start": "LATE",
-      "end": "LITERACY",
+      "start": "EARN",
+      "end": "ARTICLE",
       "difficulty": 5,
-      "score": 454,
+      "score": 408,
       "blueMoves": 0,
       "yellowMoves": 2,
-      "greenMoves": 2,
-      "redMoves": 1,
+      "greenMoves": 1,
+      "redMoves": 2,
       "curation": {
-        "baseScore": 454,
-        "curatedScore": 597,
-        "rankedWordCount": 6,
-        "totalWords": 6,
-        "frequencyCoverage": 1.0,
-        "unrankedWords": [],
-        "averageRankScore": 22.2,
-        "endRank": 4129,
-        "moveVariety": 3,
-        "quality": "EXCELLENT",
-        "curatedDifficulty": 4,
-        "difficultyLabel": "Hard",
-        "filterStatus": "KEPT"
-      },
-      "curationReasons": [
-        "all words are ranked in the source list",
-        "very high frequency-list coverage",
-        "strong average frequency rank",
-        "good move variety",
-        "strong ending word length"
-      ]
-    },
-    {
-      "id": "generated_0104",
-      "sequence": [
-        "LATE",
-        "LATER",
-        "TRAVEL",
-        "REALTY",
-        "REALITY",
-        "LITERARY"
-      ],
-      "pattern": [
-        "Y",
-        "G",
-        "R",
-        "Y",
-        "G"
-      ],
-      "start": "LATE",
-      "end": "LITERARY",
-      "difficulty": 5,
-      "score": 454,
-      "blueMoves": 0,
-      "yellowMoves": 2,
-      "greenMoves": 2,
-      "redMoves": 1,
-      "curation": {
-        "baseScore": 454,
-        "curatedScore": 597,
-        "rankedWordCount": 6,
-        "totalWords": 6,
-        "frequencyCoverage": 1.0,
-        "unrankedWords": [],
-        "averageRankScore": 22.3,
-        "endRank": 3948,
-        "moveVariety": 3,
-        "quality": "EXCELLENT",
-        "curatedDifficulty": 4,
-        "difficultyLabel": "Hard",
-        "filterStatus": "KEPT"
-      },
-      "curationReasons": [
-        "all words are ranked in the source list",
-        "very high frequency-list coverage",
-        "strong average frequency rank",
-        "good move variety",
-        "strong ending word length"
-      ]
-    },
-    {
-      "id": "generated_0182",
-      "sequence": [
-        "RAIN",
-        "TRAIN",
-        "RATING",
-        "EATING",
-        "HEATING",
-        "TEACHING"
-      ],
-      "pattern": [
-        "Y",
-        "G",
-        "R",
-        "Y",
-        "G"
-      ],
-      "start": "RAIN",
-      "end": "TEACHING",
-      "difficulty": 5,
-      "score": 446,
-      "blueMoves": 0,
-      "yellowMoves": 2,
-      "greenMoves": 2,
-      "redMoves": 1,
-      "curation": {
-        "baseScore": 446,
-        "curatedScore": 597,
+        "baseScore": 408,
+        "curatedScore": 557,
         "rankedWordCount": 6,
         "totalWords": 6,
         "frequencyCoverage": 1.0,
         "unrankedWords": [],
         "averageRankScore": 23.0,
-        "endRank": 1136,
+        "endRank": 296,
         "moveVariety": 3,
         "quality": "EXCELLENT",
         "curatedDifficulty": 4,
@@ -197,48 +245,47 @@
         "filterStatus": "KEPT"
       },
       "curationReasons": [
-        "end word is common",
+        "end word is very common",
         "all words are ranked in the source list",
         "very high frequency-list coverage",
         "strong average frequency rank",
-        "good move variety",
-        "strong ending word length"
+        "good move variety"
       ]
     },
     {
-      "id": "generated_0154",
+      "id": "generated_0340",
       "sequence": [
-        "CORE",
-        "SCORE",
-        "SECTOR",
-        "ACTORS",
-        "FACTORS",
-        "FORECAST"
+        "EARN",
+        "LEARN",
+        "NEARLY",
+        "REALTY",
+        "REALITY",
+        "ARTICLE"
       ],
       "pattern": [
         "Y",
         "G",
         "R",
         "Y",
-        "G"
+        "R"
       ],
-      "start": "CORE",
-      "end": "FORECAST",
+      "start": "EARN",
+      "end": "ARTICLE",
       "difficulty": 5,
-      "score": 446,
+      "score": 408,
       "blueMoves": 0,
       "yellowMoves": 2,
-      "greenMoves": 2,
-      "redMoves": 1,
+      "greenMoves": 1,
+      "redMoves": 2,
       "curation": {
-        "baseScore": 446,
-        "curatedScore": 596,
+        "baseScore": 408,
+        "curatedScore": 555,
         "rankedWordCount": 6,
         "totalWords": 6,
         "frequencyCoverage": 1.0,
         "unrankedWords": [],
-        "averageRankScore": 22.8,
-        "endRank": 2102,
+        "averageRankScore": 22.3,
+        "endRank": 296,
         "moveVariety": 3,
         "quality": "EXCELLENT",
         "curatedDifficulty": 4,
@@ -246,335 +293,97 @@
         "filterStatus": "KEPT"
       },
       "curationReasons": [
-        "end word is common",
+        "end word is very common",
         "all words are ranked in the source list",
         "very high frequency-list coverage",
         "strong average frequency rank",
-        "good move variety",
-        "strong ending word length"
+        "good move variety"
       ]
     },
     {
-      "id": "generated_0044",
-      "sequence": [
-        "USES",
-        "USERS",
-        "VERSUS",
-        "SERVES",
-        "SERVERS",
-        "RESERVES"
-      ],
-      "pattern": [
-        "Y",
-        "G",
-        "R",
-        "Y",
-        "G"
-      ],
-      "start": "USES",
-      "end": "RESERVES",
-      "difficulty": 5,
-      "score": 462,
-      "blueMoves": 0,
-      "yellowMoves": 2,
-      "greenMoves": 2,
-      "redMoves": 1,
-      "curation": {
-        "baseScore": 462,
-        "curatedScore": 592,
-        "rankedWordCount": 6,
-        "totalWords": 6,
-        "frequencyCoverage": 1.0,
-        "unrankedWords": [],
-        "averageRankScore": 20.8,
-        "endRank": 3800,
-        "moveVariety": 3,
-        "quality": "EXCELLENT",
-        "curatedDifficulty": 4,
-        "difficultyLabel": "Hard",
-        "filterStatus": "KEPT"
-      },
-      "curationReasons": [
-        "all words are ranked in the source list",
-        "very high frequency-list coverage",
-        "good move variety",
-        "strong ending word length"
-      ]
-    },
-    {
-      "id": "generated_0082",
-      "sequence": [
-        "GAIN",
-        "GRAIN",
-        "RATING",
-        "EATING",
-        "HEATING",
-        "TEACHING"
-      ],
-      "pattern": [
-        "Y",
-        "G",
-        "R",
-        "Y",
-        "G"
-      ],
-      "start": "GAIN",
-      "end": "TEACHING",
-      "difficulty": 5,
-      "score": 454,
-      "blueMoves": 0,
-      "yellowMoves": 2,
-      "greenMoves": 2,
-      "redMoves": 1,
-      "curation": {
-        "baseScore": 454,
-        "curatedScore": 591,
-        "rankedWordCount": 6,
-        "totalWords": 6,
-        "frequencyCoverage": 1.0,
-        "unrankedWords": [],
-        "averageRankScore": 21.5,
-        "endRank": 1136,
-        "moveVariety": 3,
-        "quality": "EXCELLENT",
-        "curatedDifficulty": 4,
-        "difficultyLabel": "Hard",
-        "filterStatus": "KEPT"
-      },
-      "curationReasons": [
-        "end word is common",
-        "all words are ranked in the source list",
-        "very high frequency-list coverage",
-        "good move variety",
-        "strong ending word length"
-      ]
-    },
-    {
-      "id": "generated_0048",
-      "sequence": [
-        "CASH",
-        "CRASH",
-        "CHARTS",
-        "ACTORS",
-        "FACTORS",
-        "FORECAST"
-      ],
-      "pattern": [
-        "Y",
-        "G",
-        "R",
-        "Y",
-        "G"
-      ],
-      "start": "CASH",
-      "end": "FORECAST",
-      "difficulty": 5,
-      "score": 454,
-      "blueMoves": 0,
-      "yellowMoves": 2,
-      "greenMoves": 2,
-      "redMoves": 1,
-      "curation": {
-        "baseScore": 454,
-        "curatedScore": 590,
-        "rankedWordCount": 6,
-        "totalWords": 6,
-        "frequencyCoverage": 1.0,
-        "unrankedWords": [],
-        "averageRankScore": 20.8,
-        "endRank": 2102,
-        "moveVariety": 3,
-        "quality": "EXCELLENT",
-        "curatedDifficulty": 4,
-        "difficultyLabel": "Hard",
-        "filterStatus": "KEPT"
-      },
-      "curationReasons": [
-        "end word is common",
-        "all words are ranked in the source list",
-        "very high frequency-list coverage",
-        "good move variety",
-        "strong ending word length"
-      ]
-    },
-    {
-      "id": "generated_0170",
-      "sequence": [
-        "EAST",
-        "LEAST",
-        "LATEST",
-        "STATES",
-        "ESTATES",
-        "CASSETTE"
-      ],
-      "pattern": [
-        "Y",
-        "G",
-        "R",
-        "Y",
-        "G"
-      ],
-      "start": "EAST",
-      "end": "CASSETTE",
-      "difficulty": 5,
-      "score": 446,
-      "blueMoves": 0,
-      "yellowMoves": 2,
-      "greenMoves": 2,
-      "redMoves": 1,
-      "curation": {
-        "baseScore": 446,
-        "curatedScore": 590,
-        "rankedWordCount": 6,
-        "totalWords": 6,
-        "frequencyCoverage": 1.0,
-        "unrankedWords": [],
-        "averageRankScore": 22.5,
-        "endRank": 4409,
-        "moveVariety": 3,
-        "quality": "EXCELLENT",
-        "curatedDifficulty": 4,
-        "difficultyLabel": "Hard",
-        "filterStatus": "KEPT"
-      },
-      "curationReasons": [
-        "all words are ranked in the source list",
-        "very high frequency-list coverage",
-        "strong average frequency rank",
-        "good move variety",
-        "strong ending word length"
-      ]
-    },
-    {
-      "id": "generated_0008",
-      "sequence": [
-        "LAST",
-        "LEAST",
-        "PLATES",
-        "PLANTS",
-        "PLANETS",
-        "PLEASANT"
-      ],
-      "pattern": [
-        "Y",
-        "G",
-        "R",
-        "Y",
-        "G"
-      ],
-      "start": "LAST",
-      "end": "PLEASANT",
-      "difficulty": 5,
-      "score": 462,
-      "blueMoves": 0,
-      "yellowMoves": 2,
-      "greenMoves": 2,
-      "redMoves": 1,
-      "curation": {
-        "baseScore": 462,
-        "curatedScore": 589,
-        "rankedWordCount": 6,
-        "totalWords": 6,
-        "frequencyCoverage": 1.0,
-        "unrankedWords": [],
-        "averageRankScore": 19.5,
-        "endRank": 4223,
-        "moveVariety": 3,
-        "quality": "GOOD",
-        "curatedDifficulty": 4,
-        "difficultyLabel": "Hard",
-        "filterStatus": "KEPT"
-      },
-      "curationReasons": [
-        "all words are ranked in the source list",
-        "very high frequency-list coverage",
-        "good move variety",
-        "strong ending word length"
-      ]
-    },
-    {
-      "id": "generated_0037",
-      "sequence": [
-        "SALE",
-        "SCALE",
-        "PLACES",
-        "PLANES",
-        "PLANETS",
-        "PLEASANT"
-      ],
-      "pattern": [
-        "Y",
-        "G",
-        "R",
-        "Y",
-        "G"
-      ],
-      "start": "SALE",
-      "end": "PLEASANT",
-      "difficulty": 5,
-      "score": 462,
-      "blueMoves": 0,
-      "yellowMoves": 2,
-      "greenMoves": 2,
-      "redMoves": 1,
-      "curation": {
-        "baseScore": 462,
-        "curatedScore": 584,
-        "rankedWordCount": 6,
-        "totalWords": 6,
-        "frequencyCoverage": 1.0,
-        "unrankedWords": [],
-        "averageRankScore": 17.2,
-        "endRank": 4223,
-        "moveVariety": 3,
-        "quality": "GOOD",
-        "curatedDifficulty": 5,
-        "difficultyLabel": "Very Hard",
-        "filterStatus": "KEPT"
-      },
-      "curationReasons": [
-        "all words are ranked in the source list",
-        "very high frequency-list coverage",
-        "good move variety",
-        "strong ending word length"
-      ]
-    },
-    {
-      "id": "generated_0047",
+      "id": "generated_0175",
       "sequence": [
         "BEST",
         "BEAST",
         "BREAST",
         "EASTER",
         "EASTERN",
-        "VETERANS"
+        "PRESENT"
       ],
       "pattern": [
         "Y",
         "G",
         "R",
         "Y",
-        "G"
+        "R"
       ],
       "start": "BEST",
-      "end": "VETERANS",
+      "end": "PRESENT",
       "difficulty": 5,
-      "score": 454,
+      "score": 408,
       "blueMoves": 0,
       "yellowMoves": 2,
-      "greenMoves": 2,
-      "redMoves": 1,
+      "greenMoves": 1,
+      "redMoves": 2,
       "curation": {
-        "baseScore": 454,
-        "curatedScore": 581,
+        "baseScore": 408,
+        "curatedScore": 554,
         "rankedWordCount": 6,
         "totalWords": 6,
         "frequencyCoverage": 1.0,
         "unrankedWords": [],
-        "averageRankScore": 19.7,
-        "endRank": 4167,
+        "averageRankScore": 22.0,
+        "endRank": 612,
         "moveVariety": 3,
-        "quality": "GOOD",
+        "quality": "EXCELLENT",
+        "curatedDifficulty": 4,
+        "difficultyLabel": "Hard",
+        "filterStatus": "KEPT"
+      },
+      "curationReasons": [
+        "end word is very common",
+        "all words are ranked in the source list",
+        "very high frequency-list coverage",
+        "strong average frequency rank",
+        "good move variety"
+      ]
+    },
+    {
+      "id": "generated_0186",
+      "sequence": [
+        "CASH",
+        "CRASH",
+        "SEARCH",
+        "CHARGE",
+        "CHARGER",
+        "CHARTER"
+      ],
+      "pattern": [
+        "Y",
+        "G",
+        "R",
+        "Y",
+        "R"
+      ],
+      "start": "CASH",
+      "end": "CHARTER",
+      "difficulty": 5,
+      "score": 408,
+      "blueMoves": 0,
+      "yellowMoves": 2,
+      "greenMoves": 1,
+      "redMoves": 2,
+      "curation": {
+        "baseScore": 408,
+        "curatedScore": 546,
+        "rankedWordCount": 6,
+        "totalWords": 6,
+        "frequencyCoverage": 1.0,
+        "unrankedWords": [],
+        "averageRankScore": 22.5,
+        "endRank": 2942,
+        "moveVariety": 3,
+        "quality": "EXCELLENT",
         "curatedDifficulty": 4,
         "difficultyLabel": "Hard",
         "filterStatus": "KEPT"
@@ -582,234 +391,139 @@
       "curationReasons": [
         "all words are ranked in the source list",
         "very high frequency-list coverage",
-        "good move variety",
-        "strong ending word length"
+        "strong average frequency rank",
+        "good move variety"
       ]
     },
     {
-      "id": "generated_0045",
+      "id": "generated_0183",
+      "sequence": [
+        "CASE",
+        "CHASE",
+        "SEARCH",
+        "CHARGE",
+        "CHARGER",
+        "CHARTER"
+      ],
+      "pattern": [
+        "Y",
+        "G",
+        "R",
+        "Y",
+        "R"
+      ],
+      "start": "CASE",
+      "end": "CHARTER",
+      "difficulty": 5,
+      "score": 408,
+      "blueMoves": 0,
+      "yellowMoves": 2,
+      "greenMoves": 1,
+      "redMoves": 2,
+      "curation": {
+        "baseScore": 408,
+        "curatedScore": 545,
+        "rankedWordCount": 6,
+        "totalWords": 6,
+        "frequencyCoverage": 1.0,
+        "unrankedWords": [],
+        "averageRankScore": 22.3,
+        "endRank": 2942,
+        "moveVariety": 3,
+        "quality": "EXCELLENT",
+        "curatedDifficulty": 4,
+        "difficultyLabel": "Hard",
+        "filterStatus": "KEPT"
+      },
+      "curationReasons": [
+        "all words are ranked in the source list",
+        "very high frequency-list coverage",
+        "strong average frequency rank",
+        "good move variety"
+      ]
+    },
+    {
+      "id": "generated_0058",
+      "sequence": [
+        "PLAN",
+        "PLAIN",
+        "PLANT",
+        "PLANET",
+        "PATENT",
+        "PATIENT"
+      ],
+      "pattern": [
+        "Y",
+        "R",
+        "Y",
+        "R",
+        "Y"
+      ],
+      "start": "PLAN",
+      "end": "PATIENT",
+      "difficulty": 5,
+      "score": 412,
+      "blueMoves": 0,
+      "yellowMoves": 3,
+      "greenMoves": 0,
+      "redMoves": 2,
+      "curation": {
+        "baseScore": 412,
+        "curatedScore": 543,
+        "rankedWordCount": 6,
+        "totalWords": 6,
+        "frequencyCoverage": 1.0,
+        "unrankedWords": [],
+        "averageRankScore": 23.3,
+        "endRank": 1497,
+        "moveVariety": 2,
+        "quality": "EXCELLENT",
+        "curatedDifficulty": 4,
+        "difficultyLabel": "Hard",
+        "filterStatus": "KEPT"
+      },
+      "curationReasons": [
+        "end word is common",
+        "all words are ranked in the source list",
+        "very high frequency-list coverage",
+        "strong average frequency rank"
+      ]
+    },
+    {
+      "id": "generated_0147",
       "sequence": [
         "BARS",
         "BEARS",
         "BREAST",
         "EASTER",
         "EASTERN",
-        "VETERANS"
+        "PRESENT"
       ],
       "pattern": [
         "Y",
         "G",
         "R",
         "Y",
-        "G"
+        "R"
       ],
       "start": "BARS",
-      "end": "VETERANS",
+      "end": "PRESENT",
       "difficulty": 5,
-      "score": 454,
+      "score": 408,
       "blueMoves": 0,
       "yellowMoves": 2,
-      "greenMoves": 2,
-      "redMoves": 1,
+      "greenMoves": 1,
+      "redMoves": 2,
       "curation": {
-        "baseScore": 454,
-        "curatedScore": 580,
+        "baseScore": 408,
+        "curatedScore": 543,
         "rankedWordCount": 6,
         "totalWords": 6,
         "frequencyCoverage": 1.0,
         "unrankedWords": [],
-        "averageRankScore": 19.0,
-        "endRank": 4167,
+        "averageRankScore": 21.3,
+        "endRank": 612,
         "moveVariety": 3,
-        "quality": "GOOD",
-        "curatedDifficulty": 4,
-        "difficultyLabel": "Hard",
-        "filterStatus": "KEPT"
-      },
-      "curationReasons": [
-        "all words are ranked in the source list",
-        "very high frequency-list coverage",
-        "good move variety",
-        "strong ending word length"
-      ]
-    },
-    {
-      "id": "generated_0003",
-      "sequence": [
-        "GRAD",
-        "GRAND",
-        "GARDEN",
-        "RANGES",
-        "RANGERS",
-        "EARRINGS"
-      ],
-      "pattern": [
-        "Y",
-        "G",
-        "R",
-        "Y",
-        "G"
-      ],
-      "start": "GRAD",
-      "end": "EARRINGS",
-      "difficulty": 5,
-      "score": 462,
-      "blueMoves": 0,
-      "yellowMoves": 2,
-      "greenMoves": 2,
-      "redMoves": 1,
-      "curation": {
-        "baseScore": 462,
-        "curatedScore": 578,
-        "rankedWordCount": 6,
-        "totalWords": 6,
-        "frequencyCoverage": 1.0,
-        "unrankedWords": [],
-        "averageRankScore": 14.5,
-        "endRank": 3933,
-        "moveVariety": 3,
-        "quality": "BORDERLINE",
-        "curatedDifficulty": 5,
-        "difficultyLabel": "Very Hard",
-        "filterStatus": "KEPT"
-      },
-      "curationReasons": [
-        "all words are ranked in the source list",
-        "very high frequency-list coverage",
-        "good move variety",
-        "strong ending word length"
-      ]
-    },
-    {
-      "id": "generated_0035",
-      "sequence": [
-        "SAGE",
-        "STAGE",
-        "AGENTS",
-        "RANGES",
-        "RANGERS",
-        "EARRINGS"
-      ],
-      "pattern": [
-        "Y",
-        "G",
-        "R",
-        "Y",
-        "G"
-      ],
-      "start": "SAGE",
-      "end": "EARRINGS",
-      "difficulty": 5,
-      "score": 462,
-      "blueMoves": 0,
-      "yellowMoves": 2,
-      "greenMoves": 2,
-      "redMoves": 1,
-      "curation": {
-        "baseScore": 462,
-        "curatedScore": 578,
-        "rankedWordCount": 6,
-        "totalWords": 6,
-        "frequencyCoverage": 1.0,
-        "unrankedWords": [],
-        "averageRankScore": 14.7,
-        "endRank": 3933,
-        "moveVariety": 3,
-        "quality": "BORDERLINE",
-        "curatedDifficulty": 5,
-        "difficultyLabel": "Very Hard",
-        "filterStatus": "KEPT"
-      },
-      "curationReasons": [
-        "all words are ranked in the source list",
-        "very high frequency-list coverage",
-        "good move variety",
-        "strong ending word length"
-      ]
-    },
-    {
-      "id": "generated_0089",
-      "sequence": [
-        "HOST",
-        "GHOST",
-        "SOUGHT",
-        "THOUGH",
-        "THROUGH",
-        "THOROUGH"
-      ],
-      "pattern": [
-        "Y",
-        "G",
-        "R",
-        "Y",
-        "G"
-      ],
-      "start": "HOST",
-      "end": "THOROUGH",
-      "difficulty": 5,
-      "score": 454,
-      "blueMoves": 0,
-      "yellowMoves": 2,
-      "greenMoves": 2,
-      "redMoves": 1,
-      "curation": {
-        "baseScore": 454,
-        "curatedScore": 576,
-        "rankedWordCount": 6,
-        "totalWords": 6,
-        "frequencyCoverage": 1.0,
-        "unrankedWords": [],
-        "averageRankScore": 19.0,
-        "endRank": 7331,
-        "moveVariety": 3,
-        "quality": "GOOD",
-        "curatedDifficulty": 4,
-        "difficultyLabel": "Hard",
-        "filterStatus": "KEPT"
-      },
-      "curationReasons": [
-        "end word is relatively low-frequency",
-        "all words are ranked in the source list",
-        "very high frequency-list coverage",
-        "good move variety",
-        "strong ending word length"
-      ]
-    },
-    {
-      "id": "generated_1037",
-      "sequence": [
-        "CARE",
-        "TRACE",
-        "TRANCE",
-        "CENTER",
-        "RECENT",
-        "PERCENT"
-      ],
-      "pattern": [
-        "G",
-        "Y",
-        "R",
-        "B",
-        "G"
-      ],
-      "start": "CARE",
-      "end": "PERCENT",
-      "difficulty": 5,
-      "score": 396,
-      "blueMoves": 1,
-      "yellowMoves": 1,
-      "greenMoves": 2,
-      "redMoves": 1,
-      "curation": {
-        "baseScore": 396,
-        "curatedScore": 551,
-        "rankedWordCount": 6,
-        "totalWords": 6,
-        "frequencyCoverage": 1.0,
-        "unrankedWords": [],
-        "averageRankScore": 23.0,
-        "endRank": 650,
-        "moveVariety": 4,
         "quality": "EXCELLENT",
         "curatedDifficulty": 4,
         "difficultyLabel": "Hard",
@@ -819,381 +533,44 @@
         "end word is very common",
         "all words are ranked in the source list",
         "very high frequency-list coverage",
-        "strong average frequency rank",
         "good move variety"
       ]
     },
     {
-      "id": "generated_1042",
+      "id": "generated_0042",
       "sequence": [
-        "CARE",
-        "TRACE",
-        "TRANCE",
-        "RECENT",
-        "CENTER",
-        "PERCENT"
+        "LAST",
+        "LEAST",
+        "LATER",
+        "LATTER",
+        "REALTY",
+        "REALITY"
       ],
       "pattern": [
-        "G",
         "Y",
         "R",
-        "B",
-        "G"
-      ],
-      "start": "CARE",
-      "end": "PERCENT",
-      "difficulty": 5,
-      "score": 396,
-      "blueMoves": 1,
-      "yellowMoves": 1,
-      "greenMoves": 2,
-      "redMoves": 1,
-      "curation": {
-        "baseScore": 396,
-        "curatedScore": 551,
-        "rankedWordCount": 6,
-        "totalWords": 6,
-        "frequencyCoverage": 1.0,
-        "unrankedWords": [],
-        "averageRankScore": 23.0,
-        "endRank": 650,
-        "moveVariety": 4,
-        "quality": "EXCELLENT",
-        "curatedDifficulty": 4,
-        "difficultyLabel": "Hard",
-        "filterStatus": "KEPT"
-      },
-      "curationReasons": [
-        "end word is very common",
-        "all words are ranked in the source list",
-        "very high frequency-list coverage",
-        "strong average frequency rank",
-        "good move variety"
-      ]
-    },
-    {
-      "id": "generated_1165",
-      "sequence": [
-        "SAME",
-        "MAKES",
-        "MAKERS",
-        "MASTER",
-        "STREAM",
-        "MARKETS"
-      ],
-      "pattern": [
-        "G",
         "Y",
         "R",
-        "B",
-        "G"
+        "Y"
       ],
-      "start": "SAME",
-      "end": "MARKETS",
+      "start": "LAST",
+      "end": "REALITY",
       "difficulty": 5,
-      "score": 396,
-      "blueMoves": 1,
-      "yellowMoves": 1,
-      "greenMoves": 2,
-      "redMoves": 1,
+      "score": 412,
+      "blueMoves": 0,
+      "yellowMoves": 3,
+      "greenMoves": 0,
+      "redMoves": 2,
       "curation": {
-        "baseScore": 396,
-        "curatedScore": 550,
-        "rankedWordCount": 6,
-        "totalWords": 6,
-        "frequencyCoverage": 1.0,
-        "unrankedWords": [],
-        "averageRankScore": 24.7,
-        "endRank": 1487,
-        "moveVariety": 4,
-        "quality": "EXCELLENT",
-        "curatedDifficulty": 4,
-        "difficultyLabel": "Hard",
-        "filterStatus": "KEPT"
-      },
-      "curationReasons": [
-        "end word is common",
-        "all words are ranked in the source list",
-        "very high frequency-list coverage",
-        "strong average frequency rank",
-        "good move variety"
-      ]
-    },
-    {
-      "id": "generated_1167",
-      "sequence": [
-        "SAME",
-        "MAKES",
-        "MAKERS",
-        "STREAM",
-        "MASTER",
-        "MARKETS"
-      ],
-      "pattern": [
-        "G",
-        "Y",
-        "R",
-        "B",
-        "G"
-      ],
-      "start": "SAME",
-      "end": "MARKETS",
-      "difficulty": 5,
-      "score": 396,
-      "blueMoves": 1,
-      "yellowMoves": 1,
-      "greenMoves": 2,
-      "redMoves": 1,
-      "curation": {
-        "baseScore": 396,
-        "curatedScore": 550,
-        "rankedWordCount": 6,
-        "totalWords": 6,
-        "frequencyCoverage": 1.0,
-        "unrankedWords": [],
-        "averageRankScore": 24.7,
-        "endRank": 1487,
-        "moveVariety": 4,
-        "quality": "EXCELLENT",
-        "curatedDifficulty": 4,
-        "difficultyLabel": "Hard",
-        "filterStatus": "KEPT"
-      },
-      "curationReasons": [
-        "end word is common",
-        "all words are ranked in the source list",
-        "very high frequency-list coverage",
-        "strong average frequency rank",
-        "good move variety"
-      ]
-    },
-    {
-      "id": "generated_1024",
-      "sequence": [
-        "BEST",
-        "BEAST",
-        "BREAST",
-        "MASTER",
-        "STREAM",
-        "MATTERS"
-      ],
-      "pattern": [
-        "G",
-        "Y",
-        "R",
-        "B",
-        "G"
-      ],
-      "start": "BEST",
-      "end": "MATTERS",
-      "difficulty": 5,
-      "score": 396,
-      "blueMoves": 1,
-      "yellowMoves": 1,
-      "greenMoves": 2,
-      "redMoves": 1,
-      "curation": {
-        "baseScore": 396,
-        "curatedScore": 548,
-        "rankedWordCount": 6,
-        "totalWords": 6,
-        "frequencyCoverage": 1.0,
-        "unrankedWords": [],
-        "averageRankScore": 23.7,
-        "endRank": 2075,
-        "moveVariety": 4,
-        "quality": "EXCELLENT",
-        "curatedDifficulty": 4,
-        "difficultyLabel": "Hard",
-        "filterStatus": "KEPT"
-      },
-      "curationReasons": [
-        "end word is common",
-        "all words are ranked in the source list",
-        "very high frequency-list coverage",
-        "strong average frequency rank",
-        "good move variety"
-      ]
-    },
-    {
-      "id": "generated_1027",
-      "sequence": [
-        "BEST",
-        "BEAST",
-        "BREAST",
-        "STREAM",
-        "MASTER",
-        "MATTERS"
-      ],
-      "pattern": [
-        "G",
-        "Y",
-        "R",
-        "B",
-        "G"
-      ],
-      "start": "BEST",
-      "end": "MATTERS",
-      "difficulty": 5,
-      "score": 396,
-      "blueMoves": 1,
-      "yellowMoves": 1,
-      "greenMoves": 2,
-      "redMoves": 1,
-      "curation": {
-        "baseScore": 396,
-        "curatedScore": 548,
-        "rankedWordCount": 6,
-        "totalWords": 6,
-        "frequencyCoverage": 1.0,
-        "unrankedWords": [],
-        "averageRankScore": 23.7,
-        "endRank": 2075,
-        "moveVariety": 4,
-        "quality": "EXCELLENT",
-        "curatedDifficulty": 4,
-        "difficultyLabel": "Hard",
-        "filterStatus": "KEPT"
-      },
-      "curationReasons": [
-        "end word is common",
-        "all words are ranked in the source list",
-        "very high frequency-list coverage",
-        "strong average frequency rank",
-        "good move variety"
-      ]
-    },
-    {
-      "id": "generated_2143",
-      "sequence": [
-        "NEAR",
-        "RANGE",
-        "ORANGE",
-        "DANGER",
-        "GARDEN",
-        "READING"
-      ],
-      "pattern": [
-        "G",
-        "Y",
-        "R",
-        "B",
-        "G"
-      ],
-      "start": "NEAR",
-      "end": "READING",
-      "difficulty": 5,
-      "score": 388,
-      "blueMoves": 1,
-      "yellowMoves": 1,
-      "greenMoves": 2,
-      "redMoves": 1,
-      "curation": {
-        "baseScore": 388,
-        "curatedScore": 548,
-        "rankedWordCount": 6,
-        "totalWords": 6,
-        "frequencyCoverage": 1.0,
-        "unrankedWords": [],
-        "averageRankScore": 25.3,
-        "endRank": 640,
-        "moveVariety": 4,
-        "quality": "EXCELLENT",
-        "curatedDifficulty": 4,
-        "difficultyLabel": "Hard",
-        "filterStatus": "KEPT"
-      },
-      "curationReasons": [
-        "end word is very common",
-        "all words are ranked in the source list",
-        "very high frequency-list coverage",
-        "strong average frequency rank",
-        "good move variety"
-      ]
-    },
-    {
-      "id": "generated_2145",
-      "sequence": [
-        "NEAR",
-        "RANGE",
-        "ORANGE",
-        "GARDEN",
-        "DANGER",
-        "READING"
-      ],
-      "pattern": [
-        "G",
-        "Y",
-        "R",
-        "B",
-        "G"
-      ],
-      "start": "NEAR",
-      "end": "READING",
-      "difficulty": 5,
-      "score": 388,
-      "blueMoves": 1,
-      "yellowMoves": 1,
-      "greenMoves": 2,
-      "redMoves": 1,
-      "curation": {
-        "baseScore": 388,
-        "curatedScore": 548,
-        "rankedWordCount": 6,
-        "totalWords": 6,
-        "frequencyCoverage": 1.0,
-        "unrankedWords": [],
-        "averageRankScore": 25.3,
-        "endRank": 640,
-        "moveVariety": 4,
-        "quality": "EXCELLENT",
-        "curatedDifficulty": 4,
-        "difficultyLabel": "Hard",
-        "filterStatus": "KEPT"
-      },
-      "curationReasons": [
-        "end word is very common",
-        "all words are ranked in the source list",
-        "very high frequency-list coverage",
-        "strong average frequency rank",
-        "good move variety"
-      ]
-    },
-    {
-      "id": "generated_0864",
-      "sequence": [
-        "ACTS",
-        "CAST",
-        "COAST",
-        "FACTS",
-        "CRAFTS",
-        "FACTORS"
-      ],
-      "pattern": [
-        "B",
-        "Y",
-        "R",
-        "G",
-        "G"
-      ],
-      "start": "ACTS",
-      "end": "FACTORS",
-      "difficulty": 5,
-      "score": 396,
-      "blueMoves": 1,
-      "yellowMoves": 1,
-      "greenMoves": 2,
-      "redMoves": 1,
-      "curation": {
-        "baseScore": 396,
-        "curatedScore": 546,
+        "baseScore": 412,
+        "curatedScore": 542,
         "rankedWordCount": 6,
         "totalWords": 6,
         "frequencyCoverage": 1.0,
         "unrankedWords": [],
         "averageRankScore": 22.7,
-        "endRank": 1512,
-        "moveVariety": 4,
+        "endRank": 1966,
+        "moveVariety": 2,
         "quality": "EXCELLENT",
         "curatedDifficulty": 4,
         "difficultyLabel": "Hard",
@@ -1203,475 +580,91 @@
         "end word is common",
         "all words are ranked in the source list",
         "very high frequency-list coverage",
-        "strong average frequency rank",
-        "good move variety"
+        "strong average frequency rank"
       ]
     },
     {
-      "id": "generated_0912",
+      "id": "generated_0053",
       "sequence": [
-        "AGES",
-        "SAGE",
-        "STAGE",
-        "RATES",
-        "MASTER",
-        "MARKETS"
+        "PAIN",
+        "PLAIN",
+        "PLANT",
+        "PLANET",
+        "PATENT",
+        "PATIENT"
       ],
       "pattern": [
-        "B",
         "Y",
         "R",
-        "G",
-        "G"
-      ],
-      "start": "AGES",
-      "end": "MARKETS",
-      "difficulty": 5,
-      "score": 396,
-      "blueMoves": 1,
-      "yellowMoves": 1,
-      "greenMoves": 2,
-      "redMoves": 1,
-      "curation": {
-        "baseScore": 396,
-        "curatedScore": 546,
-        "rankedWordCount": 6,
-        "totalWords": 6,
-        "frequencyCoverage": 1.0,
-        "unrankedWords": [],
-        "averageRankScore": 22.5,
-        "endRank": 1487,
-        "moveVariety": 4,
-        "quality": "EXCELLENT",
-        "curatedDifficulty": 4,
-        "difficultyLabel": "Hard",
-        "filterStatus": "KEPT"
-      },
-      "curationReasons": [
-        "end word is common",
-        "all words are ranked in the source list",
-        "very high frequency-list coverage",
-        "strong average frequency rank",
-        "good move variety"
-      ]
-    },
-    {
-      "id": "generated_0915",
-      "sequence": [
-        "AGES",
-        "SAGE",
-        "STAGE",
-        "RATES",
-        "STREAM",
-        "MARKETS"
-      ],
-      "pattern": [
-        "B",
         "Y",
         "R",
-        "G",
-        "G"
+        "Y"
       ],
-      "start": "AGES",
-      "end": "MARKETS",
+      "start": "PAIN",
+      "end": "PATIENT",
       "difficulty": 5,
-      "score": 396,
-      "blueMoves": 1,
-      "yellowMoves": 1,
-      "greenMoves": 2,
-      "redMoves": 1,
+      "score": 412,
+      "blueMoves": 0,
+      "yellowMoves": 3,
+      "greenMoves": 0,
+      "redMoves": 2,
       "curation": {
-        "baseScore": 396,
-        "curatedScore": 545,
-        "rankedWordCount": 6,
-        "totalWords": 6,
-        "frequencyCoverage": 1.0,
-        "unrankedWords": [],
-        "averageRankScore": 22.2,
-        "endRank": 1487,
-        "moveVariety": 4,
-        "quality": "EXCELLENT",
-        "curatedDifficulty": 4,
-        "difficultyLabel": "Hard",
-        "filterStatus": "KEPT"
-      },
-      "curationReasons": [
-        "end word is common",
-        "all words are ranked in the source list",
-        "very high frequency-list coverage",
-        "strong average frequency rank",
-        "good move variety"
-      ]
-    },
-    {
-      "id": "generated_0988",
-      "sequence": [
-        "ARCH",
-        "CHAR",
-        "CHAIR",
-        "REACH",
-        "SEARCH",
-        "CHARGES"
-      ],
-      "pattern": [
-        "B",
-        "Y",
-        "R",
-        "G",
-        "G"
-      ],
-      "start": "ARCH",
-      "end": "CHARGES",
-      "difficulty": 5,
-      "score": 396,
-      "blueMoves": 1,
-      "yellowMoves": 1,
-      "greenMoves": 2,
-      "redMoves": 1,
-      "curation": {
-        "baseScore": 396,
-        "curatedScore": 544,
-        "rankedWordCount": 6,
-        "totalWords": 6,
-        "frequencyCoverage": 1.0,
-        "unrankedWords": [],
-        "averageRankScore": 22.0,
-        "endRank": 1709,
-        "moveVariety": 4,
-        "quality": "EXCELLENT",
-        "curatedDifficulty": 4,
-        "difficultyLabel": "Hard",
-        "filterStatus": "KEPT"
-      },
-      "curationReasons": [
-        "end word is common",
-        "all words are ranked in the source list",
-        "very high frequency-list coverage",
-        "strong average frequency rank",
-        "good move variety"
-      ]
-    },
-    {
-      "id": "generated_1832",
-      "sequence": [
-        "ACRE",
-        "RACE",
-        "GRACE",
-        "RANGE",
-        "GARDEN",
-        "READING"
-      ],
-      "pattern": [
-        "B",
-        "Y",
-        "R",
-        "G",
-        "G"
-      ],
-      "start": "ACRE",
-      "end": "READING",
-      "difficulty": 5,
-      "score": 388,
-      "blueMoves": 1,
-      "yellowMoves": 1,
-      "greenMoves": 2,
-      "redMoves": 1,
-      "curation": {
-        "baseScore": 388,
+        "baseScore": 412,
         "curatedScore": 542,
         "rankedWordCount": 6,
         "totalWords": 6,
         "frequencyCoverage": 1.0,
         "unrankedWords": [],
         "averageRankScore": 22.5,
-        "endRank": 640,
-        "moveVariety": 4,
+        "endRank": 1497,
+        "moveVariety": 2,
         "quality": "EXCELLENT",
         "curatedDifficulty": 4,
         "difficultyLabel": "Hard",
         "filterStatus": "KEPT"
       },
       "curationReasons": [
-        "end word is very common",
+        "end word is common",
         "all words are ranked in the source list",
         "very high frequency-list coverage",
-        "strong average frequency rank",
-        "good move variety"
+        "strong average frequency rank"
       ]
     },
     {
-      "id": "generated_2103",
+      "id": "generated_0507",
       "sequence": [
-        "EURO",
-        "ROUTE",
-        "ROUTER",
-        "RETURN",
-        "TURNER",
-        "CURRENT"
-      ],
-      "pattern": [
-        "G",
-        "Y",
-        "R",
-        "B",
-        "G"
-      ],
-      "start": "EURO",
-      "end": "CURRENT",
-      "difficulty": 5,
-      "score": 388,
-      "blueMoves": 1,
-      "yellowMoves": 1,
-      "greenMoves": 2,
-      "redMoves": 1,
-      "curation": {
-        "baseScore": 388,
-        "curatedScore": 541,
-        "rankedWordCount": 6,
-        "totalWords": 6,
-        "frequencyCoverage": 1.0,
-        "unrankedWords": [],
-        "averageRankScore": 22.3,
-        "endRank": 228,
-        "moveVariety": 4,
-        "quality": "EXCELLENT",
-        "curatedDifficulty": 4,
-        "difficultyLabel": "Hard",
-        "filterStatus": "KEPT"
-      },
-      "curationReasons": [
-        "end word is very common",
-        "all words are ranked in the source list",
-        "very high frequency-list coverage",
-        "strong average frequency rank",
-        "good move variety"
-      ]
-    },
-    {
-      "id": "generated_2107",
-      "sequence": [
-        "EURO",
-        "ROUTE",
-        "ROUTER",
-        "TURNER",
-        "RETURN",
-        "CURRENT"
-      ],
-      "pattern": [
-        "G",
-        "Y",
-        "R",
-        "B",
-        "G"
-      ],
-      "start": "EURO",
-      "end": "CURRENT",
-      "difficulty": 5,
-      "score": 388,
-      "blueMoves": 1,
-      "yellowMoves": 1,
-      "greenMoves": 2,
-      "redMoves": 1,
-      "curation": {
-        "baseScore": 388,
-        "curatedScore": 541,
-        "rankedWordCount": 6,
-        "totalWords": 6,
-        "frequencyCoverage": 1.0,
-        "unrankedWords": [],
-        "averageRankScore": 22.3,
-        "endRank": 228,
-        "moveVariety": 4,
-        "quality": "EXCELLENT",
-        "curatedDifficulty": 4,
-        "difficultyLabel": "Hard",
-        "filterStatus": "KEPT"
-      },
-      "curationReasons": [
-        "end word is very common",
-        "all words are ranked in the source list",
-        "very high frequency-list coverage",
-        "strong average frequency rank",
-        "good move variety"
-      ]
-    },
-    {
-      "id": "generated_1826",
-      "sequence": [
-        "ACRE",
-        "RACE",
-        "GRACE",
-        "GRADE",
-        "GARDEN",
-        "READING"
-      ],
-      "pattern": [
-        "B",
-        "Y",
-        "R",
-        "G",
-        "G"
-      ],
-      "start": "ACRE",
-      "end": "READING",
-      "difficulty": 5,
-      "score": 388,
-      "blueMoves": 1,
-      "yellowMoves": 1,
-      "greenMoves": 2,
-      "redMoves": 1,
-      "curation": {
-        "baseScore": 388,
-        "curatedScore": 540,
-        "rankedWordCount": 6,
-        "totalWords": 6,
-        "frequencyCoverage": 1.0,
-        "unrankedWords": [],
-        "averageRankScore": 22.0,
-        "endRank": 640,
-        "moveVariety": 4,
-        "quality": "EXCELLENT",
-        "curatedDifficulty": 4,
-        "difficultyLabel": "Hard",
-        "filterStatus": "KEPT"
-      },
-      "curationReasons": [
-        "end word is very common",
-        "all words are ranked in the source list",
-        "very high frequency-list coverage",
-        "strong average frequency rank",
-        "good move variety"
-      ]
-    },
-    {
-      "id": "generated_1243",
-      "sequence": [
-        "THIS",
-        "SIGHT",
-        "SLIGHT",
-        "NIGHTS",
-        "THINGS",
-        "HOSTING"
-      ],
-      "pattern": [
-        "G",
-        "Y",
-        "R",
-        "B",
-        "G"
-      ],
-      "start": "THIS",
-      "end": "HOSTING",
-      "difficulty": 5,
-      "score": 396,
-      "blueMoves": 1,
-      "yellowMoves": 1,
-      "greenMoves": 2,
-      "redMoves": 1,
-      "curation": {
-        "baseScore": 396,
-        "curatedScore": 538,
-        "rankedWordCount": 6,
-        "totalWords": 6,
-        "frequencyCoverage": 1.0,
-        "unrankedWords": [],
-        "averageRankScore": 21.7,
-        "endRank": 622,
-        "moveVariety": 4,
-        "quality": "EXCELLENT",
-        "curatedDifficulty": 4,
-        "difficultyLabel": "Hard",
-        "filterStatus": "KEPT"
-      },
-      "curationReasons": [
-        "end word is very common",
-        "all words are ranked in the source list",
-        "very high frequency-list coverage",
-        "good move variety"
-      ]
-    },
-    {
-      "id": "generated_1246",
-      "sequence": [
-        "THIS",
-        "SIGHT",
-        "SLIGHT",
-        "THINGS",
-        "NIGHTS",
-        "HOSTING"
-      ],
-      "pattern": [
-        "G",
-        "Y",
-        "R",
-        "B",
-        "G"
-      ],
-      "start": "THIS",
-      "end": "HOSTING",
-      "difficulty": 5,
-      "score": 396,
-      "blueMoves": 1,
-      "yellowMoves": 1,
-      "greenMoves": 2,
-      "redMoves": 1,
-      "curation": {
-        "baseScore": 396,
-        "curatedScore": 538,
-        "rankedWordCount": 6,
-        "totalWords": 6,
-        "frequencyCoverage": 1.0,
-        "unrankedWords": [],
-        "averageRankScore": 21.7,
-        "endRank": 622,
-        "moveVariety": 4,
-        "quality": "EXCELLENT",
-        "curatedDifficulty": 4,
-        "difficultyLabel": "Hard",
-        "filterStatus": "KEPT"
-      },
-      "curationReasons": [
-        "end word is very common",
-        "all words are ranked in the source list",
-        "very high frequency-list coverage",
-        "good move variety"
-      ]
-    },
-    {
-      "id": "generated_1195",
-      "sequence": [
-        "SETS",
-        "SITES",
-        "SUITES",
-        "RESIST",
-        "SISTER",
+        "LOTS",
+        "SLOTS",
+        "SPOTS",
+        "SPORTS",
+        "STORES",
         "STORIES"
       ],
       "pattern": [
-        "G",
         "Y",
         "R",
-        "B",
-        "G"
+        "Y",
+        "R",
+        "Y"
       ],
-      "start": "SETS",
+      "start": "LOTS",
       "end": "STORIES",
       "difficulty": 5,
-      "score": 396,
-      "blueMoves": 1,
-      "yellowMoves": 1,
-      "greenMoves": 2,
-      "redMoves": 1,
+      "score": 404,
+      "blueMoves": 0,
+      "yellowMoves": 3,
+      "greenMoves": 0,
+      "redMoves": 2,
       "curation": {
-        "baseScore": 396,
-        "curatedScore": 536,
+        "baseScore": 404,
+        "curatedScore": 539,
         "rankedWordCount": 6,
         "totalWords": 6,
         "frequencyCoverage": 1.0,
         "unrankedWords": [],
-        "averageRankScore": 20.8,
+        "averageRankScore": 23.0,
         "endRank": 510,
-        "moveVariety": 4,
+        "moveVariety": 2,
         "quality": "EXCELLENT",
         "curatedDifficulty": 4,
         "difficultyLabel": "Hard",
@@ -1681,44 +674,44 @@
         "end word is very common",
         "all words are ranked in the source list",
         "very high frequency-list coverage",
-        "good move variety"
+        "strong average frequency rank"
       ]
     },
     {
-      "id": "generated_1198",
+      "id": "generated_0886",
       "sequence": [
-        "SETS",
-        "SITES",
-        "SUITES",
-        "SISTER",
-        "RESIST",
+        "ARTS",
+        "PARTS",
+        "PORTS",
+        "SPORTS",
+        "STORES",
         "STORIES"
       ],
       "pattern": [
-        "G",
         "Y",
         "R",
-        "B",
-        "G"
+        "Y",
+        "R",
+        "Y"
       ],
-      "start": "SETS",
+      "start": "ARTS",
       "end": "STORIES",
       "difficulty": 5,
       "score": 396,
-      "blueMoves": 1,
-      "yellowMoves": 1,
-      "greenMoves": 2,
-      "redMoves": 1,
+      "blueMoves": 0,
+      "yellowMoves": 3,
+      "greenMoves": 0,
+      "redMoves": 2,
       "curation": {
         "baseScore": 396,
-        "curatedScore": 536,
+        "curatedScore": 539,
         "rankedWordCount": 6,
         "totalWords": 6,
         "frequencyCoverage": 1.0,
         "unrankedWords": [],
-        "averageRankScore": 20.8,
+        "averageRankScore": 27.0,
         "endRank": 510,
-        "moveVariety": 4,
+        "moveVariety": 2,
         "quality": "EXCELLENT",
         "curatedDifficulty": 4,
         "difficultyLabel": "Hard",
@@ -1728,45 +721,139 @@
         "end word is very common",
         "all words are ranked in the source list",
         "very high frequency-list coverage",
-        "good move variety"
+        "strong average frequency rank"
       ]
     },
     {
-      "id": "generated_0995",
+      "id": "generated_0004",
       "sequence": [
-        "ARMS",
-        "MARS",
-        "MARKS",
-        "SMART",
-        "MASTER",
+        "BARS",
+        "BEARS",
+        "BREAKS",
+        "MAKERS",
+        "MARKERS",
         "MARKETS"
       ],
       "pattern": [
-        "B",
         "Y",
-        "R",
         "G",
-        "G"
+        "R",
+        "Y",
+        "R"
       ],
-      "start": "ARMS",
+      "start": "BARS",
       "end": "MARKETS",
       "difficulty": 5,
-      "score": 396,
-      "blueMoves": 1,
-      "yellowMoves": 1,
-      "greenMoves": 2,
-      "redMoves": 1,
+      "score": 416,
+      "blueMoves": 0,
+      "yellowMoves": 2,
+      "greenMoves": 1,
+      "redMoves": 2,
       "curation": {
-        "baseScore": 396,
+        "baseScore": 416,
+        "curatedScore": 538,
+        "rankedWordCount": 6,
+        "totalWords": 6,
+        "frequencyCoverage": 1.0,
+        "unrankedWords": [],
+        "averageRankScore": 17.3,
+        "endRank": 1487,
+        "moveVariety": 3,
+        "quality": "GOOD",
+        "curatedDifficulty": 5,
+        "difficultyLabel": "Very Hard",
+        "filterStatus": "KEPT"
+      },
+      "curationReasons": [
+        "end word is common",
+        "all words are ranked in the source list",
+        "very high frequency-list coverage",
+        "good move variety"
+      ]
+    },
+    {
+      "id": "generated_0300",
+      "sequence": [
+        "EARL",
+        "EARLY",
+        "REALLY",
+        "LAYERS",
+        "LAWYERS",
+        "PLAYERS"
+      ],
+      "pattern": [
+        "Y",
+        "G",
+        "R",
+        "Y",
+        "R"
+      ],
+      "start": "EARL",
+      "end": "PLAYERS",
+      "difficulty": 5,
+      "score": 408,
+      "blueMoves": 0,
+      "yellowMoves": 2,
+      "greenMoves": 1,
+      "redMoves": 2,
+      "curation": {
+        "baseScore": 408,
+        "curatedScore": 536,
+        "rankedWordCount": 6,
+        "totalWords": 6,
+        "frequencyCoverage": 1.0,
+        "unrankedWords": [],
+        "averageRankScore": 20.2,
+        "endRank": 810,
+        "moveVariety": 3,
+        "quality": "EXCELLENT",
+        "curatedDifficulty": 4,
+        "difficultyLabel": "Hard",
+        "filterStatus": "KEPT"
+      },
+      "curationReasons": [
+        "end word is common",
+        "all words are ranked in the source list",
+        "very high frequency-list coverage",
+        "good move variety"
+      ]
+    },
+    {
+      "id": "generated_0268",
+      "sequence": [
+        "EARL",
+        "EARLY",
+        "NEARLY",
+        "LAYERS",
+        "LAWYERS",
+        "PLAYERS"
+      ],
+      "pattern": [
+        "Y",
+        "G",
+        "R",
+        "Y",
+        "R"
+      ],
+      "start": "EARL",
+      "end": "PLAYERS",
+      "difficulty": 5,
+      "score": 408,
+      "blueMoves": 0,
+      "yellowMoves": 2,
+      "greenMoves": 1,
+      "redMoves": 2,
+      "curation": {
+        "baseScore": 408,
         "curatedScore": 534,
         "rankedWordCount": 6,
         "totalWords": 6,
         "frequencyCoverage": 1.0,
         "unrankedWords": [],
-        "averageRankScore": 21.8,
-        "endRank": 1487,
-        "moveVariety": 4,
-        "quality": "EXCELLENT",
+        "averageRankScore": 19.2,
+        "endRank": 810,
+        "moveVariety": 3,
+        "quality": "GOOD",
         "curatedDifficulty": 4,
         "difficultyLabel": "Hard",
         "filterStatus": "KEPT"
@@ -1779,40 +866,40 @@
       ]
     },
     {
-      "id": "generated_0996",
+      "id": "generated_0385",
       "sequence": [
-        "ARMS",
-        "MARS",
-        "MARKS",
-        "SMART",
-        "MASTER",
-        "MATTERS"
+        "ABLE",
+        "TABLE",
+        "LATER",
+        "LATTER",
+        "REALTY",
+        "REALITY"
       ],
       "pattern": [
-        "B",
         "Y",
         "R",
-        "G",
-        "G"
+        "Y",
+        "R",
+        "Y"
       ],
-      "start": "ARMS",
-      "end": "MATTERS",
+      "start": "ABLE",
+      "end": "REALITY",
       "difficulty": 5,
-      "score": 396,
-      "blueMoves": 1,
-      "yellowMoves": 1,
-      "greenMoves": 2,
-      "redMoves": 1,
+      "score": 404,
+      "blueMoves": 0,
+      "yellowMoves": 3,
+      "greenMoves": 0,
+      "redMoves": 2,
       "curation": {
-        "baseScore": 396,
-        "curatedScore": 533,
+        "baseScore": 404,
+        "curatedScore": 534,
         "rankedWordCount": 6,
         "totalWords": 6,
         "frequencyCoverage": 1.0,
         "unrankedWords": [],
-        "averageRankScore": 21.3,
-        "endRank": 2075,
-        "moveVariety": 4,
+        "averageRankScore": 22.5,
+        "endRank": 1966,
+        "moveVariety": 2,
         "quality": "EXCELLENT",
         "curatedDifficulty": 4,
         "difficultyLabel": "Hard",
@@ -1822,232 +909,44 @@
         "end word is common",
         "all words are ranked in the source list",
         "very high frequency-list coverage",
-        "good move variety"
+        "strong average frequency rank"
       ]
     },
     {
-      "id": "generated_1143",
+      "id": "generated_0389",
       "sequence": [
-        "RING",
-        "BRING",
-        "BORING",
-        "IGNORE",
-        "REGION",
-        "FOREIGN"
+        "ASKS",
+        "TASKS",
+        "STATS",
+        "STATES",
+        "STATED",
+        "STARTED"
       ],
       "pattern": [
-        "G",
         "Y",
         "R",
-        "B",
-        "G"
-      ],
-      "start": "RING",
-      "end": "FOREIGN",
-      "difficulty": 5,
-      "score": 396,
-      "blueMoves": 1,
-      "yellowMoves": 1,
-      "greenMoves": 2,
-      "redMoves": 1,
-      "curation": {
-        "baseScore": 396,
-        "curatedScore": 533,
-        "rankedWordCount": 6,
-        "totalWords": 6,
-        "frequencyCoverage": 1.0,
-        "unrankedWords": [],
-        "averageRankScore": 21.3,
-        "endRank": 935,
-        "moveVariety": 4,
-        "quality": "EXCELLENT",
-        "curatedDifficulty": 4,
-        "difficultyLabel": "Hard",
-        "filterStatus": "KEPT"
-      },
-      "curationReasons": [
-        "end word is common",
-        "all words are ranked in the source list",
-        "very high frequency-list coverage",
-        "good move variety"
-      ]
-    },
-    {
-      "id": "generated_1144",
-      "sequence": [
-        "RING",
-        "BRING",
-        "BORING",
-        "REGION",
-        "IGNORE",
-        "FOREIGN"
-      ],
-      "pattern": [
-        "G",
         "Y",
         "R",
-        "B",
-        "G"
+        "Y"
       ],
-      "start": "RING",
-      "end": "FOREIGN",
+      "start": "ASKS",
+      "end": "STARTED",
       "difficulty": 5,
-      "score": 396,
-      "blueMoves": 1,
-      "yellowMoves": 1,
-      "greenMoves": 2,
-      "redMoves": 1,
+      "score": 404,
+      "blueMoves": 0,
+      "yellowMoves": 3,
+      "greenMoves": 0,
+      "redMoves": 2,
       "curation": {
-        "baseScore": 396,
-        "curatedScore": 533,
-        "rankedWordCount": 6,
-        "totalWords": 6,
-        "frequencyCoverage": 1.0,
-        "unrankedWords": [],
-        "averageRankScore": 21.3,
-        "endRank": 935,
-        "moveVariety": 4,
-        "quality": "EXCELLENT",
-        "curatedDifficulty": 4,
-        "difficultyLabel": "Hard",
-        "filterStatus": "KEPT"
-      },
-      "curationReasons": [
-        "end word is common",
-        "all words are ranked in the source list",
-        "very high frequency-list coverage",
-        "good move variety"
-      ]
-    },
-    {
-      "id": "generated_2135",
-      "sequence": [
-        "MADE",
-        "MEDIA",
-        "MEDIAN",
-        "MARINE",
-        "REMAIN",
-        "SEMINAR"
-      ],
-      "pattern": [
-        "G",
-        "Y",
-        "R",
-        "B",
-        "G"
-      ],
-      "start": "MADE",
-      "end": "SEMINAR",
-      "difficulty": 5,
-      "score": 388,
-      "blueMoves": 1,
-      "yellowMoves": 1,
-      "greenMoves": 2,
-      "redMoves": 1,
-      "curation": {
-        "baseScore": 388,
-        "curatedScore": 533,
-        "rankedWordCount": 6,
-        "totalWords": 6,
-        "frequencyCoverage": 1.0,
-        "unrankedWords": [],
-        "averageRankScore": 23.2,
-        "endRank": 2960,
-        "moveVariety": 4,
-        "quality": "EXCELLENT",
-        "curatedDifficulty": 4,
-        "difficultyLabel": "Hard",
-        "filterStatus": "KEPT"
-      },
-      "curationReasons": [
-        "all words are ranked in the source list",
-        "very high frequency-list coverage",
-        "strong average frequency rank",
-        "good move variety"
-      ]
-    },
-    {
-      "id": "generated_2137",
-      "sequence": [
-        "MADE",
-        "MEDIA",
-        "MEDIAN",
-        "REMAIN",
-        "MARINE",
-        "SEMINAR"
-      ],
-      "pattern": [
-        "G",
-        "Y",
-        "R",
-        "B",
-        "G"
-      ],
-      "start": "MADE",
-      "end": "SEMINAR",
-      "difficulty": 5,
-      "score": 388,
-      "blueMoves": 1,
-      "yellowMoves": 1,
-      "greenMoves": 2,
-      "redMoves": 1,
-      "curation": {
-        "baseScore": 388,
-        "curatedScore": 533,
-        "rankedWordCount": 6,
-        "totalWords": 6,
-        "frequencyCoverage": 1.0,
-        "unrankedWords": [],
-        "averageRankScore": 23.2,
-        "endRank": 2960,
-        "moveVariety": 4,
-        "quality": "EXCELLENT",
-        "curatedDifficulty": 4,
-        "difficultyLabel": "Hard",
-        "filterStatus": "KEPT"
-      },
-      "curationReasons": [
-        "all words are ranked in the source list",
-        "very high frequency-list coverage",
-        "strong average frequency rank",
-        "good move variety"
-      ]
-    },
-    {
-      "id": "generated_0984",
-      "sequence": [
-        "ARCH",
-        "CHAR",
-        "CHAIR",
-        "CRASH",
-        "SEARCH",
-        "CHARGES"
-      ],
-      "pattern": [
-        "B",
-        "Y",
-        "R",
-        "G",
-        "G"
-      ],
-      "start": "ARCH",
-      "end": "CHARGES",
-      "difficulty": 5,
-      "score": 396,
-      "blueMoves": 1,
-      "yellowMoves": 1,
-      "greenMoves": 2,
-      "redMoves": 1,
-      "curation": {
-        "baseScore": 396,
+        "baseScore": 404,
         "curatedScore": 532,
         "rankedWordCount": 6,
         "totalWords": 6,
         "frequencyCoverage": 1.0,
         "unrankedWords": [],
-        "averageRankScore": 21.0,
-        "endRank": 1709,
-        "moveVariety": 4,
+        "averageRankScore": 22.0,
+        "endRank": 817,
+        "moveVariety": 2,
         "quality": "EXCELLENT",
         "curatedDifficulty": 4,
         "difficultyLabel": "Hard",
@@ -2057,44 +956,44 @@
         "end word is common",
         "all words are ranked in the source list",
         "very high frequency-list coverage",
-        "good move variety"
+        "strong average frequency rank"
       ]
     },
     {
-      "id": "generated_1085",
+      "id": "generated_0458",
       "sequence": [
-        "LIST",
-        "TILES",
-        "TITLES",
-        "LISTEN",
-        "SILENT",
-        "CLIENTS"
+        "HEAT",
+        "HEART",
+        "OTHER",
+        "MOTHER",
+        "BOTHER",
+        "BROTHER"
       ],
       "pattern": [
-        "G",
         "Y",
         "R",
-        "B",
-        "G"
+        "Y",
+        "R",
+        "Y"
       ],
-      "start": "LIST",
-      "end": "CLIENTS",
+      "start": "HEAT",
+      "end": "BROTHER",
       "difficulty": 5,
-      "score": 396,
-      "blueMoves": 1,
-      "yellowMoves": 1,
-      "greenMoves": 2,
-      "redMoves": 1,
+      "score": 404,
+      "blueMoves": 0,
+      "yellowMoves": 3,
+      "greenMoves": 0,
+      "redMoves": 2,
       "curation": {
-        "baseScore": 396,
-        "curatedScore": 530,
+        "baseScore": 404,
+        "curatedScore": 532,
         "rankedWordCount": 6,
         "totalWords": 6,
         "frequencyCoverage": 1.0,
         "unrankedWords": [],
-        "averageRankScore": 20.2,
-        "endRank": 1475,
-        "moveVariety": 4,
+        "averageRankScore": 22.0,
+        "endRank": 1830,
+        "moveVariety": 2,
         "quality": "EXCELLENT",
         "curatedDifficulty": 4,
         "difficultyLabel": "Hard",
@@ -2104,44 +1003,44 @@
         "end word is common",
         "all words are ranked in the source list",
         "very high frequency-list coverage",
-        "good move variety"
+        "strong average frequency rank"
       ]
     },
     {
-      "id": "generated_1086",
+      "id": "generated_0477",
       "sequence": [
-        "LIST",
-        "TILES",
-        "TITLES",
-        "SILENT",
-        "LISTEN",
-        "CLIENTS"
+        "LAST",
+        "LEAST",
+        "BEAST",
+        "BREAST",
+        "EASTER",
+        "EASTERN"
       ],
       "pattern": [
-        "G",
         "Y",
         "R",
-        "B",
-        "G"
+        "Y",
+        "R",
+        "Y"
       ],
-      "start": "LIST",
-      "end": "CLIENTS",
+      "start": "LAST",
+      "end": "EASTERN",
       "difficulty": 5,
-      "score": 396,
-      "blueMoves": 1,
-      "yellowMoves": 1,
-      "greenMoves": 2,
-      "redMoves": 1,
+      "score": 404,
+      "blueMoves": 0,
+      "yellowMoves": 3,
+      "greenMoves": 0,
+      "redMoves": 2,
       "curation": {
-        "baseScore": 396,
-        "curatedScore": 530,
+        "baseScore": 404,
+        "curatedScore": 532,
         "rankedWordCount": 6,
         "totalWords": 6,
         "frequencyCoverage": 1.0,
         "unrankedWords": [],
-        "averageRankScore": 20.2,
-        "endRank": 1475,
-        "moveVariety": 4,
+        "averageRankScore": 22.0,
+        "endRank": 1632,
+        "moveVariety": 2,
         "quality": "EXCELLENT",
         "curatedDifficulty": 4,
         "difficultyLabel": "Hard",
@@ -2151,558 +1050,231 @@
         "end word is common",
         "all words are ranked in the source list",
         "very high frequency-list coverage",
+        "strong average frequency rank"
+      ]
+    },
+    {
+      "id": "generated_0011",
+      "sequence": [
+        "BEST",
+        "BEAST",
+        "BASKET",
+        "TABLES",
+        "TABLETS",
+        "BOTTLES"
+      ],
+      "pattern": [
+        "Y",
+        "G",
+        "R",
+        "Y",
+        "R"
+      ],
+      "start": "BEST",
+      "end": "BOTTLES",
+      "difficulty": 5,
+      "score": 416,
+      "blueMoves": 0,
+      "yellowMoves": 2,
+      "greenMoves": 1,
+      "redMoves": 2,
+      "curation": {
+        "baseScore": 416,
+        "curatedScore": 531,
+        "rankedWordCount": 6,
+        "totalWords": 6,
+        "frequencyCoverage": 1.0,
+        "unrankedWords": [],
+        "averageRankScore": 18.5,
+        "endRank": 5381,
+        "moveVariety": 3,
+        "quality": "GOOD",
+        "curatedDifficulty": 4,
+        "difficultyLabel": "Hard",
+        "filterStatus": "KEPT"
+      },
+      "curationReasons": [
+        "end word is relatively low-frequency",
+        "all words are ranked in the source list",
+        "very high frequency-list coverage",
         "good move variety"
       ]
     },
     {
-      "id": "generated_0863",
+      "id": "generated_0184",
       "sequence": [
-        "ACTS",
-        "CAST",
-        "COAST",
-        "ACTOR",
-        "FACTOR",
+        "CASH",
+        "CRASH",
+        "CHARTS",
+        "ACTORS",
+        "FACTORS",
         "FACTORY"
       ],
       "pattern": [
-        "B",
         "Y",
-        "R",
         "G",
-        "G"
+        "R",
+        "Y",
+        "R"
       ],
-      "start": "ACTS",
+      "start": "CASH",
       "end": "FACTORY",
       "difficulty": 5,
-      "score": 396,
-      "blueMoves": 1,
-      "yellowMoves": 1,
-      "greenMoves": 2,
-      "redMoves": 1,
+      "score": 408,
+      "blueMoves": 0,
+      "yellowMoves": 2,
+      "greenMoves": 1,
+      "redMoves": 2,
       "curation": {
-        "baseScore": 396,
+        "baseScore": 408,
+        "curatedScore": 531,
+        "rankedWordCount": 6,
+        "totalWords": 6,
+        "frequencyCoverage": 1.0,
+        "unrankedWords": [],
+        "averageRankScore": 20.7,
+        "endRank": 2282,
+        "moveVariety": 3,
+        "quality": "EXCELLENT",
+        "curatedDifficulty": 4,
+        "difficultyLabel": "Hard",
+        "filterStatus": "KEPT"
+      },
+      "curationReasons": [
+        "all words are ranked in the source list",
+        "very high frequency-list coverage",
+        "good move variety"
+      ]
+    },
+    {
+      "id": "generated_0238",
+      "sequence": [
+        "DAWN",
+        "DRAWN",
+        "WARNED",
+        "EARNED",
+        "LEARNED",
+        "GENERAL"
+      ],
+      "pattern": [
+        "Y",
+        "G",
+        "R",
+        "Y",
+        "R"
+      ],
+      "start": "DAWN",
+      "end": "GENERAL",
+      "difficulty": 5,
+      "score": 408,
+      "blueMoves": 0,
+      "yellowMoves": 2,
+      "greenMoves": 1,
+      "redMoves": 2,
+      "curation": {
+        "baseScore": 408,
+        "curatedScore": 531,
+        "rankedWordCount": 6,
+        "totalWords": 6,
+        "frequencyCoverage": 1.0,
+        "unrankedWords": [],
+        "averageRankScore": 15.8,
+        "endRank": 114,
+        "moveVariety": 3,
+        "quality": "BORDERLINE",
+        "curatedDifficulty": 5,
+        "difficultyLabel": "Very Hard",
+        "filterStatus": "KEPT"
+      },
+      "curationReasons": [
+        "end word is very common",
+        "all words are ranked in the source list",
+        "very high frequency-list coverage",
+        "good move variety"
+      ]
+    },
+    {
+      "id": "generated_0241",
+      "sequence": [
+        "DAWN",
+        "DRAWN",
+        "WARNED",
+        "EARNED",
+        "LEARNED",
+        "RELATED"
+      ],
+      "pattern": [
+        "Y",
+        "G",
+        "R",
+        "Y",
+        "R"
+      ],
+      "start": "DAWN",
+      "end": "RELATED",
+      "difficulty": 5,
+      "score": 408,
+      "blueMoves": 0,
+      "yellowMoves": 2,
+      "greenMoves": 1,
+      "redMoves": 2,
+      "curation": {
+        "baseScore": 408,
+        "curatedScore": 531,
+        "rankedWordCount": 6,
+        "totalWords": 6,
+        "frequencyCoverage": 1.0,
+        "unrankedWords": [],
+        "averageRankScore": 15.8,
+        "endRank": 203,
+        "moveVariety": 3,
+        "quality": "BORDERLINE",
+        "curatedDifficulty": 5,
+        "difficultyLabel": "Very Hard",
+        "filterStatus": "KEPT"
+      },
+      "curationReasons": [
+        "end word is very common",
+        "all words are ranked in the source list",
+        "very high frequency-list coverage",
+        "good move variety"
+      ]
+    },
+    {
+      "id": "generated_0007",
+      "sequence": [
+        "BEAT",
+        "BEAST",
+        "BASKET",
+        "TABLES",
+        "TABLETS",
+        "BOTTLES"
+      ],
+      "pattern": [
+        "Y",
+        "G",
+        "R",
+        "Y",
+        "R"
+      ],
+      "start": "BEAT",
+      "end": "BOTTLES",
+      "difficulty": 5,
+      "score": 416,
+      "blueMoves": 0,
+      "yellowMoves": 2,
+      "greenMoves": 1,
+      "redMoves": 2,
+      "curation": {
+        "baseScore": 416,
         "curatedScore": 528,
         "rankedWordCount": 6,
         "totalWords": 6,
         "frequencyCoverage": 1.0,
         "unrankedWords": [],
-        "averageRankScore": 21.7,
-        "endRank": 2282,
-        "moveVariety": 4,
-        "quality": "EXCELLENT",
-        "curatedDifficulty": 4,
-        "difficultyLabel": "Hard",
-        "filterStatus": "KEPT"
-      },
-      "curationReasons": [
-        "all words are ranked in the source list",
-        "very high frequency-list coverage",
-        "good move variety"
-      ]
-    },
-    {
-      "id": "generated_2132",
-      "sequence": [
-        "LOSE",
-        "CLOSE",
-        "CLOSER",
-        "COURSE",
-        "SOURCE",
-        "CLOSURE"
-      ],
-      "pattern": [
-        "G",
-        "Y",
-        "R",
-        "B",
-        "G"
-      ],
-      "start": "LOSE",
-      "end": "CLOSURE",
-      "difficulty": 5,
-      "score": 388,
-      "blueMoves": 1,
-      "yellowMoves": 1,
-      "greenMoves": 2,
-      "redMoves": 1,
-      "curation": {
-        "baseScore": 388,
-        "curatedScore": 527,
-        "rankedWordCount": 6,
-        "totalWords": 6,
-        "frequencyCoverage": 1.0,
-        "unrankedWords": [],
-        "averageRankScore": 22.2,
-        "endRank": 5430,
-        "moveVariety": 4,
-        "quality": "EXCELLENT",
-        "curatedDifficulty": 4,
-        "difficultyLabel": "Hard",
-        "filterStatus": "KEPT"
-      },
-      "curationReasons": [
-        "end word is relatively low-frequency",
-        "all words are ranked in the source list",
-        "very high frequency-list coverage",
-        "strong average frequency rank",
-        "good move variety"
-      ]
-    },
-    {
-      "id": "generated_2133",
-      "sequence": [
-        "LOSE",
-        "CLOSE",
-        "CLOSER",
-        "SOURCE",
-        "COURSE",
-        "CLOSURE"
-      ],
-      "pattern": [
-        "G",
-        "Y",
-        "R",
-        "B",
-        "G"
-      ],
-      "start": "LOSE",
-      "end": "CLOSURE",
-      "difficulty": 5,
-      "score": 388,
-      "blueMoves": 1,
-      "yellowMoves": 1,
-      "greenMoves": 2,
-      "redMoves": 1,
-      "curation": {
-        "baseScore": 388,
-        "curatedScore": 527,
-        "rankedWordCount": 6,
-        "totalWords": 6,
-        "frequencyCoverage": 1.0,
-        "unrankedWords": [],
-        "averageRankScore": 22.2,
-        "endRank": 5430,
-        "moveVariety": 4,
-        "quality": "EXCELLENT",
-        "curatedDifficulty": 4,
-        "difficultyLabel": "Hard",
-        "filterStatus": "KEPT"
-      },
-      "curationReasons": [
-        "end word is relatively low-frequency",
-        "all words are ranked in the source list",
-        "very high frequency-list coverage",
-        "strong average frequency rank",
-        "good move variety"
-      ]
-    },
-    {
-      "id": "generated_2092",
-      "sequence": [
-        "EURO",
-        "OUTER",
-        "ROUTER",
-        "RESORT",
-        "ROSTER",
-        "REPORTS"
-      ],
-      "pattern": [
-        "G",
-        "Y",
-        "R",
-        "B",
-        "G"
-      ],
-      "start": "EURO",
-      "end": "REPORTS",
-      "difficulty": 5,
-      "score": 388,
-      "blueMoves": 1,
-      "yellowMoves": 1,
-      "greenMoves": 2,
-      "redMoves": 1,
-      "curation": {
-        "baseScore": 388,
-        "curatedScore": 523,
-        "rankedWordCount": 6,
-        "totalWords": 6,
-        "frequencyCoverage": 1.0,
-        "unrankedWords": [],
-        "averageRankScore": 18.8,
-        "endRank": 513,
-        "moveVariety": 4,
-        "quality": "GOOD",
-        "curatedDifficulty": 4,
-        "difficultyLabel": "Hard",
-        "filterStatus": "KEPT"
-      },
-      "curationReasons": [
-        "end word is very common",
-        "all words are ranked in the source list",
-        "very high frequency-list coverage",
-        "good move variety"
-      ]
-    },
-    {
-      "id": "generated_2096",
-      "sequence": [
-        "EURO",
-        "OUTER",
-        "ROUTER",
-        "ROSTER",
-        "RESORT",
-        "REPORTS"
-      ],
-      "pattern": [
-        "G",
-        "Y",
-        "R",
-        "B",
-        "G"
-      ],
-      "start": "EURO",
-      "end": "REPORTS",
-      "difficulty": 5,
-      "score": 388,
-      "blueMoves": 1,
-      "yellowMoves": 1,
-      "greenMoves": 2,
-      "redMoves": 1,
-      "curation": {
-        "baseScore": 388,
-        "curatedScore": 523,
-        "rankedWordCount": 6,
-        "totalWords": 6,
-        "frequencyCoverage": 1.0,
-        "unrankedWords": [],
-        "averageRankScore": 18.8,
-        "endRank": 513,
-        "moveVariety": 4,
-        "quality": "GOOD",
-        "curatedDifficulty": 4,
-        "difficultyLabel": "Hard",
-        "filterStatus": "KEPT"
-      },
-      "curationReasons": [
-        "end word is very common",
-        "all words are ranked in the source list",
-        "very high frequency-list coverage",
-        "good move variety"
-      ]
-    },
-    {
-      "id": "generated_1140",
-      "sequence": [
-        "RICE",
-        "PRICE",
-        "PRINCE",
-        "PIERCE",
-        "RECIPE",
-        "RECEIPT"
-      ],
-      "pattern": [
-        "G",
-        "Y",
-        "R",
-        "B",
-        "G"
-      ],
-      "start": "RICE",
-      "end": "RECEIPT",
-      "difficulty": 5,
-      "score": 396,
-      "blueMoves": 1,
-      "yellowMoves": 1,
-      "greenMoves": 2,
-      "redMoves": 1,
-      "curation": {
-        "baseScore": 396,
-        "curatedScore": 520,
-        "rankedWordCount": 6,
-        "totalWords": 6,
-        "frequencyCoverage": 1.0,
-        "unrankedWords": [],
-        "averageRankScore": 18.3,
-        "endRank": 3595,
-        "moveVariety": 4,
-        "quality": "GOOD",
-        "curatedDifficulty": 4,
-        "difficultyLabel": "Hard",
-        "filterStatus": "KEPT"
-      },
-      "curationReasons": [
-        "all words are ranked in the source list",
-        "very high frequency-list coverage",
-        "good move variety"
-      ]
-    },
-    {
-      "id": "generated_1142",
-      "sequence": [
-        "RICE",
-        "PRICE",
-        "PRINCE",
-        "RECIPE",
-        "PIERCE",
-        "RECEIPT"
-      ],
-      "pattern": [
-        "G",
-        "Y",
-        "R",
-        "B",
-        "G"
-      ],
-      "start": "RICE",
-      "end": "RECEIPT",
-      "difficulty": 5,
-      "score": 396,
-      "blueMoves": 1,
-      "yellowMoves": 1,
-      "greenMoves": 2,
-      "redMoves": 1,
-      "curation": {
-        "baseScore": 396,
-        "curatedScore": 520,
-        "rankedWordCount": 6,
-        "totalWords": 6,
-        "frequencyCoverage": 1.0,
-        "unrankedWords": [],
-        "averageRankScore": 18.3,
-        "endRank": 3595,
-        "moveVariety": 4,
-        "quality": "GOOD",
-        "curatedDifficulty": 4,
-        "difficultyLabel": "Hard",
-        "filterStatus": "KEPT"
-      },
-      "curationReasons": [
-        "all words are ranked in the source list",
-        "very high frequency-list coverage",
-        "good move variety"
-      ]
-    },
-    {
-      "id": "generated_1175",
-      "sequence": [
-        "SAND",
-        "STAND",
-        "STRAND",
-        "STRAIN",
-        "TRAINS",
-        "RATINGS"
-      ],
-      "pattern": [
-        "G",
-        "Y",
-        "R",
-        "B",
-        "G"
-      ],
-      "start": "SAND",
-      "end": "RATINGS",
-      "difficulty": 5,
-      "score": 396,
-      "blueMoves": 1,
-      "yellowMoves": 1,
-      "greenMoves": 2,
-      "redMoves": 1,
-      "curation": {
-        "baseScore": 396,
-        "curatedScore": 520,
-        "rankedWordCount": 6,
-        "totalWords": 6,
-        "frequencyCoverage": 1.0,
-        "unrankedWords": [],
-        "averageRankScore": 15.3,
-        "endRank": 1005,
-        "moveVariety": 4,
-        "quality": "BORDERLINE",
-        "curatedDifficulty": 5,
-        "difficultyLabel": "Very Hard",
-        "filterStatus": "KEPT"
-      },
-      "curationReasons": [
-        "end word is common",
-        "all words are ranked in the source list",
-        "very high frequency-list coverage",
-        "good move variety"
-      ]
-    },
-    {
-      "id": "generated_1177",
-      "sequence": [
-        "SAND",
-        "STAND",
-        "STRAND",
-        "TRAINS",
-        "STRAIN",
-        "RATINGS"
-      ],
-      "pattern": [
-        "G",
-        "Y",
-        "R",
-        "B",
-        "G"
-      ],
-      "start": "SAND",
-      "end": "RATINGS",
-      "difficulty": 5,
-      "score": 396,
-      "blueMoves": 1,
-      "yellowMoves": 1,
-      "greenMoves": 2,
-      "redMoves": 1,
-      "curation": {
-        "baseScore": 396,
-        "curatedScore": 520,
-        "rankedWordCount": 6,
-        "totalWords": 6,
-        "frequencyCoverage": 1.0,
-        "unrankedWords": [],
-        "averageRankScore": 15.3,
-        "endRank": 1005,
-        "moveVariety": 4,
-        "quality": "BORDERLINE",
-        "curatedDifficulty": 5,
-        "difficultyLabel": "Very Hard",
-        "filterStatus": "KEPT"
-      },
-      "curationReasons": [
-        "end word is common",
-        "all words are ranked in the source list",
-        "very high frequency-list coverage",
-        "good move variety"
-      ]
-    },
-    {
-      "id": "generated_1205",
-      "sequence": [
-        "SING",
-        "SWING",
-        "SEWING",
-        "DESIGN",
-        "SIGNED",
-        "SENDING"
-      ],
-      "pattern": [
-        "G",
-        "Y",
-        "R",
-        "B",
-        "G"
-      ],
-      "start": "SING",
-      "end": "SENDING",
-      "difficulty": 5,
-      "score": 396,
-      "blueMoves": 1,
-      "yellowMoves": 1,
-      "greenMoves": 2,
-      "redMoves": 1,
-      "curation": {
-        "baseScore": 396,
-        "curatedScore": 518,
-        "rankedWordCount": 6,
-        "totalWords": 6,
-        "frequencyCoverage": 1.0,
-        "unrankedWords": [],
-        "averageRankScore": 17.5,
-        "endRank": 2806,
-        "moveVariety": 4,
-        "quality": "GOOD",
-        "curatedDifficulty": 5,
-        "difficultyLabel": "Very Hard",
-        "filterStatus": "KEPT"
-      },
-      "curationReasons": [
-        "all words are ranked in the source list",
-        "very high frequency-list coverage",
-        "good move variety"
-      ]
-    },
-    {
-      "id": "generated_1206",
-      "sequence": [
-        "SING",
-        "SWING",
-        "SEWING",
-        "SIGNED",
-        "DESIGN",
-        "SENDING"
-      ],
-      "pattern": [
-        "G",
-        "Y",
-        "R",
-        "B",
-        "G"
-      ],
-      "start": "SING",
-      "end": "SENDING",
-      "difficulty": 5,
-      "score": 396,
-      "blueMoves": 1,
-      "yellowMoves": 1,
-      "greenMoves": 2,
-      "redMoves": 1,
-      "curation": {
-        "baseScore": 396,
-        "curatedScore": 518,
-        "rankedWordCount": 6,
-        "totalWords": 6,
-        "frequencyCoverage": 1.0,
-        "unrankedWords": [],
-        "averageRankScore": 17.5,
-        "endRank": 2806,
-        "moveVariety": 4,
-        "quality": "GOOD",
-        "curatedDifficulty": 5,
-        "difficultyLabel": "Very Hard",
-        "filterStatus": "KEPT"
-      },
-      "curationReasons": [
-        "all words are ranked in the source list",
-        "very high frequency-list coverage",
-        "good move variety"
-      ]
-    },
-    {
-      "id": "generated_1161",
-      "sequence": [
-        "SALE",
-        "MEALS",
-        "METALS",
-        "STABLE",
-        "TABLES",
-        "TABLETS"
-      ],
-      "pattern": [
-        "G",
-        "Y",
-        "R",
-        "B",
-        "G"
-      ],
-      "start": "SALE",
-      "end": "TABLETS",
-      "difficulty": 5,
-      "score": 396,
-      "blueMoves": 1,
-      "yellowMoves": 1,
-      "greenMoves": 2,
-      "redMoves": 1,
-      "curation": {
-        "baseScore": 396,
-        "curatedScore": 513,
-        "rankedWordCount": 6,
-        "totalWords": 6,
-        "frequencyCoverage": 1.0,
-        "unrankedWords": [],
-        "averageRankScore": 16.7,
-        "endRank": 5787,
-        "moveVariety": 4,
+        "averageRankScore": 17.2,
+        "endRank": 5381,
+        "moveVariety": 3,
         "quality": "GOOD",
         "curatedDifficulty": 5,
         "difficultyLabel": "Very Hard",
@@ -2716,554 +1288,740 @@
       ]
     },
     {
-      "id": "generated_1164",
+      "id": "generated_0140",
       "sequence": [
-        "SALE",
-        "MEALS",
-        "METALS",
-        "TABLES",
-        "STABLE",
-        "TABLETS"
+        "ARMS",
+        "FARMS",
+        "FRAMES",
+        "MAKERS",
+        "MARKERS",
+        "MARKETS"
       ],
       "pattern": [
-        "G",
         "Y",
+        "G",
         "R",
-        "B",
-        "G"
+        "Y",
+        "R"
       ],
-      "start": "SALE",
-      "end": "TABLETS",
+      "start": "ARMS",
+      "end": "MARKETS",
       "difficulty": 5,
-      "score": 396,
-      "blueMoves": 1,
-      "yellowMoves": 1,
-      "greenMoves": 2,
-      "redMoves": 1,
-      "curation": {
-        "baseScore": 396,
-        "curatedScore": 513,
-        "rankedWordCount": 6,
-        "totalWords": 6,
-        "frequencyCoverage": 1.0,
-        "unrankedWords": [],
-        "averageRankScore": 16.7,
-        "endRank": 5787,
-        "moveVariety": 4,
-        "quality": "GOOD",
-        "curatedDifficulty": 5,
-        "difficultyLabel": "Very Hard",
-        "filterStatus": "KEPT"
-      },
-      "curationReasons": [
-        "end word is relatively low-frequency",
-        "all words are ranked in the source list",
-        "very high frequency-list coverage",
-        "good move variety"
-      ]
-    },
-    {
-      "id": "generated_2108",
-      "sequence": [
-        "FROG",
-        "FORGE",
-        "FORGET",
-        "FOREST",
-        "FOSTER",
-        "EFFORTS"
-      ],
-      "pattern": [
-        "G",
-        "Y",
-        "R",
-        "B",
-        "G"
-      ],
-      "start": "FROG",
-      "end": "EFFORTS",
-      "difficulty": 5,
-      "score": 388,
-      "blueMoves": 1,
-      "yellowMoves": 1,
-      "greenMoves": 2,
-      "redMoves": 1,
-      "curation": {
-        "baseScore": 388,
-        "curatedScore": 513,
-        "rankedWordCount": 6,
-        "totalWords": 6,
-        "frequencyCoverage": 1.0,
-        "unrankedWords": [],
-        "averageRankScore": 16.0,
-        "endRank": 1649,
-        "moveVariety": 4,
-        "quality": "GOOD",
-        "curatedDifficulty": 5,
-        "difficultyLabel": "Very Hard",
-        "filterStatus": "KEPT"
-      },
-      "curationReasons": [
-        "end word is common",
-        "all words are ranked in the source list",
-        "very high frequency-list coverage",
-        "good move variety"
-      ]
-    },
-    {
-      "id": "generated_2109",
-      "sequence": [
-        "FROG",
-        "FORGE",
-        "FORGET",
-        "FOSTER",
-        "FOREST",
-        "EFFORTS"
-      ],
-      "pattern": [
-        "G",
-        "Y",
-        "R",
-        "B",
-        "G"
-      ],
-      "start": "FROG",
-      "end": "EFFORTS",
-      "difficulty": 5,
-      "score": 388,
-      "blueMoves": 1,
-      "yellowMoves": 1,
-      "greenMoves": 2,
-      "redMoves": 1,
-      "curation": {
-        "baseScore": 388,
-        "curatedScore": 513,
-        "rankedWordCount": 6,
-        "totalWords": 6,
-        "frequencyCoverage": 1.0,
-        "unrankedWords": [],
-        "averageRankScore": 16.0,
-        "endRank": 1649,
-        "moveVariety": 4,
-        "quality": "GOOD",
-        "curatedDifficulty": 5,
-        "difficultyLabel": "Very Hard",
-        "filterStatus": "KEPT"
-      },
-      "curationReasons": [
-        "end word is common",
-        "all words are ranked in the source list",
-        "very high frequency-list coverage",
-        "good move variety"
-      ]
-    },
-    {
-      "id": "generated_2168",
-      "sequence": [
-        "RIDE",
-        "DRIVE",
-        "DRIVEN",
-        "FINDER",
-        "FRIEND",
-        "REFINED"
-      ],
-      "pattern": [
-        "G",
-        "Y",
-        "R",
-        "B",
-        "G"
-      ],
-      "start": "RIDE",
-      "end": "REFINED",
-      "difficulty": 5,
-      "score": 388,
-      "blueMoves": 1,
-      "yellowMoves": 1,
-      "greenMoves": 2,
-      "redMoves": 1,
-      "curation": {
-        "baseScore": 388,
-        "curatedScore": 512,
-        "rankedWordCount": 6,
-        "totalWords": 6,
-        "frequencyCoverage": 1.0,
-        "unrankedWords": [],
-        "averageRankScore": 19.8,
-        "endRank": 6518,
-        "moveVariety": 4,
-        "quality": "GOOD",
-        "curatedDifficulty": 4,
-        "difficultyLabel": "Hard",
-        "filterStatus": "KEPT"
-      },
-      "curationReasons": [
-        "end word is relatively low-frequency",
-        "all words are ranked in the source list",
-        "very high frequency-list coverage",
-        "good move variety"
-      ]
-    },
-    {
-      "id": "generated_2169",
-      "sequence": [
-        "RIDE",
-        "DRIVE",
-        "DRIVEN",
-        "FRIEND",
-        "FINDER",
-        "REFINED"
-      ],
-      "pattern": [
-        "G",
-        "Y",
-        "R",
-        "B",
-        "G"
-      ],
-      "start": "RIDE",
-      "end": "REFINED",
-      "difficulty": 5,
-      "score": 388,
-      "blueMoves": 1,
-      "yellowMoves": 1,
-      "greenMoves": 2,
-      "redMoves": 1,
-      "curation": {
-        "baseScore": 388,
-        "curatedScore": 512,
-        "rankedWordCount": 6,
-        "totalWords": 6,
-        "frequencyCoverage": 1.0,
-        "unrankedWords": [],
-        "averageRankScore": 19.8,
-        "endRank": 6518,
-        "moveVariety": 4,
-        "quality": "GOOD",
-        "curatedDifficulty": 4,
-        "difficultyLabel": "Hard",
-        "filterStatus": "KEPT"
-      },
-      "curationReasons": [
-        "end word is relatively low-frequency",
-        "all words are ranked in the source list",
-        "very high frequency-list coverage",
-        "good move variety"
-      ]
-    },
-    {
-      "id": "generated_1109",
-      "sequence": [
-        "PAST",
-        "PANTS",
-        "PLANTS",
-        "PANELS",
-        "PLANES",
-        "PLANETS"
-      ],
-      "pattern": [
-        "G",
-        "Y",
-        "R",
-        "B",
-        "G"
-      ],
-      "start": "PAST",
-      "end": "PLANETS",
-      "difficulty": 5,
-      "score": 396,
-      "blueMoves": 1,
-      "yellowMoves": 1,
-      "greenMoves": 2,
-      "redMoves": 1,
-      "curation": {
-        "baseScore": 396,
-        "curatedScore": 510,
-        "rankedWordCount": 6,
-        "totalWords": 6,
-        "frequencyCoverage": 1.0,
-        "unrankedWords": [],
-        "averageRankScore": 15.3,
-        "endRank": 6298,
-        "moveVariety": 4,
-        "quality": "BORDERLINE",
-        "curatedDifficulty": 5,
-        "difficultyLabel": "Very Hard",
-        "filterStatus": "KEPT"
-      },
-      "curationReasons": [
-        "end word is relatively low-frequency",
-        "all words are ranked in the source list",
-        "very high frequency-list coverage",
-        "good move variety"
-      ]
-    },
-    {
-      "id": "generated_1110",
-      "sequence": [
-        "PAST",
-        "PANTS",
-        "PLANTS",
-        "PLANES",
-        "PANELS",
-        "PLANETS"
-      ],
-      "pattern": [
-        "G",
-        "Y",
-        "R",
-        "B",
-        "G"
-      ],
-      "start": "PAST",
-      "end": "PLANETS",
-      "difficulty": 5,
-      "score": 396,
-      "blueMoves": 1,
-      "yellowMoves": 1,
-      "greenMoves": 2,
-      "redMoves": 1,
-      "curation": {
-        "baseScore": 396,
-        "curatedScore": 510,
-        "rankedWordCount": 6,
-        "totalWords": 6,
-        "frequencyCoverage": 1.0,
-        "unrankedWords": [],
-        "averageRankScore": 15.3,
-        "endRank": 6298,
-        "moveVariety": 4,
-        "quality": "BORDERLINE",
-        "curatedDifficulty": 5,
-        "difficultyLabel": "Very Hard",
-        "filterStatus": "KEPT"
-      },
-      "curationReasons": [
-        "end word is relatively low-frequency",
-        "all words are ranked in the source list",
-        "very high frequency-list coverage",
-        "good move variety"
-      ]
-    },
-    {
-      "id": "generated_2110",
-      "sequence": [
-        "GEAR",
-        "ANGER",
-        "RANGER",
-        "DANGER",
-        "GARDEN",
-        "GRANTED"
-      ],
-      "pattern": [
-        "G",
-        "Y",
-        "R",
-        "B",
-        "G"
-      ],
-      "start": "GEAR",
-      "end": "GRANTED",
-      "difficulty": 5,
-      "score": 388,
-      "blueMoves": 1,
-      "yellowMoves": 1,
-      "greenMoves": 2,
-      "redMoves": 1,
-      "curation": {
-        "baseScore": 388,
-        "curatedScore": 508,
-        "rankedWordCount": 6,
-        "totalWords": 6,
-        "frequencyCoverage": 1.0,
-        "unrankedWords": [],
-        "averageRankScore": 16.2,
-        "endRank": 2905,
-        "moveVariety": 4,
-        "quality": "GOOD",
-        "curatedDifficulty": 5,
-        "difficultyLabel": "Very Hard",
-        "filterStatus": "KEPT"
-      },
-      "curationReasons": [
-        "all words are ranked in the source list",
-        "very high frequency-list coverage",
-        "good move variety"
-      ]
-    },
-    {
-      "id": "generated_2112",
-      "sequence": [
-        "GEAR",
-        "ANGER",
-        "RANGER",
-        "GARDEN",
-        "DANGER",
-        "GRANTED"
-      ],
-      "pattern": [
-        "G",
-        "Y",
-        "R",
-        "B",
-        "G"
-      ],
-      "start": "GEAR",
-      "end": "GRANTED",
-      "difficulty": 5,
-      "score": 388,
-      "blueMoves": 1,
-      "yellowMoves": 1,
-      "greenMoves": 2,
-      "redMoves": 1,
-      "curation": {
-        "baseScore": 388,
-        "curatedScore": 508,
-        "rankedWordCount": 6,
-        "totalWords": 6,
-        "frequencyCoverage": 1.0,
-        "unrankedWords": [],
-        "averageRankScore": 16.2,
-        "endRank": 2905,
-        "moveVariety": 4,
-        "quality": "GOOD",
-        "curatedDifficulty": 5,
-        "difficultyLabel": "Very Hard",
-        "filterStatus": "KEPT"
-      },
-      "curationReasons": [
-        "all words are ranked in the source list",
-        "very high frequency-list coverage",
-        "good move variety"
-      ]
-    },
-    {
-      "id": "generated_2179",
-      "sequence": [
-        "TIPS",
-        "TRIPS",
-        "STRIPS",
-        "RESIST",
-        "SISTER",
-        "STRIKES"
-      ],
-      "pattern": [
-        "G",
-        "Y",
-        "R",
-        "B",
-        "G"
-      ],
-      "start": "TIPS",
-      "end": "STRIKES",
-      "difficulty": 5,
-      "score": 388,
-      "blueMoves": 1,
-      "yellowMoves": 1,
-      "greenMoves": 2,
-      "redMoves": 1,
-      "curation": {
-        "baseScore": 388,
-        "curatedScore": 496,
-        "rankedWordCount": 6,
-        "totalWords": 6,
-        "frequencyCoverage": 1.0,
-        "unrankedWords": [],
-        "averageRankScore": 12.5,
-        "endRank": 6555,
-        "moveVariety": 4,
-        "quality": "BORDERLINE",
-        "curatedDifficulty": 5,
-        "difficultyLabel": "Very Hard",
-        "filterStatus": "KEPT"
-      },
-      "curationReasons": [
-        "end word is relatively low-frequency",
-        "all words are ranked in the source list",
-        "very high frequency-list coverage",
-        "good move variety"
-      ]
-    },
-    {
-      "id": "generated_2182",
-      "sequence": [
-        "TIPS",
-        "TRIPS",
-        "STRIPS",
-        "SISTER",
-        "RESIST",
-        "STRIKES"
-      ],
-      "pattern": [
-        "G",
-        "Y",
-        "R",
-        "B",
-        "G"
-      ],
-      "start": "TIPS",
-      "end": "STRIKES",
-      "difficulty": 5,
-      "score": 388,
-      "blueMoves": 1,
-      "yellowMoves": 1,
-      "greenMoves": 2,
-      "redMoves": 1,
-      "curation": {
-        "baseScore": 388,
-        "curatedScore": 496,
-        "rankedWordCount": 6,
-        "totalWords": 6,
-        "frequencyCoverage": 1.0,
-        "unrankedWords": [],
-        "averageRankScore": 12.5,
-        "endRank": 6555,
-        "moveVariety": 4,
-        "quality": "BORDERLINE",
-        "curatedDifficulty": 5,
-        "difficultyLabel": "Very Hard",
-        "filterStatus": "KEPT"
-      },
-      "curationReasons": [
-        "end word is relatively low-frequency",
-        "all words are ranked in the source list",
-        "very high frequency-list coverage",
-        "good move variety"
-      ]
-    },
-    {
-      "id": "generated_0429",
-      "sequence": [
-        "BIRD",
-        "BRIDE",
-        "BRIDGE",
-        "FRIDGE",
-        "FIGURED"
-      ],
-      "pattern": [
-        "G",
-        "Y",
-        "R",
-        "G"
-      ],
-      "start": "BIRD",
-      "end": "FIGURED",
-      "difficulty": 4,
-      "score": 403,
+      "score": 408,
       "blueMoves": 0,
-      "yellowMoves": 1,
-      "greenMoves": 2,
-      "redMoves": 1,
+      "yellowMoves": 2,
+      "greenMoves": 1,
+      "redMoves": 2,
       "curation": {
-        "baseScore": 403,
-        "curatedScore": 487,
-        "rankedWordCount": 5,
-        "totalWords": 5,
+        "baseScore": 408,
+        "curatedScore": 528,
+        "rankedWordCount": 6,
+        "totalWords": 6,
         "frequencyCoverage": 1.0,
         "unrankedWords": [],
-        "averageRankScore": 11.8,
-        "endRank": 7169,
+        "averageRankScore": 16.5,
+        "endRank": 1487,
+        "moveVariety": 3,
+        "quality": "GOOD",
+        "curatedDifficulty": 5,
+        "difficultyLabel": "Very Hard",
+        "filterStatus": "KEPT"
+      },
+      "curationReasons": [
+        "end word is common",
+        "all words are ranked in the source list",
+        "very high frequency-list coverage",
+        "good move variety"
+      ]
+    },
+    {
+      "id": "generated_0378",
+      "sequence": [
+        "EARS",
+        "TEARS",
+        "ARREST",
+        "CARTER",
+        "CHARTER",
+        "CHAPTER"
+      ],
+      "pattern": [
+        "Y",
+        "G",
+        "R",
+        "Y",
+        "R"
+      ],
+      "start": "EARS",
+      "end": "CHAPTER",
+      "difficulty": 5,
+      "score": 408,
+      "blueMoves": 0,
+      "yellowMoves": 2,
+      "greenMoves": 1,
+      "redMoves": 2,
+      "curation": {
+        "baseScore": 408,
+        "curatedScore": 528,
+        "rankedWordCount": 6,
+        "totalWords": 6,
+        "frequencyCoverage": 1.0,
+        "unrankedWords": [],
+        "averageRankScore": 14.7,
+        "endRank": 700,
         "moveVariety": 3,
         "quality": "BORDERLINE",
+        "curatedDifficulty": 5,
+        "difficultyLabel": "Very Hard",
+        "filterStatus": "KEPT"
+      },
+      "curationReasons": [
+        "end word is very common",
+        "all words are ranked in the source list",
+        "very high frequency-list coverage",
+        "good move variety"
+      ]
+    },
+    {
+      "id": "generated_0894",
+      "sequence": [
+        "BEST",
+        "BEAST",
+        "STATE",
+        "ESTATE",
+        "EASTER",
+        "EASTERN"
+      ],
+      "pattern": [
+        "Y",
+        "R",
+        "Y",
+        "R",
+        "Y"
+      ],
+      "start": "BEST",
+      "end": "EASTERN",
+      "difficulty": 5,
+      "score": 396,
+      "blueMoves": 0,
+      "yellowMoves": 3,
+      "greenMoves": 0,
+      "redMoves": 2,
+      "curation": {
+        "baseScore": 396,
+        "curatedScore": 527,
+        "rankedWordCount": 6,
+        "totalWords": 6,
+        "frequencyCoverage": 1.0,
+        "unrankedWords": [],
+        "averageRankScore": 23.2,
+        "endRank": 1632,
+        "moveVariety": 2,
+        "quality": "EXCELLENT",
+        "curatedDifficulty": 4,
+        "difficultyLabel": "Hard",
+        "filterStatus": "KEPT"
+      },
+      "curationReasons": [
+        "end word is common",
+        "all words are ranked in the source list",
+        "very high frequency-list coverage",
+        "strong average frequency rank"
+      ]
+    },
+    {
+      "id": "generated_0968",
+      "sequence": [
+        "HERE",
+        "THERE",
+        "OTHER",
+        "MOTHER",
+        "BOTHER",
+        "BROTHER"
+      ],
+      "pattern": [
+        "Y",
+        "R",
+        "Y",
+        "R",
+        "Y"
+      ],
+      "start": "HERE",
+      "end": "BROTHER",
+      "difficulty": 5,
+      "score": 396,
+      "blueMoves": 0,
+      "yellowMoves": 3,
+      "greenMoves": 0,
+      "redMoves": 2,
+      "curation": {
+        "baseScore": 396,
+        "curatedScore": 527,
+        "rankedWordCount": 6,
+        "totalWords": 6,
+        "frequencyCoverage": 1.0,
+        "unrankedWords": [],
+        "averageRankScore": 23.3,
+        "endRank": 1830,
+        "moveVariety": 2,
+        "quality": "EXCELLENT",
+        "curatedDifficulty": 4,
+        "difficultyLabel": "Hard",
+        "filterStatus": "KEPT"
+      },
+      "curationReasons": [
+        "end word is common",
+        "all words are ranked in the source list",
+        "very high frequency-list coverage",
+        "strong average frequency rank"
+      ]
+    },
+    {
+      "id": "generated_0381",
+      "sequence": [
+        "EARS",
+        "TEARS",
+        "ARREST",
+        "CARTER",
+        "CHARTER",
+        "TEACHER"
+      ],
+      "pattern": [
+        "Y",
+        "G",
+        "R",
+        "Y",
+        "R"
+      ],
+      "start": "EARS",
+      "end": "TEACHER",
+      "difficulty": 5,
+      "score": 408,
+      "blueMoves": 0,
+      "yellowMoves": 2,
+      "greenMoves": 1,
+      "redMoves": 2,
+      "curation": {
+        "baseScore": 408,
+        "curatedScore": 523,
+        "rankedWordCount": 6,
+        "totalWords": 6,
+        "frequencyCoverage": 1.0,
+        "unrankedWords": [],
+        "averageRankScore": 14.2,
+        "endRank": 1339,
+        "moveVariety": 3,
+        "quality": "BORDERLINE",
+        "curatedDifficulty": 5,
+        "difficultyLabel": "Very Hard",
+        "filterStatus": "KEPT"
+      },
+      "curationReasons": [
+        "end word is common",
+        "all words are ranked in the source list",
+        "very high frequency-list coverage",
+        "good move variety"
+      ]
+    },
+    {
+      "id": "generated_0745",
+      "sequence": [
+        "ACTS",
+        "FACTS",
+        "CRAFTS",
+        "ACTORS",
+        "FACTORS",
+        "FACTORY"
+      ],
+      "pattern": [
+        "Y",
+        "G",
+        "R",
+        "Y",
+        "R"
+      ],
+      "start": "ACTS",
+      "end": "FACTORY",
+      "difficulty": 5,
+      "score": 400,
+      "blueMoves": 0,
+      "yellowMoves": 2,
+      "greenMoves": 1,
+      "redMoves": 2,
+      "curation": {
+        "baseScore": 400,
+        "curatedScore": 523,
+        "rankedWordCount": 6,
+        "totalWords": 6,
+        "frequencyCoverage": 1.0,
+        "unrankedWords": [],
+        "averageRankScore": 20.5,
+        "endRank": 2282,
+        "moveVariety": 3,
+        "quality": "EXCELLENT",
+        "curatedDifficulty": 4,
+        "difficultyLabel": "Hard",
+        "filterStatus": "KEPT"
+      },
+      "curationReasons": [
+        "all words are ranked in the source list",
+        "very high frequency-list coverage",
+        "good move variety"
+      ]
+    },
+    {
+      "id": "generated_0469",
+      "sequence": [
+        "HOST",
+        "GHOST",
+        "TOUGH",
+        "THOUGH",
+        "BOUGHT",
+        "BROUGHT"
+      ],
+      "pattern": [
+        "Y",
+        "R",
+        "Y",
+        "R",
+        "Y"
+      ],
+      "start": "HOST",
+      "end": "BROUGHT",
+      "difficulty": 5,
+      "score": 404,
+      "blueMoves": 0,
+      "yellowMoves": 3,
+      "greenMoves": 0,
+      "redMoves": 2,
+      "curation": {
+        "baseScore": 404,
+        "curatedScore": 522,
+        "rankedWordCount": 6,
+        "totalWords": 6,
+        "frequencyCoverage": 1.0,
+        "unrankedWords": [],
+        "averageRankScore": 21.8,
+        "endRank": 1583,
+        "moveVariety": 2,
+        "quality": "EXCELLENT",
+        "curatedDifficulty": 4,
+        "difficultyLabel": "Hard",
+        "filterStatus": "KEPT"
+      },
+      "curationReasons": [
+        "end word is common",
+        "all words are ranked in the source list",
+        "very high frequency-list coverage"
+      ]
+    },
+    {
+      "id": "generated_0461",
+      "sequence": [
+        "HITS",
+        "HINTS",
+        "NIGHT",
+        "KNIGHT",
+        "TAKING",
+        "TALKING"
+      ],
+      "pattern": [
+        "Y",
+        "R",
+        "Y",
+        "R",
+        "Y"
+      ],
+      "start": "HITS",
+      "end": "TALKING",
+      "difficulty": 5,
+      "score": 404,
+      "blueMoves": 0,
+      "yellowMoves": 3,
+      "greenMoves": 0,
+      "redMoves": 2,
+      "curation": {
+        "baseScore": 404,
+        "curatedScore": 521,
+        "rankedWordCount": 6,
+        "totalWords": 6,
+        "frequencyCoverage": 1.0,
+        "unrankedWords": [],
+        "averageRankScore": 21.3,
+        "endRank": 1715,
+        "moveVariety": 2,
+        "quality": "EXCELLENT",
+        "curatedDifficulty": 4,
+        "difficultyLabel": "Hard",
+        "filterStatus": "KEPT"
+      },
+      "curationReasons": [
+        "end word is common",
+        "all words are ranked in the source list",
+        "very high frequency-list coverage"
+      ]
+    },
+    {
+      "id": "generated_1150",
+      "sequence": [
+        "CORE",
+        "SCORE",
+        "CROSS",
+        "ACROSS",
+        "ACTORS",
+        "FACTORS"
+      ],
+      "pattern": [
+        "Y",
+        "R",
+        "Y",
+        "R",
+        "Y"
+      ],
+      "start": "CORE",
+      "end": "FACTORS",
+      "difficulty": 5,
+      "score": 388,
+      "blueMoves": 0,
+      "yellowMoves": 3,
+      "greenMoves": 0,
+      "redMoves": 2,
+      "curation": {
+        "baseScore": 388,
+        "curatedScore": 521,
+        "rankedWordCount": 6,
+        "totalWords": 6,
+        "frequencyCoverage": 1.0,
+        "unrankedWords": [],
+        "averageRankScore": 24.0,
+        "endRank": 1512,
+        "moveVariety": 2,
+        "quality": "EXCELLENT",
+        "curatedDifficulty": 4,
+        "difficultyLabel": "Hard",
+        "filterStatus": "KEPT"
+      },
+      "curationReasons": [
+        "end word is common",
+        "all words are ranked in the source list",
+        "very high frequency-list coverage",
+        "strong average frequency rank"
+      ]
+    },
+    {
+      "id": "generated_1163",
+      "sequence": [
+        "EVER",
+        "EVERY",
+        "SERVE",
+        "SERVER",
+        "RIVERS",
+        "DRIVERS"
+      ],
+      "pattern": [
+        "Y",
+        "R",
+        "Y",
+        "R",
+        "Y"
+      ],
+      "start": "EVER",
+      "end": "DRIVERS",
+      "difficulty": 5,
+      "score": 388,
+      "blueMoves": 0,
+      "yellowMoves": 3,
+      "greenMoves": 0,
+      "redMoves": 2,
+      "curation": {
+        "baseScore": 388,
+        "curatedScore": 521,
+        "rankedWordCount": 6,
+        "totalWords": 6,
+        "frequencyCoverage": 1.0,
+        "unrankedWords": [],
+        "averageRankScore": 24.2,
+        "endRank": 2046,
+        "moveVariety": 2,
+        "quality": "EXCELLENT",
+        "curatedDifficulty": 4,
+        "difficultyLabel": "Hard",
+        "filterStatus": "KEPT"
+      },
+      "curationReasons": [
+        "end word is common",
+        "all words are ranked in the source list",
+        "very high frequency-list coverage",
+        "strong average frequency rank"
+      ]
+    },
+    {
+      "id": "generated_1167",
+      "sequence": [
+        "EVER",
+        "NEVER",
+        "SERVE",
+        "SERVER",
+        "RIVERS",
+        "DRIVERS"
+      ],
+      "pattern": [
+        "Y",
+        "R",
+        "Y",
+        "R",
+        "Y"
+      ],
+      "start": "EVER",
+      "end": "DRIVERS",
+      "difficulty": 5,
+      "score": 388,
+      "blueMoves": 0,
+      "yellowMoves": 3,
+      "greenMoves": 0,
+      "redMoves": 2,
+      "curation": {
+        "baseScore": 388,
+        "curatedScore": 521,
+        "rankedWordCount": 6,
+        "totalWords": 6,
+        "frequencyCoverage": 1.0,
+        "unrankedWords": [],
+        "averageRankScore": 24.2,
+        "endRank": 2046,
+        "moveVariety": 2,
+        "quality": "EXCELLENT",
+        "curatedDifficulty": 4,
+        "difficultyLabel": "Hard",
+        "filterStatus": "KEPT"
+      },
+      "curationReasons": [
+        "end word is common",
+        "all words are ranked in the source list",
+        "very high frequency-list coverage",
+        "strong average frequency rank"
+      ]
+    },
+    {
+      "id": "generated_0995",
+      "sequence": [
+        "LATE",
+        "LATER",
+        "EARLY",
+        "NEARLY",
+        "LAYERS",
+        "LAWYERS"
+      ],
+      "pattern": [
+        "Y",
+        "R",
+        "Y",
+        "R",
+        "Y"
+      ],
+      "start": "LATE",
+      "end": "LAWYERS",
+      "difficulty": 5,
+      "score": 396,
+      "blueMoves": 0,
+      "yellowMoves": 3,
+      "greenMoves": 0,
+      "redMoves": 2,
+      "curation": {
+        "baseScore": 396,
+        "curatedScore": 520,
+        "rankedWordCount": 6,
+        "totalWords": 6,
+        "frequencyCoverage": 1.0,
+        "unrankedWords": [],
+        "averageRankScore": 22.8,
+        "endRank": 2334,
+        "moveVariety": 2,
+        "quality": "EXCELLENT",
+        "curatedDifficulty": 4,
+        "difficultyLabel": "Hard",
+        "filterStatus": "KEPT"
+      },
+      "curationReasons": [
+        "all words are ranked in the source list",
+        "very high frequency-list coverage",
+        "strong average frequency rank"
+      ]
+    },
+    {
+      "id": "generated_1181",
+      "sequence": [
+        "LATE",
+        "LATER",
+        "EARLY",
+        "NEARLY",
+        "LAYERS",
+        "PLAYERS"
+      ],
+      "pattern": [
+        "Y",
+        "R",
+        "Y",
+        "R",
+        "Y"
+      ],
+      "start": "LATE",
+      "end": "PLAYERS",
+      "difficulty": 5,
+      "score": 388,
+      "blueMoves": 0,
+      "yellowMoves": 3,
+      "greenMoves": 0,
+      "redMoves": 2,
+      "curation": {
+        "baseScore": 388,
+        "curatedScore": 520,
+        "rankedWordCount": 6,
+        "totalWords": 6,
+        "frequencyCoverage": 1.0,
+        "unrankedWords": [],
+        "averageRankScore": 23.8,
+        "endRank": 810,
+        "moveVariety": 2,
+        "quality": "EXCELLENT",
+        "curatedDifficulty": 4,
+        "difficultyLabel": "Hard",
+        "filterStatus": "KEPT"
+      },
+      "curationReasons": [
+        "end word is common",
+        "all words are ranked in the source list",
+        "very high frequency-list coverage",
+        "strong average frequency rank"
+      ]
+    },
+    {
+      "id": "generated_0441",
+      "sequence": [
+        "EVEN",
+        "SEVEN",
+        "GENES",
+        "GENRES",
+        "SEEING",
+        "SEEKING"
+      ],
+      "pattern": [
+        "Y",
+        "R",
+        "Y",
+        "R",
+        "Y"
+      ],
+      "start": "EVEN",
+      "end": "SEEKING",
+      "difficulty": 5,
+      "score": 404,
+      "blueMoves": 0,
+      "yellowMoves": 3,
+      "greenMoves": 0,
+      "redMoves": 2,
+      "curation": {
+        "baseScore": 404,
+        "curatedScore": 519,
+        "rankedWordCount": 6,
+        "totalWords": 6,
+        "frequencyCoverage": 1.0,
+        "unrankedWords": [],
+        "averageRankScore": 20.3,
+        "endRank": 2204,
+        "moveVariety": 2,
+        "quality": "EXCELLENT",
+        "curatedDifficulty": 4,
+        "difficultyLabel": "Hard",
+        "filterStatus": "KEPT"
+      },
+      "curationReasons": [
+        "end word is common",
+        "all words are ranked in the source list",
+        "very high frequency-list coverage"
+      ]
+    },
+    {
+      "id": "generated_0463",
+      "sequence": [
+        "HONG",
+        "THONG",
+        "TOUGH",
+        "THOUGH",
+        "BOUGHT",
+        "BROUGHT"
+      ],
+      "pattern": [
+        "Y",
+        "R",
+        "Y",
+        "R",
+        "Y"
+      ],
+      "start": "HONG",
+      "end": "BROUGHT",
+      "difficulty": 5,
+      "score": 404,
+      "blueMoves": 0,
+      "yellowMoves": 3,
+      "greenMoves": 0,
+      "redMoves": 2,
+      "curation": {
+        "baseScore": 404,
+        "curatedScore": 518,
+        "rankedWordCount": 6,
+        "totalWords": 6,
+        "frequencyCoverage": 1.0,
+        "unrankedWords": [],
+        "averageRankScore": 20.2,
+        "endRank": 1583,
+        "moveVariety": 2,
+        "quality": "EXCELLENT",
+        "curatedDifficulty": 4,
+        "difficultyLabel": "Hard",
+        "filterStatus": "KEPT"
+      },
+      "curationReasons": [
+        "end word is common",
+        "all words are ranked in the source list",
+        "very high frequency-list coverage"
+      ]
+    },
+    {
+      "id": "generated_0888",
+      "sequence": [
+        "ARTS",
+        "PARTS",
+        "STARS",
+        "STARTS",
+        "STATES",
+        "ESTATES"
+      ],
+      "pattern": [
+        "Y",
+        "R",
+        "Y",
+        "R",
+        "Y"
+      ],
+      "start": "ARTS",
+      "end": "ESTATES",
+      "difficulty": 5,
+      "score": 396,
+      "blueMoves": 0,
+      "yellowMoves": 3,
+      "greenMoves": 0,
+      "redMoves": 2,
+      "curation": {
+        "baseScore": 396,
+        "curatedScore": 517,
+        "rankedWordCount": 6,
+        "totalWords": 6,
+        "frequencyCoverage": 1.0,
+        "unrankedWords": [],
+        "averageRankScore": 23.0,
+        "endRank": 6181,
+        "moveVariety": 2,
+        "quality": "EXCELLENT",
         "curatedDifficulty": 4,
         "difficultyLabel": "Hard",
         "filterStatus": "KEPT"
@@ -3272,12 +2030,1977 @@
         "end word is relatively low-frequency",
         "all words are ranked in the source list",
         "very high frequency-list coverage",
-        "weak average frequency rank",
-        "good move variety"
+        "strong average frequency rank"
       ]
     },
     {
-      "id": "generated_1726",
+      "id": "generated_0982",
+      "sequence": [
+        "HOST",
+        "GHOST",
+        "OUGHT",
+        "BOUGHT",
+        "THOUGH",
+        "THROUGH"
+      ],
+      "pattern": [
+        "Y",
+        "R",
+        "Y",
+        "R",
+        "Y"
+      ],
+      "start": "HOST",
+      "end": "THROUGH",
+      "difficulty": 5,
+      "score": 396,
+      "blueMoves": 0,
+      "yellowMoves": 3,
+      "greenMoves": 0,
+      "redMoves": 2,
+      "curation": {
+        "baseScore": 396,
+        "curatedScore": 517,
+        "rankedWordCount": 6,
+        "totalWords": 6,
+        "frequencyCoverage": 1.0,
+        "unrankedWords": [],
+        "averageRankScore": 21.5,
+        "endRank": 95,
+        "moveVariety": 2,
+        "quality": "EXCELLENT",
+        "curatedDifficulty": 4,
+        "difficultyLabel": "Hard",
+        "filterStatus": "KEPT"
+      },
+      "curationReasons": [
+        "end word is very common",
+        "all words are ranked in the source list",
+        "very high frequency-list coverage"
+      ]
+    },
+    {
+      "id": "generated_0029",
+      "sequence": [
+        "BIDS",
+        "BIRDS",
+        "RIDES",
+        "RIDERS",
+        "DRIVES",
+        "DRIVERS"
+      ],
+      "pattern": [
+        "Y",
+        "R",
+        "Y",
+        "R",
+        "Y"
+      ],
+      "start": "BIDS",
+      "end": "DRIVERS",
+      "difficulty": 5,
+      "score": 412,
+      "blueMoves": 0,
+      "yellowMoves": 3,
+      "greenMoves": 0,
+      "redMoves": 2,
+      "curation": {
+        "baseScore": 412,
+        "curatedScore": 516,
+        "rankedWordCount": 6,
+        "totalWords": 6,
+        "frequencyCoverage": 1.0,
+        "unrankedWords": [],
+        "averageRankScore": 15.7,
+        "endRank": 2046,
+        "moveVariety": 2,
+        "quality": "BORDERLINE",
+        "curatedDifficulty": 5,
+        "difficultyLabel": "Very Hard",
+        "filterStatus": "KEPT"
+      },
+      "curationReasons": [
+        "end word is common",
+        "all words are ranked in the source list",
+        "very high frequency-list coverage"
+      ]
+    },
+    {
+      "id": "generated_0030",
+      "sequence": [
+        "CART",
+        "CHART",
+        "TRACE",
+        "TRANCE",
+        "CARTER",
+        "CHARTER"
+      ],
+      "pattern": [
+        "Y",
+        "R",
+        "Y",
+        "R",
+        "Y"
+      ],
+      "start": "CART",
+      "end": "CHARTER",
+      "difficulty": 5,
+      "score": 412,
+      "blueMoves": 0,
+      "yellowMoves": 3,
+      "greenMoves": 0,
+      "redMoves": 2,
+      "curation": {
+        "baseScore": 412,
+        "curatedScore": 515,
+        "rankedWordCount": 6,
+        "totalWords": 6,
+        "frequencyCoverage": 1.0,
+        "unrankedWords": [],
+        "averageRankScore": 17.8,
+        "endRank": 2942,
+        "moveVariety": 2,
+        "quality": "GOOD",
+        "curatedDifficulty": 5,
+        "difficultyLabel": "Very Hard",
+        "filterStatus": "KEPT"
+      },
+      "curationReasons": [
+        "all words are ranked in the source list",
+        "very high frequency-list coverage"
+      ]
+    },
+    {
+      "id": "generated_0040",
+      "sequence": [
+        "HEAT",
+        "HEART",
+        "TRACE",
+        "TRANCE",
+        "CARTER",
+        "CHARTER"
+      ],
+      "pattern": [
+        "Y",
+        "R",
+        "Y",
+        "R",
+        "Y"
+      ],
+      "start": "HEAT",
+      "end": "CHARTER",
+      "difficulty": 5,
+      "score": 412,
+      "blueMoves": 0,
+      "yellowMoves": 3,
+      "greenMoves": 0,
+      "redMoves": 2,
+      "curation": {
+        "baseScore": 412,
+        "curatedScore": 515,
+        "rankedWordCount": 6,
+        "totalWords": 6,
+        "frequencyCoverage": 1.0,
+        "unrankedWords": [],
+        "averageRankScore": 17.8,
+        "endRank": 2942,
+        "moveVariety": 2,
+        "quality": "GOOD",
+        "curatedDifficulty": 5,
+        "difficultyLabel": "Very Hard",
+        "filterStatus": "KEPT"
+      },
+      "curationReasons": [
+        "all words are ranked in the source list",
+        "very high frequency-list coverage"
+      ]
+    },
+    {
+      "id": "generated_0024",
+      "sequence": [
+        "BARS",
+        "BEARS",
+        "BEAST",
+        "BREAST",
+        "TABLES",
+        "TABLETS"
+      ],
+      "pattern": [
+        "Y",
+        "R",
+        "Y",
+        "R",
+        "Y"
+      ],
+      "start": "BARS",
+      "end": "TABLETS",
+      "difficulty": 5,
+      "score": 412,
+      "blueMoves": 0,
+      "yellowMoves": 3,
+      "greenMoves": 0,
+      "redMoves": 2,
+      "curation": {
+        "baseScore": 412,
+        "curatedScore": 513,
+        "rankedWordCount": 6,
+        "totalWords": 6,
+        "frequencyCoverage": 1.0,
+        "unrankedWords": [],
+        "averageRankScore": 18.8,
+        "endRank": 5787,
+        "moveVariety": 2,
+        "quality": "GOOD",
+        "curatedDifficulty": 4,
+        "difficultyLabel": "Hard",
+        "filterStatus": "KEPT"
+      },
+      "curationReasons": [
+        "end word is relatively low-frequency",
+        "all words are ranked in the source list",
+        "very high frequency-list coverage"
+      ]
+    },
+    {
+      "id": "generated_0033",
+      "sequence": [
+        "DIED",
+        "DRIED",
+        "RIDES",
+        "RIDERS",
+        "DRIVES",
+        "DRIVERS"
+      ],
+      "pattern": [
+        "Y",
+        "R",
+        "Y",
+        "R",
+        "Y"
+      ],
+      "start": "DIED",
+      "end": "DRIVERS",
+      "difficulty": 5,
+      "score": 412,
+      "blueMoves": 0,
+      "yellowMoves": 3,
+      "greenMoves": 0,
+      "redMoves": 2,
+      "curation": {
+        "baseScore": 412,
+        "curatedScore": 512,
+        "rankedWordCount": 6,
+        "totalWords": 6,
+        "frequencyCoverage": 1.0,
+        "unrankedWords": [],
+        "averageRankScore": 13.5,
+        "endRank": 2046,
+        "moveVariety": 2,
+        "quality": "BORDERLINE",
+        "curatedDifficulty": 5,
+        "difficultyLabel": "Very Hard",
+        "filterStatus": "KEPT"
+      },
+      "curationReasons": [
+        "end word is common",
+        "all words are ranked in the source list",
+        "very high frequency-list coverage"
+      ]
+    },
+    {
+      "id": "generated_0470",
+      "sequence": [
+        "INTO",
+        "INTRO",
+        "INTER",
+        "WINTER",
+        "WRITES",
+        "WRITERS"
+      ],
+      "pattern": [
+        "Y",
+        "R",
+        "Y",
+        "R",
+        "Y"
+      ],
+      "start": "INTO",
+      "end": "WRITERS",
+      "difficulty": 5,
+      "score": 404,
+      "blueMoves": 0,
+      "yellowMoves": 3,
+      "greenMoves": 0,
+      "redMoves": 2,
+      "curation": {
+        "baseScore": 404,
+        "curatedScore": 512,
+        "rankedWordCount": 6,
+        "totalWords": 6,
+        "frequencyCoverage": 1.0,
+        "unrankedWords": [],
+        "averageRankScore": 20.2,
+        "endRank": 2889,
+        "moveVariety": 2,
+        "quality": "EXCELLENT",
+        "curatedDifficulty": 4,
+        "difficultyLabel": "Hard",
+        "filterStatus": "KEPT"
+      },
+      "curationReasons": [
+        "all words are ranked in the source list",
+        "very high frequency-list coverage"
+      ]
+    },
+    {
+      "id": "generated_0970",
+      "sequence": [
+        "HONG",
+        "THONG",
+        "NIGHT",
+        "KNIGHT",
+        "TAKING",
+        "TALKING"
+      ],
+      "pattern": [
+        "Y",
+        "R",
+        "Y",
+        "R",
+        "Y"
+      ],
+      "start": "HONG",
+      "end": "TALKING",
+      "difficulty": 5,
+      "score": 396,
+      "blueMoves": 0,
+      "yellowMoves": 3,
+      "greenMoves": 0,
+      "redMoves": 2,
+      "curation": {
+        "baseScore": 396,
+        "curatedScore": 512,
+        "rankedWordCount": 6,
+        "totalWords": 6,
+        "frequencyCoverage": 1.0,
+        "unrankedWords": [],
+        "averageRankScore": 20.8,
+        "endRank": 1715,
+        "moveVariety": 2,
+        "quality": "EXCELLENT",
+        "curatedDifficulty": 4,
+        "difficultyLabel": "Hard",
+        "filterStatus": "KEPT"
+      },
+      "curationReasons": [
+        "end word is common",
+        "all words are ranked in the source list",
+        "very high frequency-list coverage"
+      ]
+    },
+    {
+      "id": "generated_0405",
+      "sequence": [
+        "CASE",
+        "CHASE",
+        "BEACH",
+        "BREACH",
+        "CHARGE",
+        "CHARGER"
+      ],
+      "pattern": [
+        "Y",
+        "R",
+        "Y",
+        "R",
+        "Y"
+      ],
+      "start": "CASE",
+      "end": "CHARGER",
+      "difficulty": 5,
+      "score": 404,
+      "blueMoves": 0,
+      "yellowMoves": 3,
+      "greenMoves": 0,
+      "redMoves": 2,
+      "curation": {
+        "baseScore": 404,
+        "curatedScore": 511,
+        "rankedWordCount": 6,
+        "totalWords": 6,
+        "frequencyCoverage": 1.0,
+        "unrankedWords": [],
+        "averageRankScore": 19.3,
+        "endRank": 3725,
+        "moveVariety": 2,
+        "quality": "GOOD",
+        "curatedDifficulty": 4,
+        "difficultyLabel": "Hard",
+        "filterStatus": "KEPT"
+      },
+      "curationReasons": [
+        "all words are ranked in the source list",
+        "very high frequency-list coverage"
+      ]
+    },
+    {
+      "id": "generated_0896",
+      "sequence": [
+        "CARS",
+        "CARDS",
+        "RACKS",
+        "TRACKS",
+        "ACTORS",
+        "FACTORS"
+      ],
+      "pattern": [
+        "Y",
+        "R",
+        "Y",
+        "R",
+        "Y"
+      ],
+      "start": "CARS",
+      "end": "FACTORS",
+      "difficulty": 5,
+      "score": 396,
+      "blueMoves": 0,
+      "yellowMoves": 3,
+      "greenMoves": 0,
+      "redMoves": 2,
+      "curation": {
+        "baseScore": 396,
+        "curatedScore": 511,
+        "rankedWordCount": 6,
+        "totalWords": 6,
+        "frequencyCoverage": 1.0,
+        "unrankedWords": [],
+        "averageRankScore": 20.5,
+        "endRank": 1512,
+        "moveVariety": 2,
+        "quality": "EXCELLENT",
+        "curatedDifficulty": 4,
+        "difficultyLabel": "Hard",
+        "filterStatus": "KEPT"
+      },
+      "curationReasons": [
+        "end word is common",
+        "all words are ranked in the source list",
+        "very high frequency-list coverage"
+      ]
+    },
+    {
+      "id": "generated_0028",
+      "sequence": [
+        "BEST",
+        "BEAST",
+        "STEAM",
+        "STREAM",
+        "MAKERS",
+        "MARKERS"
+      ],
+      "pattern": [
+        "Y",
+        "R",
+        "Y",
+        "R",
+        "Y"
+      ],
+      "start": "BEST",
+      "end": "MARKERS",
+      "difficulty": 5,
+      "score": 412,
+      "blueMoves": 0,
+      "yellowMoves": 3,
+      "greenMoves": 0,
+      "redMoves": 2,
+      "curation": {
+        "baseScore": 412,
+        "curatedScore": 510,
+        "rankedWordCount": 6,
+        "totalWords": 6,
+        "frequencyCoverage": 1.0,
+        "unrankedWords": [],
+        "averageRankScore": 17.2,
+        "endRank": 6343,
+        "moveVariety": 2,
+        "quality": "GOOD",
+        "curatedDifficulty": 5,
+        "difficultyLabel": "Very Hard",
+        "filterStatus": "KEPT"
+      },
+      "curationReasons": [
+        "end word is relatively low-frequency",
+        "all words are ranked in the source list",
+        "very high frequency-list coverage"
+      ]
+    },
+    {
+      "id": "generated_0051",
+      "sequence": [
+        "PAIN",
+        "PLAIN",
+        "PLANS",
+        "PLANES",
+        "PLANTS",
+        "PLANETS"
+      ],
+      "pattern": [
+        "Y",
+        "R",
+        "Y",
+        "R",
+        "Y"
+      ],
+      "start": "PAIN",
+      "end": "PLANETS",
+      "difficulty": 5,
+      "score": 412,
+      "blueMoves": 0,
+      "yellowMoves": 3,
+      "greenMoves": 0,
+      "redMoves": 2,
+      "curation": {
+        "baseScore": 412,
+        "curatedScore": 510,
+        "rankedWordCount": 6,
+        "totalWords": 6,
+        "frequencyCoverage": 1.0,
+        "unrankedWords": [],
+        "averageRankScore": 17.5,
+        "endRank": 6298,
+        "moveVariety": 2,
+        "quality": "GOOD",
+        "curatedDifficulty": 5,
+        "difficultyLabel": "Very Hard",
+        "filterStatus": "KEPT"
+      },
+      "curationReasons": [
+        "end word is relatively low-frequency",
+        "all words are ranked in the source list",
+        "very high frequency-list coverage"
+      ]
+    },
+    {
+      "id": "generated_0034",
+      "sequence": [
+        "EXIT",
+        "EXIST",
+        "TRIES",
+        "TRIBES",
+        "WRITES",
+        "WRITERS"
+      ],
+      "pattern": [
+        "Y",
+        "R",
+        "Y",
+        "R",
+        "Y"
+      ],
+      "start": "EXIT",
+      "end": "WRITERS",
+      "difficulty": 5,
+      "score": 412,
+      "blueMoves": 0,
+      "yellowMoves": 3,
+      "greenMoves": 0,
+      "redMoves": 2,
+      "curation": {
+        "baseScore": 412,
+        "curatedScore": 509,
+        "rankedWordCount": 6,
+        "totalWords": 6,
+        "frequencyCoverage": 1.0,
+        "unrankedWords": [],
+        "averageRankScore": 15.2,
+        "endRank": 2889,
+        "moveVariety": 2,
+        "quality": "BORDERLINE",
+        "curatedDifficulty": 5,
+        "difficultyLabel": "Very Hard",
+        "filterStatus": "KEPT"
+      },
+      "curationReasons": [
+        "all words are ranked in the source list",
+        "very high frequency-list coverage"
+      ]
+    },
+    {
+      "id": "generated_0406",
+      "sequence": [
+        "CHAT",
+        "CHEAT",
+        "BEACH",
+        "BREACH",
+        "CHARGE",
+        "CHARGER"
+      ],
+      "pattern": [
+        "Y",
+        "R",
+        "Y",
+        "R",
+        "Y"
+      ],
+      "start": "CHAT",
+      "end": "CHARGER",
+      "difficulty": 5,
+      "score": 404,
+      "blueMoves": 0,
+      "yellowMoves": 3,
+      "greenMoves": 0,
+      "redMoves": 2,
+      "curation": {
+        "baseScore": 404,
+        "curatedScore": 509,
+        "rankedWordCount": 6,
+        "totalWords": 6,
+        "frequencyCoverage": 1.0,
+        "unrankedWords": [],
+        "averageRankScore": 18.5,
+        "endRank": 3725,
+        "moveVariety": 2,
+        "quality": "GOOD",
+        "curatedDifficulty": 4,
+        "difficultyLabel": "Hard",
+        "filterStatus": "KEPT"
+      },
+      "curationReasons": [
+        "all words are ranked in the source list",
+        "very high frequency-list coverage"
+      ]
+    },
+    {
+      "id": "generated_0451",
+      "sequence": [
+        "HART",
+        "HEART",
+        "TREAT",
+        "THREAT",
+        "HEATER",
+        "THEATER"
+      ],
+      "pattern": [
+        "Y",
+        "R",
+        "Y",
+        "R",
+        "Y"
+      ],
+      "start": "HART",
+      "end": "THEATER",
+      "difficulty": 5,
+      "score": 404,
+      "blueMoves": 0,
+      "yellowMoves": 3,
+      "greenMoves": 0,
+      "redMoves": 2,
+      "curation": {
+        "baseScore": 404,
+        "curatedScore": 509,
+        "rankedWordCount": 6,
+        "totalWords": 6,
+        "frequencyCoverage": 1.0,
+        "unrankedWords": [],
+        "averageRankScore": 16.0,
+        "endRank": 2034,
+        "moveVariety": 2,
+        "quality": "GOOD",
+        "curatedDifficulty": 5,
+        "difficultyLabel": "Very Hard",
+        "filterStatus": "KEPT"
+      },
+      "curationReasons": [
+        "end word is common",
+        "all words are ranked in the source list",
+        "very high frequency-list coverage"
+      ]
+    },
+    {
+      "id": "generated_0049",
+      "sequence": [
+        "MEAL",
+        "METAL",
+        "STEAM",
+        "STREAM",
+        "MAKERS",
+        "MARKERS"
+      ],
+      "pattern": [
+        "Y",
+        "R",
+        "Y",
+        "R",
+        "Y"
+      ],
+      "start": "MEAL",
+      "end": "MARKERS",
+      "difficulty": 5,
+      "score": 412,
+      "blueMoves": 0,
+      "yellowMoves": 3,
+      "greenMoves": 0,
+      "redMoves": 2,
+      "curation": {
+        "baseScore": 412,
+        "curatedScore": 508,
+        "rankedWordCount": 6,
+        "totalWords": 6,
+        "frequencyCoverage": 1.0,
+        "unrankedWords": [],
+        "averageRankScore": 16.3,
+        "endRank": 6343,
+        "moveVariety": 2,
+        "quality": "GOOD",
+        "curatedDifficulty": 5,
+        "difficultyLabel": "Very Hard",
+        "filterStatus": "KEPT"
+      },
+      "curationReasons": [
+        "end word is relatively low-frequency",
+        "all words are ranked in the source list",
+        "very high frequency-list coverage"
+      ]
+    },
+    {
+      "id": "generated_0393",
+      "sequence": [
+        "BASS",
+        "BRASS",
+        "STARS",
+        "STARTS",
+        "STATES",
+        "ESTATES"
+      ],
+      "pattern": [
+        "Y",
+        "R",
+        "Y",
+        "R",
+        "Y"
+      ],
+      "start": "BASS",
+      "end": "ESTATES",
+      "difficulty": 5,
+      "score": 404,
+      "blueMoves": 0,
+      "yellowMoves": 3,
+      "greenMoves": 0,
+      "redMoves": 2,
+      "curation": {
+        "baseScore": 404,
+        "curatedScore": 508,
+        "rankedWordCount": 6,
+        "totalWords": 6,
+        "frequencyCoverage": 1.0,
+        "unrankedWords": [],
+        "averageRankScore": 19.8,
+        "endRank": 6181,
+        "moveVariety": 2,
+        "quality": "GOOD",
+        "curatedDifficulty": 4,
+        "difficultyLabel": "Hard",
+        "filterStatus": "KEPT"
+      },
+      "curationReasons": [
+        "end word is relatively low-frequency",
+        "all words are ranked in the source list",
+        "very high frequency-list coverage"
+      ]
+    },
+    {
+      "id": "generated_0964",
+      "sequence": [
+        "HEAR",
+        "HEART",
+        "TREAT",
+        "THREAT",
+        "HEATER",
+        "THEATER"
+      ],
+      "pattern": [
+        "Y",
+        "R",
+        "Y",
+        "R",
+        "Y"
+      ],
+      "start": "HEAR",
+      "end": "THEATER",
+      "difficulty": 5,
+      "score": 396,
+      "blueMoves": 0,
+      "yellowMoves": 3,
+      "greenMoves": 0,
+      "redMoves": 2,
+      "curation": {
+        "baseScore": 396,
+        "curatedScore": 508,
+        "rankedWordCount": 6,
+        "totalWords": 6,
+        "frequencyCoverage": 1.0,
+        "unrankedWords": [],
+        "averageRankScore": 19.0,
+        "endRank": 2034,
+        "moveVariety": 2,
+        "quality": "GOOD",
+        "curatedDifficulty": 4,
+        "difficultyLabel": "Hard",
+        "filterStatus": "KEPT"
+      },
+      "curationReasons": [
+        "end word is common",
+        "all words are ranked in the source list",
+        "very high frequency-list coverage"
+      ]
+    },
+    {
+      "id": "generated_0444",
+      "sequence": [
+        "GAIN",
+        "GRAIN",
+        "RINGS",
+        "BRINGS",
+        "RISING",
+        "RAISING"
+      ],
+      "pattern": [
+        "Y",
+        "R",
+        "Y",
+        "R",
+        "Y"
+      ],
+      "start": "GAIN",
+      "end": "RAISING",
+      "difficulty": 5,
+      "score": 404,
+      "blueMoves": 0,
+      "yellowMoves": 3,
+      "greenMoves": 0,
+      "redMoves": 2,
+      "curation": {
+        "baseScore": 404,
+        "curatedScore": 507,
+        "rankedWordCount": 6,
+        "totalWords": 6,
+        "frequencyCoverage": 1.0,
+        "unrankedWords": [],
+        "averageRankScore": 17.7,
+        "endRank": 3848,
+        "moveVariety": 2,
+        "quality": "GOOD",
+        "curatedDifficulty": 5,
+        "difficultyLabel": "Very Hard",
+        "filterStatus": "KEPT"
+      },
+      "curationReasons": [
+        "all words are ranked in the source list",
+        "very high frequency-list coverage"
+      ]
+    },
+    {
+      "id": "generated_0055",
+      "sequence": [
+        "PAYS",
+        "PLAYS",
+        "PLANS",
+        "PLAINS",
+        "PLANTS",
+        "PLANETS"
+      ],
+      "pattern": [
+        "Y",
+        "R",
+        "Y",
+        "R",
+        "Y"
+      ],
+      "start": "PAYS",
+      "end": "PLANETS",
+      "difficulty": 5,
+      "score": 412,
+      "blueMoves": 0,
+      "yellowMoves": 3,
+      "greenMoves": 0,
+      "redMoves": 2,
+      "curation": {
+        "baseScore": 412,
+        "curatedScore": 506,
+        "rankedWordCount": 6,
+        "totalWords": 6,
+        "frequencyCoverage": 1.0,
+        "unrankedWords": [],
+        "averageRankScore": 15.7,
+        "endRank": 6298,
+        "moveVariety": 2,
+        "quality": "BORDERLINE",
+        "curatedDifficulty": 5,
+        "difficultyLabel": "Very Hard",
+        "filterStatus": "KEPT"
+      },
+      "curationReasons": [
+        "end word is relatively low-frequency",
+        "all words are ranked in the source list",
+        "very high frequency-list coverage"
+      ]
+    },
+    {
+      "id": "generated_0418",
+      "sequence": [
+        "EARL",
+        "EARLY",
+        "RALLY",
+        "REALLY",
+        "LAYERS",
+        "LAWYERS"
+      ],
+      "pattern": [
+        "Y",
+        "R",
+        "Y",
+        "R",
+        "Y"
+      ],
+      "start": "EARL",
+      "end": "LAWYERS",
+      "difficulty": 5,
+      "score": 404,
+      "blueMoves": 0,
+      "yellowMoves": 3,
+      "greenMoves": 0,
+      "redMoves": 2,
+      "curation": {
+        "baseScore": 404,
+        "curatedScore": 506,
+        "rankedWordCount": 6,
+        "totalWords": 6,
+        "frequencyCoverage": 1.0,
+        "unrankedWords": [],
+        "averageRankScore": 17.3,
+        "endRank": 2334,
+        "moveVariety": 2,
+        "quality": "GOOD",
+        "curatedDifficulty": 5,
+        "difficultyLabel": "Very Hard",
+        "filterStatus": "KEPT"
+      },
+      "curationReasons": [
+        "all words are ranked in the source list",
+        "very high frequency-list coverage"
+      ]
+    },
+    {
+      "id": "generated_0047",
+      "sequence": [
+        "MALE",
+        "MAPLE",
+        "MEALS",
+        "METALS",
+        "TABLES",
+        "TABLETS"
+      ],
+      "pattern": [
+        "Y",
+        "R",
+        "Y",
+        "R",
+        "Y"
+      ],
+      "start": "MALE",
+      "end": "TABLETS",
+      "difficulty": 5,
+      "score": 412,
+      "blueMoves": 0,
+      "yellowMoves": 3,
+      "greenMoves": 0,
+      "redMoves": 2,
+      "curation": {
+        "baseScore": 412,
+        "curatedScore": 505,
+        "rankedWordCount": 6,
+        "totalWords": 6,
+        "frequencyCoverage": 1.0,
+        "unrankedWords": [],
+        "averageRankScore": 15.2,
+        "endRank": 5787,
+        "moveVariety": 2,
+        "quality": "BORDERLINE",
+        "curatedDifficulty": 5,
+        "difficultyLabel": "Very Hard",
+        "filterStatus": "KEPT"
+      },
+      "curationReasons": [
+        "end word is relatively low-frequency",
+        "all words are ranked in the source list",
+        "very high frequency-list coverage"
+      ]
+    },
+    {
+      "id": "generated_0500",
+      "sequence": [
+        "LOSE",
+        "LOOSE",
+        "CLOSE",
+        "CLOSER",
+        "COLORS",
+        "COLOURS"
+      ],
+      "pattern": [
+        "Y",
+        "R",
+        "Y",
+        "R",
+        "Y"
+      ],
+      "start": "LOSE",
+      "end": "COLOURS",
+      "difficulty": 5,
+      "score": 404,
+      "blueMoves": 0,
+      "yellowMoves": 3,
+      "greenMoves": 0,
+      "redMoves": 2,
+      "curation": {
+        "baseScore": 404,
+        "curatedScore": 505,
+        "rankedWordCount": 6,
+        "totalWords": 6,
+        "frequencyCoverage": 1.0,
+        "unrankedWords": [],
+        "averageRankScore": 18.7,
+        "endRank": 5204,
+        "moveVariety": 2,
+        "quality": "GOOD",
+        "curatedDifficulty": 4,
+        "difficultyLabel": "Hard",
+        "filterStatus": "KEPT"
+      },
+      "curationReasons": [
+        "end word is relatively low-frequency",
+        "all words are ranked in the source list",
+        "very high frequency-list coverage"
+      ]
+    },
+    {
+      "id": "generated_0946",
+      "sequence": [
+        "EVEN",
+        "SEVEN",
+        "GENES",
+        "GENRES",
+        "ENTERS",
+        "CENTERS"
+      ],
+      "pattern": [
+        "Y",
+        "R",
+        "Y",
+        "R",
+        "Y"
+      ],
+      "start": "EVEN",
+      "end": "CENTERS",
+      "difficulty": 5,
+      "score": 396,
+      "blueMoves": 0,
+      "yellowMoves": 3,
+      "greenMoves": 0,
+      "redMoves": 2,
+      "curation": {
+        "baseScore": 396,
+        "curatedScore": 504,
+        "rankedWordCount": 6,
+        "totalWords": 6,
+        "frequencyCoverage": 1.0,
+        "unrankedWords": [],
+        "averageRankScore": 17.2,
+        "endRank": 1763,
+        "moveVariety": 2,
+        "quality": "GOOD",
+        "curatedDifficulty": 5,
+        "difficultyLabel": "Very Hard",
+        "filterStatus": "KEPT"
+      },
+      "curationReasons": [
+        "end word is common",
+        "all words are ranked in the source list",
+        "very high frequency-list coverage"
+      ]
+    },
+    {
+      "id": "generated_0904",
+      "sequence": [
+        "CORE",
+        "SCORE",
+        "CLOSE",
+        "CLOSER",
+        "COLORS",
+        "COLOURS"
+      ],
+      "pattern": [
+        "Y",
+        "R",
+        "Y",
+        "R",
+        "Y"
+      ],
+      "start": "CORE",
+      "end": "COLOURS",
+      "difficulty": 5,
+      "score": 396,
+      "blueMoves": 0,
+      "yellowMoves": 3,
+      "greenMoves": 0,
+      "redMoves": 2,
+      "curation": {
+        "baseScore": 396,
+        "curatedScore": 503,
+        "rankedWordCount": 6,
+        "totalWords": 6,
+        "frequencyCoverage": 1.0,
+        "unrankedWords": [],
+        "averageRankScore": 21.5,
+        "endRank": 5204,
+        "moveVariety": 2,
+        "quality": "EXCELLENT",
+        "curatedDifficulty": 4,
+        "difficultyLabel": "Hard",
+        "filterStatus": "KEPT"
+      },
+      "curationReasons": [
+        "end word is relatively low-frequency",
+        "all words are ranked in the source list",
+        "very high frequency-list coverage"
+      ]
+    },
+    {
+      "id": "generated_1008",
+      "sequence": [
+        "LEAN",
+        "LEARN",
+        "EARLY",
+        "YEARLY",
+        "LAYERS",
+        "PLAYERS"
+      ],
+      "pattern": [
+        "Y",
+        "R",
+        "Y",
+        "R",
+        "Y"
+      ],
+      "start": "LEAN",
+      "end": "PLAYERS",
+      "difficulty": 5,
+      "score": 396,
+      "blueMoves": 0,
+      "yellowMoves": 3,
+      "greenMoves": 0,
+      "redMoves": 2,
+      "curation": {
+        "baseScore": 396,
+        "curatedScore": 503,
+        "rankedWordCount": 6,
+        "totalWords": 6,
+        "frequencyCoverage": 1.0,
+        "unrankedWords": [],
+        "averageRankScore": 17.0,
+        "endRank": 810,
+        "moveVariety": 2,
+        "quality": "GOOD",
+        "curatedDifficulty": 5,
+        "difficultyLabel": "Very Hard",
+        "filterStatus": "KEPT"
+      },
+      "curationReasons": [
+        "end word is common",
+        "all words are ranked in the source list",
+        "very high frequency-list coverage"
+      ]
+    },
+    {
+      "id": "generated_0442",
+      "sequence": [
+        "FEES",
+        "FEELS",
+        "LEASE",
+        "PLEASE",
+        "PLANES",
+        "PLANETS"
+      ],
+      "pattern": [
+        "Y",
+        "R",
+        "Y",
+        "R",
+        "Y"
+      ],
+      "start": "FEES",
+      "end": "PLANETS",
+      "difficulty": 5,
+      "score": 404,
+      "blueMoves": 0,
+      "yellowMoves": 3,
+      "greenMoves": 0,
+      "redMoves": 2,
+      "curation": {
+        "baseScore": 404,
+        "curatedScore": 500,
+        "rankedWordCount": 6,
+        "totalWords": 6,
+        "frequencyCoverage": 1.0,
+        "unrankedWords": [],
+        "averageRankScore": 16.3,
+        "endRank": 6298,
+        "moveVariety": 2,
+        "quality": "GOOD",
+        "curatedDifficulty": 5,
+        "difficultyLabel": "Very Hard",
+        "filterStatus": "KEPT"
+      },
+      "curationReasons": [
+        "end word is relatively low-frequency",
+        "all words are ranked in the source list",
+        "very high frequency-list coverage"
+      ]
+    },
+    {
+      "id": "generated_0969",
+      "sequence": [
+        "HOLE",
+        "WHOLE",
+        "HOTEL",
+        "HOSTEL",
+        "OTHERS",
+        "MOTHERS"
+      ],
+      "pattern": [
+        "Y",
+        "R",
+        "Y",
+        "R",
+        "Y"
+      ],
+      "start": "HOLE",
+      "end": "MOTHERS",
+      "difficulty": 5,
+      "score": 396,
+      "blueMoves": 0,
+      "yellowMoves": 3,
+      "greenMoves": 0,
+      "redMoves": 2,
+      "curation": {
+        "baseScore": 396,
+        "curatedScore": 500,
+        "rankedWordCount": 6,
+        "totalWords": 6,
+        "frequencyCoverage": 1.0,
+        "unrankedWords": [],
+        "averageRankScore": 20.2,
+        "endRank": 4939,
+        "moveVariety": 2,
+        "quality": "EXCELLENT",
+        "curatedDifficulty": 4,
+        "difficultyLabel": "Hard",
+        "filterStatus": "KEPT"
+      },
+      "curationReasons": [
+        "end word is relatively low-frequency",
+        "all words are ranked in the source list",
+        "very high frequency-list coverage"
+      ]
+    },
+    {
+      "id": "generated_0499",
+      "sequence": [
+        "LIES",
+        "LINES",
+        "LINED",
+        "LINKED",
+        "KILLED",
+        "SKILLED"
+      ],
+      "pattern": [
+        "Y",
+        "R",
+        "Y",
+        "R",
+        "Y"
+      ],
+      "start": "LIES",
+      "end": "SKILLED",
+      "difficulty": 5,
+      "score": 404,
+      "blueMoves": 0,
+      "yellowMoves": 3,
+      "greenMoves": 0,
+      "redMoves": 2,
+      "curation": {
+        "baseScore": 404,
+        "curatedScore": 499,
+        "rankedWordCount": 6,
+        "totalWords": 6,
+        "frequencyCoverage": 1.0,
+        "unrankedWords": [],
+        "averageRankScore": 15.8,
+        "endRank": 5620,
+        "moveVariety": 2,
+        "quality": "BORDERLINE",
+        "curatedDifficulty": 5,
+        "difficultyLabel": "Very Hard",
+        "filterStatus": "KEPT"
+      },
+      "curationReasons": [
+        "end word is relatively low-frequency",
+        "all words are ranked in the source list",
+        "very high frequency-list coverage"
+      ]
+    },
+    {
+      "id": "generated_0525",
+      "sequence": [
+        "PAIN",
+        "PAINT",
+        "PANTS",
+        "PLANTS",
+        "PLANES",
+        "PLANETS"
+      ],
+      "pattern": [
+        "Y",
+        "R",
+        "Y",
+        "R",
+        "Y"
+      ],
+      "start": "PAIN",
+      "end": "PLANETS",
+      "difficulty": 5,
+      "score": 404,
+      "blueMoves": 0,
+      "yellowMoves": 3,
+      "greenMoves": 0,
+      "redMoves": 2,
+      "curation": {
+        "baseScore": 404,
+        "curatedScore": 499,
+        "rankedWordCount": 6,
+        "totalWords": 6,
+        "frequencyCoverage": 1.0,
+        "unrankedWords": [],
+        "averageRankScore": 16.0,
+        "endRank": 6298,
+        "moveVariety": 2,
+        "quality": "GOOD",
+        "curatedDifficulty": 5,
+        "difficultyLabel": "Very Hard",
+        "filterStatus": "KEPT"
+      },
+      "curationReasons": [
+        "end word is relatively low-frequency",
+        "all words are ranked in the source list",
+        "very high frequency-list coverage"
+      ]
+    },
+    {
+      "id": "generated_0906",
+      "sequence": [
+        "DEAL",
+        "IDEAL",
+        "FILED",
+        "FILLED",
+        "KILLED",
+        "SKILLED"
+      ],
+      "pattern": [
+        "Y",
+        "R",
+        "Y",
+        "R",
+        "Y"
+      ],
+      "start": "DEAL",
+      "end": "SKILLED",
+      "difficulty": 5,
+      "score": 396,
+      "blueMoves": 0,
+      "yellowMoves": 3,
+      "greenMoves": 0,
+      "redMoves": 2,
+      "curation": {
+        "baseScore": 396,
+        "curatedScore": 499,
+        "rankedWordCount": 6,
+        "totalWords": 6,
+        "frequencyCoverage": 1.0,
+        "unrankedWords": [],
+        "averageRankScore": 19.5,
+        "endRank": 5620,
+        "moveVariety": 2,
+        "quality": "GOOD",
+        "curatedDifficulty": 4,
+        "difficultyLabel": "Hard",
+        "filterStatus": "KEPT"
+      },
+      "curationReasons": [
+        "end word is relatively low-frequency",
+        "all words are ranked in the source list",
+        "very high frequency-list coverage"
+      ]
+    },
+    {
+      "id": "generated_0519",
+      "sequence": [
+        "ONES",
+        "TONES",
+        "VOTES",
+        "VOTERS",
+        "ROUTES",
+        "ROUTERS"
+      ],
+      "pattern": [
+        "Y",
+        "R",
+        "Y",
+        "R",
+        "Y"
+      ],
+      "start": "ONES",
+      "end": "ROUTERS",
+      "difficulty": 5,
+      "score": 404,
+      "blueMoves": 0,
+      "yellowMoves": 3,
+      "greenMoves": 0,
+      "redMoves": 2,
+      "curation": {
+        "baseScore": 404,
+        "curatedScore": 498,
+        "rankedWordCount": 6,
+        "totalWords": 6,
+        "frequencyCoverage": 1.0,
+        "unrankedWords": [],
+        "averageRankScore": 15.7,
+        "endRank": 5248,
+        "moveVariety": 2,
+        "quality": "BORDERLINE",
+        "curatedDifficulty": 5,
+        "difficultyLabel": "Very Hard",
+        "filterStatus": "KEPT"
+      },
+      "curationReasons": [
+        "end word is relatively low-frequency",
+        "all words are ranked in the source list",
+        "very high frequency-list coverage"
+      ]
+    },
+    {
+      "id": "generated_0885",
+      "sequence": [
+        "AREA",
+        "ARENA",
+        "ANGER",
+        "DANGER",
+        "EARNED",
+        "LEARNED"
+      ],
+      "pattern": [
+        "Y",
+        "R",
+        "Y",
+        "R",
+        "Y"
+      ],
+      "start": "AREA",
+      "end": "LEARNED",
+      "difficulty": 5,
+      "score": 396,
+      "blueMoves": 0,
+      "yellowMoves": 3,
+      "greenMoves": 0,
+      "redMoves": 2,
+      "curation": {
+        "baseScore": 396,
+        "curatedScore": 498,
+        "rankedWordCount": 6,
+        "totalWords": 6,
+        "frequencyCoverage": 1.0,
+        "unrankedWords": [],
+        "averageRankScore": 17.2,
+        "endRank": 2560,
+        "moveVariety": 2,
+        "quality": "GOOD",
+        "curatedDifficulty": 5,
+        "difficultyLabel": "Very Hard",
+        "filterStatus": "KEPT"
+      },
+      "curationReasons": [
+        "all words are ranked in the source list",
+        "very high frequency-list coverage"
+      ]
+    },
+    {
+      "id": "generated_0952",
+      "sequence": [
+        "GAIN",
+        "GRAIN",
+        "RINGS",
+        "BRINGS",
+        "RISING",
+        "ARISING"
+      ],
+      "pattern": [
+        "Y",
+        "R",
+        "Y",
+        "R",
+        "Y"
+      ],
+      "start": "GAIN",
+      "end": "ARISING",
+      "difficulty": 5,
+      "score": 396,
+      "blueMoves": 0,
+      "yellowMoves": 3,
+      "greenMoves": 0,
+      "redMoves": 2,
+      "curation": {
+        "baseScore": 396,
+        "curatedScore": 498,
+        "rankedWordCount": 6,
+        "totalWords": 6,
+        "frequencyCoverage": 1.0,
+        "unrankedWords": [],
+        "averageRankScore": 17.3,
+        "endRank": 4399,
+        "moveVariety": 2,
+        "quality": "GOOD",
+        "curatedDifficulty": 5,
+        "difficultyLabel": "Very Hard",
+        "filterStatus": "KEPT"
+      },
+      "curationReasons": [
+        "all words are ranked in the source list",
+        "very high frequency-list coverage"
+      ]
+    },
+    {
+      "id": "generated_0466",
+      "sequence": [
+        "HOSE",
+        "THOSE",
+        "VOTES",
+        "VOTERS",
+        "ROUTES",
+        "ROUTERS"
+      ],
+      "pattern": [
+        "Y",
+        "R",
+        "Y",
+        "R",
+        "Y"
+      ],
+      "start": "HOSE",
+      "end": "ROUTERS",
+      "difficulty": 5,
+      "score": 404,
+      "blueMoves": 0,
+      "yellowMoves": 3,
+      "greenMoves": 0,
+      "redMoves": 2,
+      "curation": {
+        "baseScore": 404,
+        "curatedScore": 497,
+        "rankedWordCount": 6,
+        "totalWords": 6,
+        "frequencyCoverage": 1.0,
+        "unrankedWords": [],
+        "averageRankScore": 15.2,
+        "endRank": 5248,
+        "moveVariety": 2,
+        "quality": "BORDERLINE",
+        "curatedDifficulty": 5,
+        "difficultyLabel": "Very Hard",
+        "filterStatus": "KEPT"
+      },
+      "curationReasons": [
+        "end word is relatively low-frequency",
+        "all words are ranked in the source list",
+        "very high frequency-list coverage"
+      ]
+    },
+    {
+      "id": "generated_0954",
+      "sequence": [
+        "GENE",
+        "GENRE",
+        "ANGER",
+        "DANGER",
+        "EARNED",
+        "LEARNED"
+      ],
+      "pattern": [
+        "Y",
+        "R",
+        "Y",
+        "R",
+        "Y"
+      ],
+      "start": "GENE",
+      "end": "LEARNED",
+      "difficulty": 5,
+      "score": 396,
+      "blueMoves": 0,
+      "yellowMoves": 3,
+      "greenMoves": 0,
+      "redMoves": 2,
+      "curation": {
+        "baseScore": 396,
+        "curatedScore": 497,
+        "rankedWordCount": 6,
+        "totalWords": 6,
+        "frequencyCoverage": 1.0,
+        "unrankedWords": [],
+        "averageRankScore": 16.7,
+        "endRank": 2560,
+        "moveVariety": 2,
+        "quality": "GOOD",
+        "curatedDifficulty": 5,
+        "difficultyLabel": "Very Hard",
+        "filterStatus": "KEPT"
+      },
+      "curationReasons": [
+        "all words are ranked in the source list",
+        "very high frequency-list coverage"
+      ]
+    },
+    {
+      "id": "generated_1015",
+      "sequence": [
+        "LOTS",
+        "SLOTS",
+        "SHOTS",
+        "SHORTS",
+        "OTHERS",
+        "MOTHERS"
+      ],
+      "pattern": [
+        "Y",
+        "R",
+        "Y",
+        "R",
+        "Y"
+      ],
+      "start": "LOTS",
+      "end": "MOTHERS",
+      "difficulty": 5,
+      "score": 396,
+      "blueMoves": 0,
+      "yellowMoves": 3,
+      "greenMoves": 0,
+      "redMoves": 2,
+      "curation": {
+        "baseScore": 396,
+        "curatedScore": 497,
+        "rankedWordCount": 6,
+        "totalWords": 6,
+        "frequencyCoverage": 1.0,
+        "unrankedWords": [],
+        "averageRankScore": 18.7,
+        "endRank": 4939,
+        "moveVariety": 2,
+        "quality": "GOOD",
+        "curatedDifficulty": 4,
+        "difficultyLabel": "Hard",
+        "filterStatus": "KEPT"
+      },
+      "curationReasons": [
+        "end word is relatively low-frequency",
+        "all words are ranked in the source list",
+        "very high frequency-list coverage"
+      ]
+    },
+    {
+      "id": "generated_0471",
+      "sequence": [
+        "INTO",
+        "INTRO",
+        "PRINT",
+        "SPRINT",
+        "STRIPS",
+        "STRIPES"
+      ],
+      "pattern": [
+        "Y",
+        "R",
+        "Y",
+        "R",
+        "Y"
+      ],
+      "start": "INTO",
+      "end": "STRIPES",
+      "difficulty": 5,
+      "score": 404,
+      "blueMoves": 0,
+      "yellowMoves": 3,
+      "greenMoves": 0,
+      "redMoves": 2,
+      "curation": {
+        "baseScore": 404,
+        "curatedScore": 495,
+        "rankedWordCount": 6,
+        "totalWords": 6,
+        "frequencyCoverage": 1.0,
+        "unrankedWords": [],
+        "averageRankScore": 14.2,
+        "endRank": 7353,
+        "moveVariety": 2,
+        "quality": "BORDERLINE",
+        "curatedDifficulty": 5,
+        "difficultyLabel": "Very Hard",
+        "filterStatus": "KEPT"
+      },
+      "curationReasons": [
+        "end word is relatively low-frequency",
+        "all words are ranked in the source list",
+        "very high frequency-list coverage"
+      ]
+    },
+    {
+      "id": "generated_0447",
+      "sequence": [
+        "GODS",
+        "GOODS",
+        "DOORS",
+        "DONORS",
+        "ROUNDS",
+        "GROUNDS"
+      ],
+      "pattern": [
+        "Y",
+        "R",
+        "Y",
+        "R",
+        "Y"
+      ],
+      "start": "GODS",
+      "end": "GROUNDS",
+      "difficulty": 5,
+      "score": 404,
+      "blueMoves": 0,
+      "yellowMoves": 3,
+      "greenMoves": 0,
+      "redMoves": 2,
+      "curation": {
+        "baseScore": 404,
+        "curatedScore": 494,
+        "rankedWordCount": 6,
+        "totalWords": 6,
+        "frequencyCoverage": 1.0,
+        "unrankedWords": [],
+        "averageRankScore": 12.0,
+        "endRank": 3896,
+        "moveVariety": 2,
+        "quality": "BORDERLINE",
+        "curatedDifficulty": 5,
+        "difficultyLabel": "Very Hard",
+        "filterStatus": "KEPT"
+      },
+      "curationReasons": [
+        "all words are ranked in the source list",
+        "very high frequency-list coverage"
+      ]
+    },
+    {
+      "id": "generated_0462",
+      "sequence": [
+        "HITS",
+        "HINTS",
+        "SIGHT",
+        "SLIGHT",
+        "NIGHTS",
+        "KNIGHTS"
+      ],
+      "pattern": [
+        "Y",
+        "R",
+        "Y",
+        "R",
+        "Y"
+      ],
+      "start": "HITS",
+      "end": "KNIGHTS",
+      "difficulty": 5,
+      "score": 404,
+      "blueMoves": 0,
+      "yellowMoves": 3,
+      "greenMoves": 0,
+      "redMoves": 2,
+      "curation": {
+        "baseScore": 404,
+        "curatedScore": 494,
+        "rankedWordCount": 6,
+        "totalWords": 6,
+        "frequencyCoverage": 1.0,
+        "unrankedWords": [],
+        "averageRankScore": 13.5,
+        "endRank": 6473,
+        "moveVariety": 2,
+        "quality": "BORDERLINE",
+        "curatedDifficulty": 5,
+        "difficultyLabel": "Very Hard",
+        "filterStatus": "KEPT"
+      },
+      "curationReasons": [
+        "end word is relatively low-frequency",
+        "all words are ranked in the source list",
+        "very high frequency-list coverage"
+      ]
+    },
+    {
+      "id": "generated_0945",
+      "sequence": [
+        "EAST",
+        "LEAST",
+        "SALES",
+        "SCALES",
+        "CLOSES",
+        "CLOSEST"
+      ],
+      "pattern": [
+        "Y",
+        "R",
+        "Y",
+        "R",
+        "Y"
+      ],
+      "start": "EAST",
+      "end": "CLOSEST",
+      "difficulty": 5,
+      "score": 396,
+      "blueMoves": 0,
+      "yellowMoves": 3,
+      "greenMoves": 0,
+      "redMoves": 2,
+      "curation": {
+        "baseScore": 396,
+        "curatedScore": 494,
+        "rankedWordCount": 6,
+        "totalWords": 6,
+        "frequencyCoverage": 1.0,
+        "unrankedWords": [],
+        "averageRankScore": 17.3,
+        "endRank": 6028,
+        "moveVariety": 2,
+        "quality": "GOOD",
+        "curatedDifficulty": 5,
+        "difficultyLabel": "Very Hard",
+        "filterStatus": "KEPT"
+      },
+      "curationReasons": [
+        "end word is relatively low-frequency",
+        "all words are ranked in the source list",
+        "very high frequency-list coverage"
+      ]
+    },
+    {
+      "id": "generated_0392",
+      "sequence": [
+        "BASS",
+        "BASES",
+        "SALES",
+        "SCALES",
+        "CLOSES",
+        "CLOSEST"
+      ],
+      "pattern": [
+        "Y",
+        "R",
+        "Y",
+        "R",
+        "Y"
+      ],
+      "start": "BASS",
+      "end": "CLOSEST",
+      "difficulty": 5,
+      "score": 404,
+      "blueMoves": 0,
+      "yellowMoves": 3,
+      "greenMoves": 0,
+      "redMoves": 2,
+      "curation": {
+        "baseScore": 404,
+        "curatedScore": 493,
+        "rankedWordCount": 6,
+        "totalWords": 6,
+        "frequencyCoverage": 1.0,
+        "unrankedWords": [],
+        "averageRankScore": 13.0,
+        "endRank": 6028,
+        "moveVariety": 2,
+        "quality": "BORDERLINE",
+        "curatedDifficulty": 5,
+        "difficultyLabel": "Very Hard",
+        "filterStatus": "KEPT"
+      },
+      "curationReasons": [
+        "end word is relatively low-frequency",
+        "all words are ranked in the source list",
+        "very high frequency-list coverage"
+      ]
+    },
+    {
+      "id": "generated_0502",
+      "sequence": [
+        "LOTS",
+        "PLOTS",
+        "SPOTS",
+        "SPORTS",
+        "STRIPS",
+        "STRIPES"
+      ],
+      "pattern": [
+        "Y",
+        "R",
+        "Y",
+        "R",
+        "Y"
+      ],
+      "start": "LOTS",
+      "end": "STRIPES",
+      "difficulty": 5,
+      "score": 404,
+      "blueMoves": 0,
+      "yellowMoves": 3,
+      "greenMoves": 0,
+      "redMoves": 2,
+      "curation": {
+        "baseScore": 404,
+        "curatedScore": 491,
+        "rankedWordCount": 6,
+        "totalWords": 6,
+        "frequencyCoverage": 1.0,
+        "unrankedWords": [],
+        "averageRankScore": 12.2,
+        "endRank": 7353,
+        "moveVariety": 2,
+        "quality": "BORDERLINE",
+        "curatedDifficulty": 5,
+        "difficultyLabel": "Very Hard",
+        "filterStatus": "KEPT"
+      },
+      "curationReasons": [
+        "end word is relatively low-frequency",
+        "all words are ranked in the source list",
+        "very high frequency-list coverage"
+      ]
+    },
+    {
+      "id": "generated_1071",
       "sequence": [
         "EARS",
         "TEARS",
@@ -3323,53 +4046,7 @@
       ]
     },
     {
-      "id": "generated_0491",
-      "sequence": [
-        "CUTS",
-        "STUCK",
-        "STRUCK",
-        "TRICKS",
-        "STICKER"
-      ],
-      "pattern": [
-        "G",
-        "Y",
-        "R",
-        "G"
-      ],
-      "start": "CUTS",
-      "end": "STICKER",
-      "difficulty": 4,
-      "score": 403,
-      "blueMoves": 0,
-      "yellowMoves": 1,
-      "greenMoves": 2,
-      "redMoves": 1,
-      "curation": {
-        "baseScore": 403,
-        "curatedScore": 483,
-        "rankedWordCount": 5,
-        "totalWords": 5,
-        "frequencyCoverage": 1.0,
-        "unrankedWords": [],
-        "averageRankScore": 10.2,
-        "endRank": 6260,
-        "moveVariety": 3,
-        "quality": "BORDERLINE",
-        "curatedDifficulty": 4,
-        "difficultyLabel": "Hard",
-        "filterStatus": "KEPT"
-      },
-      "curationReasons": [
-        "end word is relatively low-frequency",
-        "all words are ranked in the source list",
-        "very high frequency-list coverage",
-        "weak average frequency rank",
-        "good move variety"
-      ]
-    },
-    {
-      "id": "generated_0810",
+      "id": "generated_0699",
       "sequence": [
         "OURS",
         "TOURS",
@@ -3415,129 +4092,38 @@
       ]
     },
     {
-      "id": "generated_1535",
-      "sequence": [
-        "ACRE",
-        "EARL",
-        "PEARL",
-        "PARCEL",
-        "REPLACE"
-      ],
-      "pattern": [
-        "R",
-        "Y",
-        "G",
-        "G"
-      ],
-      "start": "ACRE",
-      "end": "REPLACE",
-      "difficulty": 4,
-      "score": 395,
-      "blueMoves": 0,
-      "yellowMoves": 1,
-      "greenMoves": 2,
-      "redMoves": 1,
-      "curation": {
-        "baseScore": 395,
-        "curatedScore": 480,
-        "rankedWordCount": 5,
-        "totalWords": 5,
-        "frequencyCoverage": 1.0,
-        "unrankedWords": [],
-        "averageRankScore": 10.6,
-        "endRank": 2619,
-        "moveVariety": 3,
-        "quality": "BORDERLINE",
-        "curatedDifficulty": 4,
-        "difficultyLabel": "Hard",
-        "filterStatus": "KEPT"
-      },
-      "curationReasons": [
-        "all words are ranked in the source list",
-        "very high frequency-list coverage",
-        "weak average frequency rank",
-        "good move variety"
-      ]
-    },
-    {
-      "id": "generated_1356",
-      "sequence": [
-        "CLAN",
-        "LANCE",
-        "GLANCE",
-        "ANGELS",
-        "LEASING"
-      ],
-      "pattern": [
-        "G",
-        "Y",
-        "R",
-        "G"
-      ],
-      "start": "CLAN",
-      "end": "LEASING",
-      "difficulty": 4,
-      "score": 395,
-      "blueMoves": 0,
-      "yellowMoves": 1,
-      "greenMoves": 2,
-      "redMoves": 1,
-      "curation": {
-        "baseScore": 395,
-        "curatedScore": 475,
-        "rankedWordCount": 5,
-        "totalWords": 5,
-        "frequencyCoverage": 1.0,
-        "unrankedWords": [],
-        "averageRankScore": 10.0,
-        "endRank": 5183,
-        "moveVariety": 3,
-        "quality": "BORDERLINE",
-        "curatedDifficulty": 4,
-        "difficultyLabel": "Hard",
-        "filterStatus": "KEPT"
-      },
-      "curationReasons": [
-        "end word is relatively low-frequency",
-        "all words are ranked in the source list",
-        "very high frequency-list coverage",
-        "weak average frequency rank",
-        "good move variety"
-      ]
-    },
-    {
-      "id": "generated_1289",
+      "id": "generated_1756",
       "sequence": [
         "ACNE",
-        "LANCE",
-        "GLANCE",
-        "ANGELS",
-        "LEASING"
+        "CLAN",
+        "CLEAN",
+        "LANES",
+        "PLANES"
       ],
       "pattern": [
-        "G",
+        "R",
         "Y",
         "R",
-        "G"
+        "Y"
       ],
       "start": "ACNE",
-      "end": "LEASING",
+      "end": "PLANES",
       "difficulty": 4,
-      "score": 395,
+      "score": 345,
       "blueMoves": 0,
-      "yellowMoves": 1,
-      "greenMoves": 2,
-      "redMoves": 1,
+      "yellowMoves": 2,
+      "greenMoves": 0,
+      "redMoves": 2,
       "curation": {
-        "baseScore": 395,
-        "curatedScore": 474,
+        "baseScore": 345,
+        "curatedScore": 407,
         "rankedWordCount": 5,
         "totalWords": 5,
         "frequencyCoverage": 1.0,
         "unrankedWords": [],
-        "averageRankScore": 9.6,
-        "endRank": 5183,
-        "moveVariety": 3,
+        "averageRankScore": 8.4,
+        "endRank": 6380,
+        "moveVariety": 2,
         "quality": "BORDERLINE",
         "curatedDifficulty": 4,
         "difficultyLabel": "Hard",
@@ -3547,43 +4133,42 @@
         "end word is relatively low-frequency",
         "all words are ranked in the source list",
         "very high frequency-list coverage",
-        "weak average frequency rank",
-        "good move variety"
+        "weak average frequency rank"
       ]
     },
     {
-      "id": "generated_1536",
+      "id": "generated_3057",
       "sequence": [
-        "ACRE",
-        "EARL",
-        "PEARL",
-        "PARCEL",
-        "REPLICA"
+        "ACNE",
+        "LEAN",
+        "CLEAN",
+        "LANES",
+        "PLANES"
       ],
       "pattern": [
         "R",
         "Y",
-        "G",
-        "G"
+        "R",
+        "Y"
       ],
-      "start": "ACRE",
-      "end": "REPLICA",
+      "start": "ACNE",
+      "end": "PLANES",
       "difficulty": 4,
-      "score": 395,
+      "score": 337,
       "blueMoves": 0,
-      "yellowMoves": 1,
-      "greenMoves": 2,
-      "redMoves": 1,
+      "yellowMoves": 2,
+      "greenMoves": 0,
+      "redMoves": 2,
       "curation": {
-        "baseScore": 395,
-        "curatedScore": 471,
+        "baseScore": 337,
+        "curatedScore": 399,
         "rankedWordCount": 5,
         "totalWords": 5,
         "frequencyCoverage": 1.0,
         "unrankedWords": [],
         "averageRankScore": 8.2,
-        "endRank": 5582,
-        "moveVariety": 3,
+        "endRank": 6380,
+        "moveVariety": 2,
         "quality": "BORDERLINE",
         "curatedDifficulty": 4,
         "difficultyLabel": "Hard",
@@ -3593,8 +4178,7 @@
         "end word is relatively low-frequency",
         "all words are ranked in the source list",
         "very high frequency-list coverage",
-        "weak average frequency rank",
-        "good move variety"
+        "weak average frequency rank"
       ]
     }
   ]
