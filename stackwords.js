@@ -1,4 +1,11 @@
 (function () {
+  const TILE_COLORS = {
+    BLUE: "blue",
+    RED: "red",
+    ORANGE: "orange",
+    GREEN: "green"
+  };
+
   function shuffle(array) {
     const clone = [...array];
     for (let index = clone.length - 1; index > 0; index -= 1) {
@@ -18,8 +25,13 @@
     }
 
     validate() {
+      const expectedLengths = [4, 5, 6];
       if (this.lengths.length !== 3 || this.solution.length !== 3) {
         throw new Error(`Triple Stack puzzle ${this.id} must contain exactly 3 words.`);
+      }
+
+      if (!expectedLengths.every((length, index) => this.lengths[index] === length)) {
+        throw new Error(`Triple Stack puzzle ${this.id} must use 4, 5, and 6 letter words.`);
       }
 
       this.solution.forEach((word, index) => {
@@ -28,9 +40,28 @@
         }
       });
 
-      const totalLength = this.lengths.reduce((sum, length) => sum + length, 0);
-      if (totalLength !== this.letters.length) {
-        throw new Error(`Triple Stack puzzle ${this.id} must use every letter exactly once.`);
+      if (this.letters.length !== 18) {
+        throw new Error(`Triple Stack puzzle ${this.id} must contain exactly 18 letters.`);
+      }
+
+      const uniqueLetters = new Set(this.letters);
+      if (uniqueLetters.size !== this.letters.length) {
+        throw new Error(`Triple Stack puzzle ${this.id} cannot contain duplicate letters.`);
+      }
+
+      const solutionLetters = this.solution.join("").split("");
+      if (new Set(solutionLetters).size !== solutionLetters.length) {
+        throw new Error(`Triple Stack puzzle ${this.id} answers cannot reuse letters.`);
+      }
+
+      solutionLetters.forEach((letter) => {
+        if (!uniqueLetters.has(letter)) {
+          throw new Error(`Triple Stack puzzle ${this.id} is missing answer letter "${letter}".`);
+        }
+      });
+
+      if (this.letters.length - solutionLetters.length !== 3) {
+        throw new Error(`Triple Stack puzzle ${this.id} must include exactly 3 decoys.`);
       }
     }
 
@@ -38,37 +69,27 @@
       return shuffle(this.letters).map((letter, index) => ({
         id: `${this.id}-${index}-${letter}`,
         letter,
-        consumed: false
+        originalIndex: index,
+        color: TILE_COLORS.BLUE,
+        placedWordIndex: null,
+        placedSlotIndex: null
       }));
     }
   }
 
   class StackWordsLogic {
-    constructor(puzzles, wordValidator) {
+    constructor(puzzles) {
       this.puzzles = puzzles.map((puzzle) => new StackWordsPuzzleModel(puzzle));
-      this.wordValidator = wordValidator;
       this.resetLimit = 3;
       this.lifeLimit = 3;
       this.currentPuzzleIndex = 0;
       this.state = null;
-      this.message = "Solve the smallest word first.";
+      this.message = "Build all three words, then submit the full attempt.";
       this.messageTone = "neutral";
     }
 
     get currentPuzzle() {
       return this.puzzles[this.currentPuzzleIndex];
-    }
-
-    get activeWordIndex() {
-      if (!this.state) {
-        return 0;
-      }
-      const unsolvedIndex = this.state.solvedWords.findIndex((word) => !word);
-      return unsolvedIndex === -1 ? this.state.solvedWords.length - 1 : unsolvedIndex;
-    }
-
-    get activeLength() {
-      return this.currentPuzzle.lengths[this.activeWordIndex];
     }
 
     get availableResets() {
@@ -79,28 +100,27 @@
       return Math.max(0, this.state.livesRemaining);
     }
 
-    get currentGuess() {
-      return this.state.selectedIds
-        .map((id) => this.state.letters.find((letter) => letter.id === id))
-        .filter(Boolean)
-        .map((entry) => entry.letter)
-        .join("");
+    createEmptyGuesses() {
+      return this.currentPuzzle.lengths.map((length) => Array(length).fill(null));
     }
 
     startPuzzle(index = this.currentPuzzleIndex) {
       this.currentPuzzleIndex = (index + this.puzzles.length) % this.puzzles.length;
       this.state = {
         letters: this.currentPuzzle.createLetterPool(),
-        selectedIds: [],
-        solvedWords: Array(this.currentPuzzle.solution.length).fill(""),
+        guesses: this.createEmptyGuesses(),
+        lastFeedbackRows: this.currentPuzzle.lengths.map((length) => Array(length).fill(null)),
+        activeWordIndex: 0,
         resetsUsed: 0,
         livesRemaining: this.lifeLimit,
         completed: false,
+        solved: false,
         gaveUp: false,
         failed: false,
-        outOfLives: false
+        outOfLives: false,
+        lastAttemptWords: []
       };
-      this.setMessage(`Build the ${this.activeLength}-letter word first.`, "neutral");
+      this.setMessage("Build all three words, then submit the full attempt.", "neutral");
       return this.getViewModel();
     }
 
@@ -113,30 +133,74 @@
       this.messageTone = tone;
     }
 
+    getLetterById(id) {
+      return this.state.letters.find((letter) => letter.id === id) || null;
+    }
+
+    getGuessWord(wordIndex) {
+      return this.state.guesses[wordIndex]
+        .map((tileId) => this.getLetterById(tileId))
+        .filter(Boolean)
+        .map((tile) => tile.letter)
+        .join("");
+    }
+
+    getAttemptWords() {
+      return this.state.guesses.map((_, wordIndex) => this.getGuessWord(wordIndex));
+    }
+
+    setActiveWord(index) {
+      if (!this.state || this.state.completed) {
+        return this.getViewModel();
+      }
+      this.state.activeWordIndex = Math.max(0, Math.min(index, this.state.guesses.length - 1));
+      this.setMessage(`Editing the ${this.currentPuzzle.lengths[this.state.activeWordIndex]}-letter word.`, "neutral");
+      return this.getViewModel();
+    }
+
+    removeTileFromGuess(tileId) {
+      for (let wordIndex = 0; wordIndex < this.state.guesses.length; wordIndex += 1) {
+        const slotIndex = this.state.guesses[wordIndex].indexOf(tileId);
+        if (slotIndex >= 0) {
+          this.state.guesses[wordIndex][slotIndex] = null;
+          const tile = this.getLetterById(tileId);
+          if (tile) {
+            tile.placedWordIndex = null;
+            tile.placedSlotIndex = null;
+          }
+          return true;
+        }
+      }
+      return false;
+    }
+
     toggleLetter(id) {
       if (!this.state || this.state.completed) {
         return this.getViewModel();
       }
 
-      const entry = this.state.letters.find((letter) => letter.id === id);
-      if (!entry || entry.consumed) {
+      const entry = this.getLetterById(id);
+      if (!entry) {
         return this.getViewModel();
       }
 
-      const selectedIndex = this.state.selectedIds.indexOf(id);
-      if (selectedIndex >= 0) {
-        this.state.selectedIds.splice(selectedIndex, 1);
-        this.setMessage(`Editing the ${this.activeLength}-letter slot.`, "neutral");
+      if (entry.placedWordIndex != null) {
+        this.removeTileFromGuess(id);
+        this.setMessage(`Returned ${entry.letter} to the pool.`, "neutral");
         return this.getViewModel();
       }
 
-      if (this.state.selectedIds.length >= this.activeLength) {
-        this.setMessage(`That slot only takes ${this.activeLength} letters.`, "error");
+      const activeGuess = this.state.guesses[this.state.activeWordIndex];
+      const nextSlotIndex = activeGuess.indexOf(null);
+      if (nextSlotIndex === -1) {
+        this.setMessage(`That row already has ${activeGuess.length} letters.`, "error");
         return this.getViewModel();
       }
 
-      this.state.selectedIds.push(id);
-      this.setMessage(`Editing the ${this.activeLength}-letter slot.`, "neutral");
+      activeGuess[nextSlotIndex] = id;
+      entry.placedWordIndex = this.state.activeWordIndex;
+      entry.placedSlotIndex = nextSlotIndex;
+      this.setMessage(`Building the ${activeGuess.length}-letter word.`, "neutral");
       return this.getViewModel();
     }
 
@@ -145,34 +209,52 @@
         return this.getViewModel();
       }
 
-      if (this.state.selectedIds.length === 0) {
-        this.setMessage("No letters selected yet.", "error");
+      const activeGuess = this.state.guesses[this.state.activeWordIndex];
+      let removed = false;
+      for (let index = activeGuess.length - 1; index >= 0; index -= 1) {
+        if (!activeGuess[index]) {
+          continue;
+        }
+        this.removeTileFromGuess(activeGuess[index]);
+        removed = true;
+        break;
+      }
+
+      if (!removed) {
+        this.setMessage("No letters placed in that word yet.", "error");
         return this.getViewModel();
       }
 
-      this.state.selectedIds.pop();
-      this.setMessage(`Editing the ${this.activeLength}-letter slot.`, "neutral");
+      this.setMessage(`Editing the ${activeGuess.length}-letter word.`, "neutral");
       return this.getViewModel();
     }
 
-    removeSelectedLetterAt(index) {
+    removeSelectedLetterAt(wordIndex, slotIndex) {
       if (!this.state || this.state.completed) {
         return this.getViewModel();
       }
 
-      if (index < 0 || index >= this.state.selectedIds.length) {
+      const tileId = this.state.guesses[wordIndex]?.[slotIndex];
+      if (!tileId) {
+        this.state.activeWordIndex = wordIndex;
+        this.setMessage(`Editing the ${this.currentPuzzle.lengths[wordIndex]}-letter word.`, "neutral");
         return this.getViewModel();
       }
 
-      this.state.selectedIds.splice(index, 1);
-      this.setMessage(`Editing the ${this.activeLength}-letter slot.`, "neutral");
+      this.removeTileFromGuess(tileId);
+      this.state.activeWordIndex = wordIndex;
+      this.setMessage(`Editing the ${this.currentPuzzle.lengths[wordIndex]}-letter word.`, "neutral");
       return this.getViewModel();
     }
 
-    clearSelectedLetters(message = `Try the ${this.activeLength}-letter word again.`) {
-      this.state.selectedIds = [];
-      this.setMessage(message, "error");
-      return this.getViewModel();
+    clearPlacementsForNextAttempt() {
+      // Reset only the current placement state. Tile colors persist so the most recent
+      // evaluation still follows each tile back into the pool on the next attempt.
+      this.state.guesses = this.createEmptyGuesses();
+      this.state.letters.forEach((tile) => {
+        tile.placedWordIndex = null;
+        tile.placedSlotIndex = null;
+      });
     }
 
     resetBoardForRetry() {
@@ -180,36 +262,34 @@
       const livesRemaining = this.state.livesRemaining;
       this.state = {
         letters: this.currentPuzzle.createLetterPool(),
-        selectedIds: [],
-        solvedWords: Array(this.currentPuzzle.solution.length).fill(""),
+        guesses: this.createEmptyGuesses(),
+        lastFeedbackRows: this.currentPuzzle.lengths.map((length) => Array(length).fill(null)),
+        activeWordIndex: 0,
         resetsUsed,
         livesRemaining,
         completed: false,
+        solved: false,
         gaveUp: false,
         failed: false,
-        outOfLives: false
+        outOfLives: false,
+        lastAttemptWords: []
       };
+      this.setMessage("Fresh board. Colors cleared and letters reset.", "neutral");
     }
 
-    isSubmittedSetValidSolution(words) {
-      if (!Array.isArray(words) || words.length !== this.currentPuzzle.solution.length) {
-        return false;
-      }
-
-      const normalizedWords = words.map((word) => String(word || "").toUpperCase());
-      const lengthsMatch = normalizedWords.every((word, index) => word.length === this.currentPuzzle.lengths[index]);
-      if (!lengthsMatch) {
-        return false;
-      }
-
-      const dictionaryOk = normalizedWords.every((word) => typeof this.wordValidator === "function" && this.wordValidator(word));
-      if (!dictionaryOk) {
-        return false;
-      }
-
-      const submittedLetters = normalizedWords.join("").split("").sort().join("");
-      const puzzleLetters = [...this.currentPuzzle.letters].sort().join("");
-      return submittedLetters === puzzleLetters;
+    evaluateWord(guess, target) {
+      // Evaluate each word independently. Because the puzzle forbids duplicate letters,
+      // the Wordle-style pass can stay simple: green exact, orange same word wrong slot,
+      // red not in that specific word.
+      return guess.split("").map((letter, index) => {
+        if (target[index] === letter) {
+          return TILE_COLORS.GREEN;
+        }
+        if (target.includes(letter)) {
+          return TILE_COLORS.ORANGE;
+        }
+        return TILE_COLORS.RED;
+      });
     }
 
     submitCurrentWord() {
@@ -217,47 +297,62 @@
         return this.getViewModel();
       }
 
-      if (this.state.selectedIds.length !== this.activeLength) {
-        this.setMessage(`Fill all ${this.activeLength} boxes before submitting.`, "error");
+      const incompleteWordIndex = this.state.guesses.findIndex((guessRow) => guessRow.includes(null));
+      if (incompleteWordIndex >= 0) {
+        this.state.activeWordIndex = incompleteWordIndex;
+        this.setMessage(`Fill the ${this.currentPuzzle.lengths[incompleteWordIndex]}-letter word before submitting.`, "error");
         return this.getViewModel();
       }
 
-      const guess = this.currentGuess;
-      this.state.solvedWords[this.activeWordIndex] = guess;
-      this.state.letters.forEach((entry) => {
-        if (this.state.selectedIds.includes(entry.id)) {
-          entry.consumed = true;
-        }
+      const attemptWords = this.getAttemptWords();
+      this.state.lastAttemptWords = [...attemptWords];
+
+      const evaluations = attemptWords.map((guess, wordIndex) => this.evaluateWord(guess, this.currentPuzzle.solution[wordIndex]));
+      this.state.lastFeedbackRows = attemptWords.map((guess, wordIndex) => (
+        guess.split("").map((letter, slotIndex) => ({
+          letter,
+          color: evaluations[wordIndex][slotIndex]
+        }))
+      ));
+
+      // Latest usage wins: each used tile takes the color from its most recent placement,
+      // even if that means overwriting an older green/orange/red state from a prior guess.
+      this.state.guesses.forEach((guessRow, wordIndex) => {
+        guessRow.forEach((tileId, slotIndex) => {
+          const tile = this.getLetterById(tileId);
+          if (!tile) {
+            return;
+          }
+          tile.color = evaluations[wordIndex][slotIndex];
+        });
       });
-      this.state.selectedIds = [];
 
-      if (this.state.solvedWords.every(Boolean)) {
-        const exactSolved = this.state.solvedWords.every((word, index) => word === this.currentPuzzle.solution[index]);
-        const alternateSolved = !exactSolved && this.isSubmittedSetValidSolution(this.state.solvedWords);
-        const solved = exactSolved || alternateSolved;
+      const solved = attemptWords.every((word, index) => word === this.currentPuzzle.solution[index]);
+      this.clearPlacementsForNextAttempt();
 
-        if (solved) {
-          this.state.completed = true;
-          this.state.failed = false;
-          this.state.outOfLives = false;
-          this.setMessage(exactSolved ? "Puzzle solved." : "Alternate solution accepted.", "success");
-        } else {
-          this.state.livesRemaining = Math.max(0, this.state.livesRemaining - 1);
-          const outOfLives = this.state.livesRemaining <= 0;
-          this.state.completed = true;
-          this.state.failed = true;
-          this.state.outOfLives = outOfLives;
-          this.setMessage(
-            outOfLives
-              ? "Out of lives. That set does not solve the puzzle."
-              : `Incorrect. ${this.state.livesRemaining} live${this.state.livesRemaining === 1 ? "" : "s"} left.`,
-            "error"
-          );
-        }
-      } else {
-        this.setMessage(`Word locked in. Next: ${this.activeLength}-letter word.`, "neutral");
+      if (solved) {
+        this.state.completed = true;
+        this.state.solved = true;
+        this.state.failed = false;
+        this.state.outOfLives = false;
+        this.setMessage("Puzzle solved.", "success");
+        return this.getViewModel();
       }
 
+      this.state.livesRemaining = Math.max(0, this.state.livesRemaining - 1);
+      this.state.failed = true;
+      this.state.outOfLives = this.state.livesRemaining <= 0;
+
+      if (this.state.outOfLives) {
+        this.state.completed = true;
+        this.setMessage("Out of lives. That full attempt did not solve the puzzle.", "error");
+        return this.getViewModel();
+      }
+
+      this.setMessage(
+        `Attempt scored. ${this.state.livesRemaining} live${this.state.livesRemaining === 1 ? "" : "s"} left.`,
+        "error"
+      );
       return this.getViewModel();
     }
 
@@ -268,16 +363,20 @@
       }
 
       const resetsUsed = this.state.resetsUsed + 1;
+      const livesRemaining = this.state.livesRemaining;
       this.state = {
         letters: this.currentPuzzle.createLetterPool(),
-        selectedIds: [],
-        solvedWords: Array(this.currentPuzzle.solution.length).fill(""),
+        guesses: this.createEmptyGuesses(),
+        lastFeedbackRows: this.currentPuzzle.lengths.map((length) => Array(length).fill(null)),
+        activeWordIndex: 0,
         resetsUsed,
-        livesRemaining: this.state.livesRemaining,
+        livesRemaining,
         completed: false,
+        solved: false,
         gaveUp: false,
         failed: false,
-        outOfLives: false
+        outOfLives: false,
+        lastAttemptWords: []
       };
       this.setMessage(`Puzzle reset. ${this.availableResets} reset${this.availableResets === 1 ? "" : "s"} left.`, "neutral");
       return this.getViewModel();
@@ -288,15 +387,12 @@
         return this.getViewModel();
       }
 
-      this.state.solvedWords = [...this.currentPuzzle.solution];
-      this.state.selectedIds = [];
+      this.clearPlacementsForNextAttempt();
       this.state.completed = true;
       this.state.gaveUp = true;
+      this.state.solved = false;
       this.state.failed = false;
       this.state.outOfLives = false;
-      this.state.letters.forEach((entry) => {
-        entry.consumed = true;
-      });
       this.setMessage("Answer revealed.", "error");
       return this.getViewModel();
     }
@@ -315,30 +411,73 @@
     }
 
     getViewModel() {
+      const rows = this.currentPuzzle.lengths.map((length, wordIndex) => {
+        const currentGuess = this.state.guesses[wordIndex];
+        const feedbackRow = this.state.lastFeedbackRows[wordIndex];
+        return {
+          index: wordIndex,
+          length,
+          active: !this.state.completed && this.state.activeWordIndex === wordIndex,
+          cells: Array.from({ length }, (_, slotIndex) => {
+            const tileId = currentGuess[slotIndex];
+            if (tileId) {
+              const tile = this.getLetterById(tileId);
+              return {
+                tileId,
+                letter: tile?.letter || "",
+                color: TILE_COLORS.BLUE,
+                filled: true,
+                feedback: false
+              };
+            }
+
+            const feedback = feedbackRow[slotIndex];
+            if (feedback) {
+              return {
+                tileId: null,
+                letter: feedback.letter,
+                color: feedback.color,
+                filled: true,
+                feedback: true
+              };
+            }
+
+            return {
+              tileId: null,
+              letter: "",
+              color: TILE_COLORS.BLUE,
+              filled: false,
+              feedback: false
+            };
+          })
+        };
+      });
+
       return {
         puzzleIndex: this.currentPuzzleIndex,
         puzzleCount: this.puzzles.length,
-        activeWordIndex: this.activeWordIndex,
-        activeLength: this.activeLength,
-        letters: this.state.letters.map((entry) => ({
-          ...entry,
-          selected: this.state.selectedIds.includes(entry.id)
-        })),
-        solvedWords: [...this.state.solvedWords],
-        selectedWord: this.currentGuess,
-        lengths: [...this.currentPuzzle.lengths],
+        rows,
         resetsUsed: this.state.resetsUsed,
         resetsRemaining: this.availableResets,
         livesRemaining: this.livesRemaining,
         completed: this.state.completed,
+        solved: this.state.solved,
         gaveUp: this.state.gaveUp,
         failed: this.state.failed,
         outOfLives: this.state.outOfLives,
         message: this.message,
         messageTone: this.messageTone,
         stars: this.getStarsEarned(),
-        canDelete: this.state.selectedIds.length > 0,
-        solutionWords: [...this.currentPuzzle.solution]
+        canDelete: this.state.guesses[this.state.activeWordIndex].some(Boolean),
+        solutionWords: [...this.currentPuzzle.solution],
+        lastAttemptWords: [...this.state.lastAttemptWords],
+        letters: this.state.letters
+          .slice()
+          .sort((left, right) => left.originalIndex - right.originalIndex)
+          .map((entry) => ({
+            ...entry,
+            placed: entry.placedWordIndex != null
+          }))
       };
     }
   }
@@ -375,16 +514,11 @@
       });
 
       this.elements.nextButton.addEventListener("click", () => {
-        if (this.logic.getViewModel().failed) {
-          if (this.logic.getViewModel().outOfLives) {
-            this.render(this.logic.nextPuzzle());
-            return;
-          }
-          this.logic.resetBoardForRetry();
-          this.render(this.logic.getViewModel());
+        if (this.logic.getViewModel().outOfLives || this.logic.getViewModel().gaveUp || this.logic.getViewModel().solved) {
+          this.render(this.logic.nextPuzzle());
           return;
         }
-        this.render(this.logic.nextPuzzle());
+        this.render(this.logic.getViewModel());
       });
 
       this.elements.menuButton.addEventListener("click", () => {
@@ -405,7 +539,8 @@
       this.elements.resetButton.disabled = view.resetsRemaining <= 0 || view.completed;
       this.elements.deleteButton.disabled = !view.canDelete || view.completed;
       this.elements.giveUpButton.disabled = view.completed;
-      this.elements.nextButton.textContent = view.failed ? "Try Again" : "Next Puzzle";
+      this.elements.submitButton.disabled = view.completed;
+      this.elements.nextButton.hidden = !view.completed;
 
       this.renderLivesDots(view);
       this.renderResetDots(view);
@@ -435,36 +570,38 @@
     renderSlots(view) {
       this.elements.slots.innerHTML = "";
 
-      view.lengths.forEach((length, index) => {
+      view.rows.forEach((rowData) => {
         const row = document.createElement("div");
-        const solvedWord = view.solvedWords[index];
-        const isActive = !view.completed && index === view.activeWordIndex;
-        row.className = `stackwords-slot${solvedWord ? " solved" : ""}${isActive ? " active" : ""}`;
+        row.className = `stackwords-slot word-${rowData.index}${rowData.active ? " active" : ""}`;
+        row.addEventListener("click", () => {
+          this.render(this.logic.setActiveWord(rowData.index));
+        });
 
         const label = document.createElement("div");
         label.className = "stackwords-slot-label";
-        label.textContent = `${length} Letters`;
+        label.textContent = `${rowData.length} Letters`;
 
         const letters = document.createElement("div");
         letters.className = "stackwords-slot-letters";
 
-        const activePreview = isActive ? view.selectedWord.split("") : [];
-        for (let charIndex = 0; charIndex < length; charIndex += 1) {
+        rowData.cells.forEach((cellData, slotIndex) => {
           const cell = document.createElement("button");
           cell.type = "button";
-          const char = solvedWord
-            ? solvedWord[charIndex]
-            : activePreview[charIndex] || "_";
-          cell.className = `stackwords-box${char === "_" ? " empty" : ""}`;
-          cell.textContent = char;
-          cell.disabled = !!solvedWord || !isActive || char === "_";
-          if (!solvedWord && isActive && char !== "_") {
-            cell.addEventListener("click", () => {
-              this.render(this.logic.removeSelectedLetterAt(charIndex));
+          cell.className = `stackwords-box${cellData.filled ? "" : " empty"}${cellData.feedback ? ` feedback-${cellData.color}` : ""}`;
+          cell.textContent = cellData.letter || "_";
+          if (cellData.tileId) {
+            cell.addEventListener("click", (event) => {
+              event.stopPropagation();
+              this.render(this.logic.removeSelectedLetterAt(rowData.index, slotIndex));
+            });
+          } else {
+            cell.addEventListener("click", (event) => {
+              event.stopPropagation();
+              this.render(this.logic.setActiveWord(rowData.index));
             });
           }
           letters.appendChild(cell);
-        }
+        });
 
         row.append(label, letters);
         this.elements.slots.appendChild(row);
@@ -477,9 +614,9 @@
       view.letters.forEach((entry) => {
         const button = document.createElement("button");
         button.type = "button";
-        button.className = `stackwords-letter${entry.selected ? " selected" : ""}${entry.consumed ? " consumed" : ""}`;
+        button.className = `stackwords-letter feedback-${entry.color}${entry.placed ? " placed" : ""}`;
         button.textContent = entry.letter;
-        button.disabled = entry.consumed || view.completed;
+        button.disabled = view.completed;
         button.addEventListener("click", () => {
           this.render(this.logic.toggleLetter(entry.id));
         });
@@ -503,29 +640,19 @@
         ? "Answer Revealed"
         : view.outOfLives
           ? "Out Of Lives"
-        : view.failed
-          ? "Incorrect"
           : "Puzzle Solved";
       this.elements.resultsSummary.textContent = view.gaveUp
         ? solutionLine
         : view.outOfLives
-          ? `Your set: ${view.solvedWords.join(" / ")}`
-        : view.failed
-          ? `Your set: ${view.solvedWords.join(" / ")}`
-        : stars === 3
-          ? "Perfect clear. No resets used."
-          : stars === 2
-            ? "Clean solve. A couple resets spent."
-            : "Solved with grit. Last reset counted.";
+          ? `Final attempt: ${view.lastAttemptWords.join(" / ")}`
+          : stars === 3
+            ? "Perfect clear. No resets used."
+            : stars === 2
+              ? "Clean solve. A couple resets spent."
+              : "Solved with grit. Last reset counted.";
 
-      this.elements.solutionText.hidden = !(view.gaveUp || view.failed);
-      this.elements.solutionText.textContent = view.gaveUp
-        ? solutionLine
-        : view.outOfLives
-          ? solutionLine
-        : view.failed
-          ? `${view.livesRemaining} live${view.livesRemaining === 1 ? "" : "s"} left. Build a new set and go again.`
-          : "";
+      this.elements.solutionText.hidden = !(view.gaveUp || view.outOfLives);
+      this.elements.solutionText.textContent = view.gaveUp || view.outOfLives ? solutionLine : "";
       this.elements.revealList.hidden = !(view.gaveUp || view.outOfLives);
       this.elements.revealList.innerHTML = "";
       if (view.gaveUp || view.outOfLives) {
@@ -537,7 +664,7 @@
         });
       }
 
-      this.elements.stars.hidden = !!view.gaveUp || !!view.failed;
+      this.elements.stars.hidden = !!view.gaveUp || !!view.outOfLives;
       this.elements.stars.innerHTML = "";
       for (let index = 0; index < 3; index += 1) {
         const star = document.createElement("span");
@@ -546,11 +673,7 @@
         this.elements.stars.appendChild(star);
       }
 
-      this.elements.nextButton.textContent = view.outOfLives
-        ? "Next Puzzle"
-        : view.failed
-          ? "Try Again"
-          : "Next Puzzle";
+      this.elements.nextButton.textContent = "Next Puzzle";
     }
   }
 
@@ -572,7 +695,7 @@
             return response.json();
           })
           .then((puzzles) => {
-            const logic = new StackWordsLogic(puzzles, config.wordValidator);
+            const logic = new StackWordsLogic(puzzles);
             screen = new StackWordsScreen(config.elements, logic, config.callbacks);
             return screen;
           });

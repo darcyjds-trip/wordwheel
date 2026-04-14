@@ -140,7 +140,8 @@
         <section id="stackWordsSlots" class="stackwords-slots"></section>
 
         <section class="stackwords-current">
-          <p id="stackWordsMessage" class="message">Solve the smallest word first.</p>
+          <p id="stackWordsMessage" class="message">Build all three words, then submit the full attempt.</p>
+          <p class="stackwords-hint">Red means not in this word - the letter may still belong to another word.</p>
         </section>
 
         <section id="stackWordsPool" class="stackwords-pool"></section>
@@ -152,7 +153,7 @@
             <button id="stackWordsDeleteButton" class="ghost-button" type="button">Delete Letter</button>
             <button id="stackWordsGiveUpButton" class="ghost-button" type="button">Give Up</button>
             <button id="stackWordsResetButton" class="ghost-button" type="button">Reset Puzzle</button>
-            <button id="stackWordsSubmitButton" class="menu-button" type="button">Submit Word</button>
+            <button id="stackWordsSubmitButton" class="menu-button" type="button">Submit Attempt</button>
           </div>
         </section>
 
@@ -177,11 +178,11 @@
         <p class="menu-kicker">Triple Stack</p>
         <h1>Readme</h1>
         <div class="rules-copy">
-          <p>Triple Stack gives you one pool of letters and three word slots to fill from smallest to largest.</p>
-          <p>Use each letter only once. Every submitted word locks into the next slot, and the full set is checked after the third word is entered.</p>
-          <p>You get three lives. A life is only lost when a full three-word set is submitted and it still does not solve the puzzle.</p>
-          <p>You can delete letters while building a word, reset the whole puzzle up to three times, or give up to reveal the answer.</p>
-          <p>No score pressure here. It is a pure solve-the-stack puzzle.</p>
+          <p>Triple Stack gives you 18 unique letters: 15 belong to the three answers and 3 are decoys.</p>
+          <p>Build a 4-letter word, a 5-letter word, and a 6-letter word at the same time, then submit the full attempt together.</p>
+          <p>Green means right letter in the right spot. Orange means right word but wrong spot. Red means that letter does not belong in that specific word.</p>
+          <p>After each attempt, every used tile returns to the pool and keeps only the color from its most recent usage.</p>
+          <p>You get three lives and three resets. Give Up reveals the authored answers for that puzzle.</p>
         </div>
         <button id="stackWordsReadmeBackButton" class="ghost-button menu-back" type="button">Back</button>
       </div>

@@ -347,6 +347,18 @@ body::before {
   transition: border-color 140ms ease, box-shadow 140ms ease;
 }
 
+.stackwords-slot.word-0 {
+  border-color: rgba(78, 242, 255, 0.24);
+}
+
+.stackwords-slot.word-1 {
+  border-color: rgba(255, 176, 79, 0.24);
+}
+
+.stackwords-slot.word-2 {
+  border-color: rgba(143, 255, 114, 0.24);
+}
+
 .stackwords-slot.active {
   border-color: rgba(78, 242, 255, 0.42);
   box-shadow: 0 0 16px rgba(78, 242, 255, 0.12);
@@ -399,9 +411,44 @@ body::before {
   color: rgba(176, 192, 215, 0.44);
 }
 
+.stackwords-box.feedback-blue,
+.stackwords-letter.feedback-blue {
+  border-color: rgba(123, 173, 201, 0.2);
+  background: rgba(9, 18, 36, 0.84);
+  color: rgba(239, 247, 255, 0.9);
+}
+
+.stackwords-box.feedback-red,
+.stackwords-letter.feedback-red {
+  border-color: rgba(255, 116, 116, 0.44);
+  background: linear-gradient(180deg, rgba(87, 17, 17, 0.92), rgba(48, 8, 8, 0.94));
+  color: #ffd4d4;
+}
+
+.stackwords-box.feedback-orange,
+.stackwords-letter.feedback-orange {
+  border-color: rgba(255, 176, 79, 0.48);
+  background: linear-gradient(180deg, rgba(94, 52, 9, 0.92), rgba(56, 28, 4, 0.94));
+  color: #ffe2ad;
+}
+
+.stackwords-box.feedback-green,
+.stackwords-letter.feedback-green {
+  border-color: rgba(132, 255, 130, 0.44);
+  background: linear-gradient(180deg, rgba(22, 75, 26, 0.92), rgba(9, 42, 13, 0.94));
+  color: #d6ffcf;
+}
+
 .stackwords-current {
   margin-top: 20px;
   text-align: center;
+}
+
+.stackwords-hint {
+  margin: 8px auto 0;
+  max-width: 560px;
+  color: rgba(239, 247, 255, 0.72);
+  font-size: 0.92rem;
 }
 
 .stackwords-pool {
@@ -442,10 +489,9 @@ body::before {
   box-shadow: 0 0 16px rgba(78, 242, 255, 0.18);
 }
 
-.stackwords-letter.consumed {
-  opacity: 0.28;
-  border-color: rgba(140, 164, 224, 0.12);
-  pointer-events: none;
+.stackwords-letter.placed {
+  transform: translateY(-1px);
+  box-shadow: 0 0 16px rgba(78, 242, 255, 0.18);
 }
 
 .stackwords-controls {
@@ -1827,6 +1873,10 @@ body::before {
 
   .stackwords-slot-label {
     font-size: 0.74rem;
+  }
+
+  .stackwords-hint {
+    font-size: 0.82rem;
   }
 
   .stackwords-box {

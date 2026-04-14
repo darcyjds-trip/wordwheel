@@ -1,62 +1,62 @@
 [
   {
     "id": 1,
-    "letters": ["S", "T", "O", "A", "R", "D", "C", "B", "N", "E", "S", "T"],
-    "lengths": [3, 4, 5],
-    "solution": ["CAT", "REST", "BONDS"]
+    "lengths": [4, 5, 6],
+    "solution": ["FORK", "PLANE", "MIGHTY"],
+    "letters": ["F", "O", "R", "K", "P", "L", "A", "N", "E", "M", "I", "G", "H", "T", "Y", "C", "D", "S"]
   },
   {
     "id": 2,
-    "letters": ["O", "S", "E", "P", "T", "A", "N", "D", "R", "O", "G", "E"],
-    "lengths": [3, 4, 5],
-    "solution": ["DOG", "PEAR", "STONE"]
+    "lengths": [4, 5, 6],
+    "solution": ["JUMP", "SHARE", "BODILY"],
+    "letters": ["J", "U", "M", "P", "S", "H", "A", "R", "E", "B", "O", "D", "I", "L", "Y", "C", "N", "T"]
   },
   {
     "id": 3,
-    "letters": ["R", "V", "F", "N", "R", "L", "C", "O", "A", "E", "M", "U", "S"],
-    "lengths": [3, 4, 6],
-    "solution": ["SUN", "FARM", "CLOVER"]
+    "lengths": [4, 5, 6],
+    "solution": ["WAVE", "BRICK", "FOUNTS"],
+    "letters": ["W", "A", "V", "E", "B", "R", "I", "C", "K", "F", "O", "U", "N", "T", "S", "D", "G", "L"]
   },
   {
     "id": 4,
-    "letters": ["A", "L", "N", "R", "W", "A", "I", "C", "P", "E", "M", "E", "D"],
-    "lengths": [3, 4, 6],
-    "solution": ["MAP", "WIRE", "CANDLE"]
+    "lengths": [4, 5, 6],
+    "solution": ["GLOW", "TRAIN", "JUMPED"],
+    "letters": ["G", "L", "O", "W", "T", "R", "A", "I", "N", "J", "U", "M", "P", "E", "D", "B", "C", "S"]
   },
   {
     "id": 5,
-    "letters": ["F", "R", "L", "K", "W", "A", "B", "C", "T", "O", "H", "E", "R", "I"],
-    "lengths": [3, 5, 6],
-    "solution": ["HAT", "BRICK", "FLOWER"]
+    "lengths": [4, 5, 6],
+    "solution": ["WELD", "CHAIN", "FROSTY"],
+    "letters": ["W", "E", "L", "D", "C", "H", "A", "I", "N", "F", "R", "O", "S", "T", "Y", "B", "G", "M"]
   },
   {
     "id": 6,
-    "letters": ["V", "E", "R", "T", "O", "M", "K", "P", "N", "G", "A", "L", "E", "E"],
-    "lengths": [3, 5, 6],
-    "solution": ["PEN", "GLOVE", "MARKET"]
+    "lengths": [4, 5, 6],
+    "solution": ["BARK", "MINTY", "GLOVED"],
+    "letters": ["B", "A", "R", "K", "M", "I", "N", "T", "Y", "G", "L", "O", "V", "E", "D", "C", "H", "P"]
   },
   {
     "id": 7,
-    "letters": ["T", "V", "F", "A", "R", "I", "E", "I", "N", "S", "X", "R", "L", "O"],
-    "lengths": [3, 5, 6],
-    "solution": ["FOX", "TRAIN", "SILVER"]
+    "lengths": [4, 5, 6],
+    "solution": ["FISH", "ROUND", "JACKET"],
+    "letters": ["F", "I", "S", "H", "R", "O", "U", "N", "D", "J", "A", "C", "K", "E", "T", "B", "L", "M"]
   },
   {
     "id": 8,
-    "letters": ["E", "A", "R", "D", "B", "O", "C", "L", "A", "P", "N", "T", "R", "H", "E"],
-    "lengths": [3, 5, 7],
-    "solution": ["BEE", "PLANT", "ORCHARD"]
+    "lengths": [4, 5, 6],
+    "solution": ["VEND", "CHAIR", "PLUMBS"],
+    "letters": ["V", "E", "N", "D", "C", "H", "A", "I", "R", "P", "L", "U", "M", "B", "S", "F", "G", "T"]
   },
   {
     "id": 9,
-    "letters": ["U", "I", "J", "T", "A", "E", "T", "M", "L", "R", "B", "O", "C", "N", "C"],
-    "lengths": [3, 6, 6],
-    "solution": ["JAM", "BUTTON", "CIRCLE"]
+    "lengths": [4, 5, 6],
+    "solution": ["CAMP", "WIDER", "FOUNTS"],
+    "letters": ["C", "A", "M", "P", "W", "I", "D", "E", "R", "F", "O", "U", "N", "T", "S", "B", "G", "L"]
   },
   {
     "id": 10,
-    "letters": ["T", "A", "E", "I", "N", "O", "H", "S", "R", "Y", "K", "R", "W", "D", "P", "E"],
-    "lengths": [3, 6, 7],
-    "solution": ["KEY", "SHADOW", "PRINTER"]
+    "lengths": [4, 5, 6],
+    "solution": ["GAZE", "CHIRP", "MOSTLY"],
+    "letters": ["G", "A", "Z", "E", "C", "H", "I", "R", "P", "M", "O", "S", "T", "L", "Y", "B", "D", "F"]
   }
 ]
