@@ -452,9 +452,14 @@ body::before {
 }
 
 .stackwords-debug-answer {
+  display: inline-flex;
   margin: 8px auto 0;
-  color: rgba(255, 240, 122, 0.82);
-  font-size: 0.92rem;
+  padding: 6px 10px;
+  border: 1px solid rgba(255, 240, 122, 0.28);
+  border-radius: 6px;
+  background: rgba(255, 240, 122, 0.08);
+  color: rgba(255, 240, 122, 0.96);
+  font-size: 0.94rem;
   font-weight: 700;
   text-align: center;
 }
