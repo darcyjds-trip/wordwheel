@@ -211,6 +211,7 @@ const elements = {
   lexiPathChain: document.getElementById("lexiPathChain"),
   lexiPathMessage: document.getElementById("lexiPathMessage"),
   lexiPathBackButton: document.getElementById("lexiPathBackButton"),
+  lexiPathGiveUpButton: document.getElementById("lexiPathGiveUpButton"),
   lexiPathSubmitButton: document.getElementById("lexiPathSubmitButton"),
   lexiPathNextButton: document.getElementById("lexiPathNextButton"),
   wheelGrid: document.getElementById("wheelGrid"),
@@ -294,6 +295,7 @@ const lexiPathController = window.LexiPathApp?.createController({
     chain: elements.lexiPathChain,
     message: elements.lexiPathMessage,
     backButton: elements.lexiPathBackButton,
+    giveUpButton: elements.lexiPathGiveUpButton,
     submitButton: elements.lexiPathSubmitButton,
     nextButton: elements.lexiPathNextButton
   },

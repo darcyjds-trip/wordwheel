@@ -235,6 +235,7 @@
         values: Array(Math.max(0, puzzle.sequence.length - 2)).fill(""),
         committed: Array(Math.max(0, puzzle.sequence.length - 2)).fill(false),
         solved: false,
+        gaveUp: false,
         sessionComplete: false
       };
       this.lastValidatedArrow = -1;
@@ -378,6 +379,26 @@
       return this.getViewModel();
     }
 
+    giveUp() {
+      if (!this.state || this.state.solved) {
+        return this.getViewModel();
+      }
+
+      const puzzle = this.currentPuzzle;
+      const finalPuzzle = this.state.puzzleIndex === this.puzzles.length - 1;
+      this.state.values = puzzle.sequence.slice(1, -1);
+      this.state.committed = this.state.values.map(() => true);
+      this.state.solved = true;
+      this.state.gaveUp = true;
+      this.state.sessionComplete = finalPuzzle;
+      this.lastValidatedArrow = puzzle.pattern.length - 1;
+      this.feedback = finalPuzzle
+        ? "Authored chain revealed. Session complete."
+        : "Authored chain revealed. Take a look, then move on when you're ready.";
+      this.feedbackTone = "neutral";
+      return this.getViewModel();
+    }
+
     getViewModel() {
       if (!this.state) {
         return null;
@@ -412,6 +433,7 @@
         puzzleLabel: `Path ${sessionIndex} of ${sessionTotal}`,
         difficulty: difficultyLabel,
         solved: this.state.solved,
+        gaveUp: !!this.state.gaveUp,
         sessionComplete: !!this.state.sessionComplete,
         feedback: this.feedback,
         feedbackTone: this.feedbackTone,
@@ -434,6 +456,10 @@
     bindEvents() {
       this.elements.backButton.addEventListener("click", () => {
         this.callbacks.onBack?.();
+      });
+      this.elements.giveUpButton.addEventListener("click", () => {
+        this.commitDrafts();
+        this.render(this.game.giveUp());
       });
       this.elements.submitButton.addEventListener("click", () => {
         this.commitDrafts();
@@ -602,6 +628,8 @@
 
       this.elements.message.textContent = view.feedback;
       this.elements.message.className = `message${view.feedbackTone && view.feedbackTone !== "neutral" ? ` ${view.feedbackTone}` : ""}`;
+      this.elements.giveUpButton.hidden = !!view.solved;
+      this.elements.submitButton.disabled = !!view.solved;
       this.elements.nextButton.hidden = !view.solved;
       this.elements.nextButton.textContent = view.nextButtonLabel || "Next Puzzle";
     }
