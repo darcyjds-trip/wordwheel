@@ -1874,48 +1874,108 @@ body::before {
     font-size: 0.66rem;
   }
 
+  .stackwords-shell {
+    width: 100%;
+  }
+
   .stackwords-header {
-    align-items: flex-start;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
   }
 
   .stackwords-status-panels {
-    gap: 8px;
+    justify-content: flex-start;
+    gap: 10px;
   }
 
   .stackwords-reset-panel {
-    min-width: 88px;
+    min-width: 0;
+    flex: 1;
+    text-align: left;
+  }
+
+  .stackwords-reset-dots {
+    justify-content: flex-start;
+  }
+
+  .stackwords-subhead {
+    margin-top: 10px;
+  }
+
+  .stackwords-slots {
+    margin-top: 18px;
+    gap: 12px;
   }
 
   .stackwords-slot {
     width: 100%;
-    padding: 14px 12px;
+    gap: 10px;
+    padding: 12px 10px;
   }
 
   .stackwords-slot-label {
-    font-size: 0.74rem;
+    font-size: 0.72rem;
+  }
+
+  .stackwords-slot-letters {
+    gap: 8px;
+  }
+
+  .stackwords-current {
+    margin-top: 14px;
   }
 
   .stackwords-hint {
-    font-size: 0.82rem;
+    max-width: 100%;
+    font-size: 0.8rem;
+    line-height: 1.35;
   }
 
   .stackwords-debug-answer {
-    font-size: 0.82rem;
+    max-width: 100%;
+    padding: 6px 8px;
+    font-size: 0.78rem;
+    line-height: 1.35;
   }
 
   .stackwords-box {
-    width: 34px;
-    height: 42px;
+    width: 36px;
+    height: 44px;
     font-size: 0.98rem;
+  }
+
+  .stackwords-pool {
+    margin-top: 14px;
+    grid-template-columns: repeat(6, 38px);
+    gap: 8px;
+    padding: 10px 8px;
   }
 
   .stackwords-letter {
     width: 38px;
     height: 42px;
+    font-size: 0.92rem;
   }
 
-  .stackwords-pool {
-    grid-template-columns: repeat(6, 38px);
+  .stackwords-controls.control-panel {
+    padding: 10px 8px;
+  }
+
+  .stackwords-controls .session-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: 100%;
+    gap: 8px;
+  }
+
+  .stackwords-controls .ghost-button,
+  .stackwords-controls .menu-button {
+    width: 100%;
+    min-width: 0;
+    min-height: 40px;
+    padding: 0 10px;
+    font-size: 0.8rem;
   }
 
   .lexipath-word-card {
@@ -2238,6 +2298,37 @@ body::before {
 }
 
 @media (max-width: 400px) {
+  .stackwords-status-panels {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .stackwords-slot {
+    padding: 10px 8px;
+  }
+
+  .stackwords-box {
+    width: 32px;
+    height: 40px;
+    font-size: 0.9rem;
+  }
+
+  .stackwords-pool {
+    grid-template-columns: repeat(6, 34px);
+    gap: 6px;
+    padding: 8px 6px;
+  }
+
+  .stackwords-letter {
+    width: 34px;
+    height: 38px;
+    font-size: 0.84rem;
+  }
+
+  .stackwords-controls .session-actions {
+    grid-template-columns: 1fr;
+  }
+
   .reel-window {
     width: min(29vw, 104px);
     height: 132px;
